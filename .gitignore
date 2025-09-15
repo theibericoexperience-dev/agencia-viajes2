@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.DS_Store
+*.zip
+*.rpm
+*.log
+.env
+public/*.svg
+images/*.svg
