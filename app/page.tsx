@@ -6,14 +6,12 @@ export default function Page() {
   return (
     <main className="relative min-h-screen w-full flex flex-col justify-start items-center overflow-hidden">
       {/* Full Background Image */}
-      <div className="fixed inset-0 w-full h-full -z-10">
-        <img
-          src="/iberico-hero.jpg"
-          alt="Iberico Experience landscape"
-          className="object-cover w-full h-full"
-          draggable="false"
-        />
-        <div className="absolute inset-0 bg-black/40" />
+      <div className="fixed inset-0 w-full h-full -z-10" aria-hidden="true">
+        <picture>
+          <source srcSet="/images/IMG_3241.JPG" type="image/jpeg" />
+          <img src="/iberico-hero.jpg" alt="Iberico Experience landscape" className="object-cover w-full h-full" draggable="false" />
+        </picture>
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       {/* Transparent Top Bar Header */}
@@ -31,10 +29,10 @@ export default function Page() {
 
       {/* Hero Section Overlay */}
       <section className="flex flex-col items-center justify-center w-full pt-40 pb-16 px-4">
-        <div className="bg-white/20 rounded-xl shadow-2xl p-10 max-w-2xl w-full text-center backdrop-blur-md">
-          <h2 className="text-5xl font-extrabold text-white mb-6 drop-shadow">Discover Iberico Experience</h2>
-          <p className="text-lg text-white mb-8">Personalized trips in small groups that connect you with the culture, gastronomy, and nature of unique places in Spain and Portugal.</p>
-          <a href="#destinations" className="inline-block px-8 py-3 bg-amber-600 text-white rounded-full font-semibold text-lg hover:bg-amber-700 transition">Start your journey</a>
+        <div className="bg-white/60 rounded-xl shadow-2xl p-8 max-w-2xl w-full text-center backdrop-blur-md" role="region" aria-labelledby="hero-title">
+          <h2 id="hero-title" className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Discover Iberico Experience</h2>
+          <p className="text-base md:text-lg text-gray-800 mb-6">Personalized trips in small groups that connect you with the culture, gastronomy, and nature of unique places in Spain and Portugal.</p>
+          <a href="#destinations" className="inline-block px-6 py-3 bg-amber-600 text-white rounded-full font-semibold text-base hover:bg-amber-700 transition">Start your journey</a>
         </div>
       </section>
 
