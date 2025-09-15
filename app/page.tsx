@@ -74,7 +74,7 @@ export default function Page() {
                 Iberico Experience
               </h1>
               <p className="mt-4 text-lg md:text-xl text-stone-200">Personalized trips in small groups that connect you with the culture, gastronomy, and nature of unique places.</p>
-              <Button onClick={handleNotImplemented} size="lg" className="mt-8 bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold">
+              <Button onClick={handleNotImplemented} className="mt-8 bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold">
                 Discover your next trip
               </Button>
             </motion.div>
@@ -96,7 +96,7 @@ export default function Page() {
                 <p className="mt-4 text-lg text-stone-600">
                   We take you to the heart of a surprising land, where history is felt in every corner and nature embraces you. From endless dehesas to medieval villages, get ready for a unique experience.
                 </p>
-                <Button variant="link" className="mt-4 text-amber-600 font-bold p-0 text-lg">
+                <Button className="mt-4 text-amber-600 font-bold p-0 text-lg">
                   Learn more about our destinations →
                 </Button>
               </motion.div>
