@@ -1,19 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
+import Modal from "./Modal";
+
+const ALBUMS = [
+  { id: 'monfrague', title: 'Monfragüe', cover: '/images/IMG_3241.png', link: '/checkout' },
+  { id: 'album-2', title: 'Tour 2', cover: '/images/iberico-hero.jpg', link: '#' },
+  { id: 'album-3', title: 'Tour 3', cover: '/images/IMG_3241.png', link: '#' },
+]
 
 export default function Gallery(){
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<any>(null);
+
   return (
     <section className="w-full bg-white py-16">
       <div className="max-w-6xl mx-auto px-6">
         <h2 className="text-3xl font-bold mb-6">Galería</h2>
-        <p className="text-gray-600 mb-8">Álbumes y enlaces a tours. Añade tus imágenes en <code>public/images</code>.</p>
+        <p className="text-gray-600 mb-8">Álbumes y enlaces a tours. Haz click para ver el álbum o ir a la página del tour.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {[1,2,3,4,5,6].map(i => (
-            <a key={i} className="block rounded-lg overflow-hidden shadow hover:scale-[1.01] transition" href="#">
-              <div className="aspect-[4/3] bg-gray-200 flex items-center justify-center text-gray-400">Album {i}</div>
-            </a>
+          {ALBUMS.map(album => (
+            <div key={album.id} className="rounded-lg overflow-hidden shadow">
+              <button onClick={() => { setActive(album); setOpen(true); }} className="block w-full text-left">
+                <div className="aspect-[4/3] bg-gray-200">
+                  <img src={album.cover} className="w-full h-full object-cover" alt={album.title} />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold">{album.title}</h3>
+                  <div className="mt-2 text-sm text-gray-500">Ver álbum · <a className="text-blue-600" href={album.link}>Ir al tour</a></div>
+                </div>
+              </button>
+            </div>
           ))}
         </div>
       </div>
+
+      <Modal open={open} onClose={() => setOpen(false)}>
+        {active ? (
+          <div>
+            <h3 className="text-xl font-bold mb-4">{active.title}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <img src={active.cover} alt="cover" className="w-full h-64 object-cover rounded" />
+              <div>
+                <p className="text-gray-700">Álbum {active.title}. Aquí podrás colgar fotos o enlaces a galerías externas (Google Photos, albums, etc.).</p>
+                <div className="mt-4">
+                  <a href={active.link} className="inline-block px-4 py-2 bg-blue-600 text-white rounded">Ver tour / Reservar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </Modal>
     </section>
   )
 }
