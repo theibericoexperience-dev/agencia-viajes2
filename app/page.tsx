@@ -8,7 +8,7 @@ export default function Page() {
       {/* Full Background Image */}
       <div className="fixed inset-0 w-full h-full -z-10">
         <img
-          src="/hero-landscape.jpg"
+          src="/iberico-hero.jpg"
           alt="Iberico Experience landscape"
           className="object-cover w-full h-full"
           draggable="false"
