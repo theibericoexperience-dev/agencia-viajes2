@@ -1,6 +1,6 @@
 {
   "name": "agencia-viajes2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -20,4 +20,5 @@
     "@types/react-dom": "^18.2.17",
     "typescript": "^5.4.5"
   }
+  // Cambio mínimo para forzar redeploy en Vercel
 }
