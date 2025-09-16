@@ -1,6 +1,7 @@
 // app/layout.tsx
 import React from "react";
 import "./globals.css";
+import CookieConsent from './components/CookieConsent';
 
   const title = 'Iberico Experience — Small-group tours in Spain & Portugal';
   const description = 'Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.';
@@ -41,6 +42,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <a href="#content" className="skip-link">Skip to content</a>
         {children}
+        <CookieConsent />
+        <script dangerouslySetInnerHTML={{ __html: `(function(){
+          function loadGA(){
+            var id = window.__NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''}';
+            if(!id) return;
+            if(document.querySelector('[data-ga]')) return;
+            var s = document.createElement('script'); s.src = 'https://www.googletagmanager.com/gtag/js?id='+id; s.async = true; s.setAttribute('data-ga', '1'); document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);} window.gtag = gtag; gtag('js', new Date()); gtag('config', id);
+          }
+          if(document.cookie.indexOf('cookie_consent=yes') !== -1) loadGA();
+          window.addEventListener('cookie-consent-accepted', loadGA);
+        })();`}} />
       </body>
     </html>
   );
