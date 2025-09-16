@@ -69,15 +69,34 @@ export async function POST(req: Request) {
   // Try to insert into Supabase
   try {
     const insert = { name, email, phone, travelers, preferred_date, billing_address, notes };
-    const res = await sb.from('orders').insert(insert).select();
-    if (res.error) {
-      console.error('Supabase insert error', res.error);
-      return NextResponse.json({ ok: false, error: res.error.message || String(res.error) }, { status: 500 });
+
+    // retry with exponential backoff
+    const maxAttempts = 3;
+    let attempt = 0;
+    let lastErr: any = null;
+    while (attempt < maxAttempts) {
+      attempt += 1;
+      try {
+        const res = await sb.from('orders').insert(insert).select();
+        if (!res.error) {
+          return NextResponse.json({ ok: true, supabase: true, data: res.data });
+        }
+        lastErr = res.error;
+        console.error(`Supabase insert attempt ${attempt} error`, res.error);
+      } catch (e: any) {
+        lastErr = e;
+        console.error(`Supabase insert attempt ${attempt} exception`, e);
+      }
+      // backoff
+      await new Promise((r) => setTimeout(r, 200 * Math.pow(2, attempt)));
     }
-    return NextResponse.json({ ok: true, supabase: true, data: res.data });
+    const errId = Math.random().toString(36).slice(2, 9);
+    console.error(`Supabase insert failed after ${maxAttempts} attempts. error_id=${errId}`, lastErr);
+    return NextResponse.json({ ok: false, error: 'Failed to persist order', error_id: errId }, { status: 500 });
   } catch (err: any) {
-    console.error('Supabase exception', err);
-    return NextResponse.json({ ok: false, error: err?.message || String(err) }, { status: 500 });
+    const errId = Math.random().toString(36).slice(2, 9);
+    console.error(`Supabase exception error_id=${errId}`, err);
+    return NextResponse.json({ ok: false, error: err?.message || String(err), error_id: errId }, { status: 500 });
   }
 }
 
