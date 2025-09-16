@@ -3,6 +3,7 @@
 
 "use client";
 import { useState } from "react";
+import Image from 'next/image';
 import Header from './components/Header';
 
 export default function Page() {
@@ -19,16 +20,32 @@ export default function Page() {
     if (!data.name || !data.email || !data.travelers) {
       setStatus('error');
       setMessage('Please fill name, email and number of travellers.');
+      // focus first missing field
+      if (!data.name) (form.querySelector('[name="name"]') as HTMLElement | null)?.focus();
+      else if (!data.email) (form.querySelector('[name="email"]') as HTMLElement | null)?.focus();
+      else if (!data.travelers) (form.querySelector('[name="travelers"]') as HTMLElement | null)?.focus();
       return;
     }
 
     setStatus("sending");
     setMessage(null);
     try {
+      // send flat fields expected by server: name,email,phone,travelers,preferred_date,billing_address,notes
+      const payload = {
+        type: 'booking',
+        createdAt: new Date().toISOString(),
+        name: data.name,
+        email: data.email,
+        phone: data.phone || null,
+        travelers: Number(data.travelers || 1),
+        preferred_date: data.preferred_date || null,
+        billing_address: data.billing_address || null,
+        notes: data.notes || null,
+      };
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'booking', payload: data, createdAt: new Date().toISOString() }),
+        body: JSON.stringify(payload),
       });
       const json = await res.json().catch(() => null);
       if (res.ok) {
@@ -47,13 +64,14 @@ export default function Page() {
   }
 
   return (
-    <main className="relative min-h-screen w-full flex flex-col justify-start items-center overflow-hidden bg-gradient-to-b from-black/50 to-black/70">
+    <main id="content" className="relative min-h-screen w-full flex flex-col justify-start items-center overflow-hidden bg-gradient-to-b from-black/50 to-black/70">
       {/* Background image */}
       <div className="fixed inset-0 w-full h-full -z-10" aria-hidden>
-        <picture>
-          <source srcSet="/images/IMG_3241.JPG" type="image/jpeg" />
-          <img src="/images/IMG_3241.JPG" alt="Iberico Experience landscape" className="object-cover w-full h-full" draggable="false" />
-        </picture>
+        <div className="absolute inset-0 -z-10">
+          <div className="relative w-full h-full">
+            <Image src="/images/IMG_3241.JPG" alt="Iberico Experience landscape" fill className="object-cover" priority={false} sizes="100vw" draggable={false} />
+          </div>
+        </div>
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
@@ -78,10 +96,10 @@ export default function Page() {
         <h2 className="text-2xl text-white font-bold mb-4">Gallery</h2>
         <p className="text-white/90 mb-6">A few moments from our trips — small groups, real experiences.</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <img src="/images/IMG_3241.JPG" alt="Gallery 1" className="w-full h-36 object-cover rounded" loading="lazy" />
-          <img src="/images/IMG_3241.JPG" alt="Gallery 2" className="w-full h-36 object-cover rounded" loading="lazy" />
-          <img src="/images/IMG_3241.JPG" alt="Gallery 3" className="w-full h-36 object-cover rounded" loading="lazy" />
-          <img src="/images/IMG_3241.JPG" alt="Gallery 4" className="w-full h-36 object-cover rounded" loading="lazy" />
+          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/images/IMG_3241.JPG" alt="Gallery 1" fill className="object-cover" priority={false} /></div>
+          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/images/IMG_3241.JPG" alt="Gallery 2" fill className="object-cover" priority={false} /></div>
+          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/images/IMG_3241.JPG" alt="Gallery 3" fill className="object-cover" priority={false} /></div>
+          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/images/IMG_3241.JPG" alt="Gallery 4" fill className="object-cover" priority={false} /></div>
         </div>
         <div className="mt-4">
           <a href="/gallery" className="text-amber-200 font-medium hover:underline">See the full gallery</a>
@@ -115,23 +133,47 @@ export default function Page() {
       <section id="booking" className="w-full max-w-3xl mx-auto py-12 px-4">
         <h2 className="text-2xl text-white font-bold mb-4">Request a Booking</h2>
         <p className="text-white/90 mb-4">Fill the form below to request a tour. We'll contact you to confirm details and payment by bank transfer.</p>
-        <form onSubmit={handleSubmit} className="bg-white/90 rounded p-6 grid grid-cols-1 gap-3">
+  <form onSubmit={handleSubmit} className="bg-white/90 rounded p-6 grid grid-cols-1 gap-3" aria-describedby="booking-status">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <input name="name" required placeholder="Full name" className="px-3 py-2 rounded border" />
-            <input name="email" type="email" required placeholder="Email" className="px-3 py-2 rounded border" />
+            <label className="flex flex-col">
+              <span className="text-sm font-medium text-gray-700">Full name</span>
+              <input name="name" required aria-required="true" placeholder="Full name" className="px-3 py-2 rounded border mt-1" />
+            </label>
+            <label className="flex flex-col">
+              <span className="text-sm font-medium text-gray-700">Email</span>
+              <input name="email" type="email" required aria-required="true" placeholder="Email" className="px-3 py-2 rounded border mt-1" />
+            </label>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <input name="phone" placeholder="Phone" className="px-3 py-2 rounded border" />
-            <input name="travelers" type="number" min={1} defaultValue={2} placeholder="Number of travellers" className="px-3 py-2 rounded border" />
+            <label className="flex flex-col">
+              <span className="text-sm font-medium text-gray-700">Phone</span>
+              <input name="phone" placeholder="Phone" aria-required="false" className="px-3 py-2 rounded border mt-1" />
+            </label>
+            <label className="flex flex-col">
+              <span className="text-sm font-medium text-gray-700">Number of travellers</span>
+              <input name="travelers" type="number" min={1} defaultValue={2} placeholder="Number of travellers" aria-required="true" className="px-3 py-2 rounded border mt-1" />
+            </label>
           </div>
-          <input name="preferredDate" type="date" className="px-3 py-2 rounded border" />
-          <input name="billingAddress" placeholder="Billing address" className="px-3 py-2 rounded border" />
-          <textarea name="notes" placeholder="Notes" className="px-3 py-2 rounded border" rows={4} />
+          <label className="flex flex-col">
+            <span className="text-sm font-medium text-gray-700">Preferred date</span>
+            <input name="preferred_date" type="date" className="px-3 py-2 rounded border mt-1" aria-required="false" />
+          </label>
+          <label className="flex flex-col">
+            <span className="text-sm font-medium text-gray-700">Billing address</span>
+            <input name="billing_address" placeholder="Billing address" className="px-3 py-2 rounded border mt-1" aria-required="false" />
+          </label>
+          <label className="flex flex-col">
+            <span className="text-sm font-medium text-gray-700">Notes</span>
+            <textarea name="notes" placeholder="Notes" className="px-3 py-2 rounded border mt-1" rows={4} aria-required="false" />
+          </label>
           <div className="flex items-center gap-3">
-            <button type="submit" className="px-4 py-2 bg-amber-600 text-white rounded">Send request</button>
-            {status === 'sending' && <span className="text-sm text-gray-700">Sending...</span>}
-            {status === 'sent' && <span className="text-sm text-emerald-700">{message || "Request sent — we'll contact you soon."}</span>}
-            {status === 'error' && <span className="text-sm text-red-600">{message || 'Error sending request. Try again later.'}</span>}
+            <button type="submit" className="px-4 py-2 bg-amber-600 text-white rounded" disabled={status === 'sending'}>Send request</button>
+            <span id="booking-status" className="sr-only" aria-live="polite">
+              {status === 'sending' ? 'Sending request' : status === 'sent' ? (message || "Request sent — we'll contact you soon.") : status === 'error' ? (message || 'Error sending request. Try again later.') : ''}
+            </span>
+            {status === 'sending' && <span className="text-sm text-gray-700" aria-hidden>Sending...</span>}
+            {status === 'sent' && <span className="text-sm text-emerald-700" aria-hidden>{message || "Request sent — we'll contact you soon."}</span>}
+            {status === 'error' && <span className="text-sm text-red-600" aria-hidden>{message || 'Error sending request. Try again later.'}</span>}
           </div>
         </form>
       </section>
