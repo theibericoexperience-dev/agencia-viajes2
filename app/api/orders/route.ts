@@ -32,44 +32,52 @@ function ensureDataDir() {
 }
 
 export async function POST(req: Request) {
-  ensureDataDir();
   const body = await req.json();
-  // Try Supabase first when configured
+
+  // Basic validation
+  const name = typeof body.name === 'string' ? body.name.trim() : '';
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  const phone = typeof body.phone === 'string' ? body.phone.trim() : '';
+  const travelers = body.travelers ? parseInt(String(body.travelers), 10) : null;
+  const preferred_date = body.preferred_date ? String(body.preferred_date) : null;
+  const billing_address = typeof body.billing_address === 'string' ? body.billing_address : null;
+  const notes = typeof body.notes === 'string' ? body.notes : null;
+
+  if (!name || !email || !travelers || Number.isNaN(travelers)) {
+    return NextResponse.json({ ok: false, error: 'Missing or invalid required fields (name, email, travelers)' }, { status: 400 });
+  }
+
   const sb = getSupabase();
-  if (sb) {
+  if (!sb) {
+    // In production we require Supabase; in dev we may fallback to file, but avoid writing to disk in serverless.
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      return NextResponse.json({ ok: false, error: 'Database not configured' }, { status: 503 });
+    }
+    // local/dev fallback: persist to file
     try {
-      const insert = { ...body };
-      // prefer named columns if payload contains nested payload
-      if (body.payload && typeof body.payload === 'object') {
-        Object.assign(insert, body.payload);
-        delete insert.payload;
-      }
-      const res = await sb.from('orders').insert(insert).select();
-      if (res.error) {
-        // If table missing or insert failed, fallback to file
-        console.error('Supabase insert error', res.error.message || res.error);
-      } else {
-        return NextResponse.json({ ok: true, supabase: true, data: res.data });
-      }
+      ensureDataDir();
+      const raw = fs.readFileSync(ORDERS_FILE, 'utf-8');
+      const arr = JSON.parse(raw || '[]');
+      arr.push({ name, email, phone, travelers, preferred_date, billing_address, notes, created_at: new Date().toISOString() });
+      fs.writeFileSync(ORDERS_FILE, JSON.stringify(arr, null, 2));
+      return NextResponse.json({ ok: true, supabase: false });
     } catch (err: any) {
-      console.error('Supabase exception', err?.message || err);
+      return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
     }
   }
 
-  // Fallback: persist to local file
+  // Try to insert into Supabase
   try {
-    const raw = fs.readFileSync(ORDERS_FILE, 'utf-8');
-    const arr = JSON.parse(raw || '[]');
-    arr.push(body);
-    fs.writeFileSync(ORDERS_FILE, JSON.stringify(arr, null, 2));
-    return NextResponse.json({ ok: true, supabase: !!sb ? false : null });
-  } catch (err) {
-    // Temporary debug: include stack trace in production response so we can see Vercel error
-    const message = err instanceof Error ? err.message : String(err);
-    const stack = err instanceof Error ? err.stack : undefined;
-    const body = { ok: false, error: message } as any;
-    if (process.env.NODE_ENV === 'production') body.debug_stack = stack;
-    return NextResponse.json(body, { status: 500 });
+    const insert = { name, email, phone, travelers, preferred_date, billing_address, notes };
+    const res = await sb.from('orders').insert(insert).select();
+    if (res.error) {
+      console.error('Supabase insert error', res.error);
+      return NextResponse.json({ ok: false, error: res.error.message || String(res.error) }, { status: 500 });
+    }
+    return NextResponse.json({ ok: true, supabase: true, data: res.data });
+  } catch (err: any) {
+    console.error('Supabase exception', err);
+    return NextResponse.json({ ok: false, error: err?.message || String(err) }, { status: 500 });
   }
 }
 
