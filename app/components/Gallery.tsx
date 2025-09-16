@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from 'next/image';
 import Modal from "./Modal";
 
 const ALBUMS = [
@@ -20,8 +21,8 @@ export default function Gallery(){
           {ALBUMS.map(album => (
             <article key={album.id} className="rounded-lg overflow-hidden shadow" aria-labelledby={`album-${album.id}`}>
               <button onClick={() => { setActive(album); setOpen(true); }} className="block w-full text-left" aria-haspopup="dialog">
-                <div className="aspect-[4/3] bg-gray-200">
-                  <img src={album.cover} className="w-full h-full object-cover" alt={`Portada del álbum ${album.title}`} loading="lazy" />
+                <div className="aspect-[4/3] bg-gray-200 relative">
+                  <Image src={album.cover} alt={`Portada del álbum ${album.title}`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 33vw" />
                 </div>
                 <div className="p-4">
                   <h3 id={`album-${album.id}`} className="font-semibold">{album.title}</h3>
@@ -37,8 +38,8 @@ export default function Gallery(){
         {active ? (
           <div>
             <h3 className="text-xl font-bold mb-4">{active.title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <img src={active.cover} alt={`Imagen representativa de ${active.title}`} className="w-full h-64 object-cover rounded" loading="lazy" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="relative w-full h-64 rounded overflow-hidden"><Image src={active.cover} alt={`Imagen representativa de ${active.title}`} fill className="object-cover rounded" sizes="(max-width: 768px) 100vw, 50vw" /></div>
               <div>
                 <p className="text-gray-700">Álbum {active.title}. Aquí podrás colgar fotos o enlaces a galerías externas (Google Photos, albums, etc.).</p>
                 <div className="mt-4">

@@ -6,3 +6,30 @@ body {
   font-family: 'Inter', sans-serif;
   background: #f8fafc;
 }
+
+/* Accessibility helpers */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus,
+.skip-link:active {
+  position: static;
+  width: auto;
+  height: auto;
+  left: 0.5rem;
+  top: 0.5rem;
+  background: black;
+  color: white;
+  padding: 0.5rem 1rem;
+  z-index: 9999;
+}
+
+:is(a,button,input,textarea,select) :focus-visible {
+  outline: 3px solid #f59e0b; /* amber */
+  outline-offset: 2px;
+}

@@ -10,7 +10,7 @@ const DESTINATIONS = [
 
 export default function DestinationsPage() {
   return (
-    <main className="min-h-screen p-8 bg-black/80 text-white">
+    <main id="content" className="min-h-screen p-8 bg-black/80 text-white">
       <Header />
       <h1 className="text-3xl font-bold mb-4">Destinations</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
