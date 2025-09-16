@@ -7,23 +7,39 @@ import Header from './components/Header';
 
 export default function Page() {
   const [status, setStatus] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form) as any);
+    const fd = new FormData(form) as any;
+    const data = Object.fromEntries(fd);
+
+    // client validation
+    if (!data.name || !data.email || !data.travelers) {
+      setStatus('error');
+      setMessage('Please fill name, email and number of travellers.');
+      return;
+    }
+
     setStatus("sending");
+    setMessage(null);
     try {
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'booking', payload: data, createdAt: new Date().toISOString() }),
       });
+      const json = await res.json().catch(() => null);
       if (res.ok) {
         setStatus('sent');
+        setMessage('Request sent — we will contact you to confirm.');
         form.reset();
       } else {
         setStatus('error');
+        setMessage(json?.error || 'Server error.');
+        // show server-side error id if present
+        if (json?.error_id) setMessage((m) => (m ? m + ` (id: ${json.error_id})` : `Error id: ${json.error_id}`));
       }
     } catch (err) {
       setStatus('error');
@@ -114,8 +130,8 @@ export default function Page() {
           <div className="flex items-center gap-3">
             <button type="submit" className="px-4 py-2 bg-amber-600 text-white rounded">Send request</button>
             {status === 'sending' && <span className="text-sm text-gray-700">Sending...</span>}
-            {status === 'sent' && <span className="text-sm text-emerald-700">Request sent — we'll contact you soon.</span>}
-            {status === 'error' && <span className="text-sm text-red-600">Error sending request. Try again later.</span>}
+            {status === 'sent' && <span className="text-sm text-emerald-700">{message || "Request sent — we'll contact you soon."}</span>}
+            {status === 'error' && <span className="text-sm text-red-600">{message || 'Error sending request. Try again later.'}</span>}
           </div>
         </form>
       </section>
