@@ -1,5 +1,19 @@
 node_modules/
 .next/
+dist/
+/.env
+.env.local
+.env.*.local
+.env.sentry-build-plugin
+.env.sentry
+.env.sentry-build-plugin
+.env.local
+.env.*.local
+node_modules/
+.next/
+/.vercel
+node_modules/
+.next/
 .DS_Store
 *.zip
 *.rpm
@@ -7,3 +21,6 @@ node_modules/
 .env
 public/*.svg
 images/*.svg
+
+# Sentry Config File
+.env.sentry-build-plugin

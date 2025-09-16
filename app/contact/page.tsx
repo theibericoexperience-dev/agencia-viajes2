@@ -41,7 +41,7 @@ export default function ContactPage(){
           <label className="flex flex-col"><span className="text-sm font-medium">Email</span><input name="email" type="email" className="px-3 py-2 rounded border mt-1" required aria-required="true" /></label>
           <label className="flex flex-col"><span className="text-sm font-medium">Message</span><textarea name="message" rows={5} className="px-3 py-2 rounded border mt-1" aria-required="false" /></label>
           <div className="flex items-center gap-3">
-            <button type="submit" className="px-4 py-2 bg-amber-600 text-white rounded" disabled={status==='sending'}>Send</button>
+            <button type="submit" className="w-full sm:w-auto px-4 py-2 bg-amber-600 text-white rounded" disabled={status==='sending'}>Send</button>
             <span aria-live="polite" className="sr-only">{status==='sending' ? 'Sending' : status==='sent' ? (message||'Sent') : status==='error' ? (message||'Error') : ''}</span>
             {status==='sent' && <span className="text-emerald-700">{message}</span>}
             {status==='error' && <span className="text-red-600">{message}</span>}

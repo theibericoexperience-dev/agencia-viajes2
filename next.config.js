@@ -1,6 +1,19 @@
+const { withSentryConfig } = require("@sentry/nextjs");
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const baseConfig = {
   output: 'standalone',
 };
 
-module.exports = nextConfig;
+module.exports = withSentryConfig(
+  baseConfig,
+  {
+    org: "iberico-experience",
+    project: "javascript-nextjs",
+    silent: !process.env.CI,
+    widenClientFileUpload: true,
+    // tunnelRoute: "/monitoring", // uncomment to enable
+    disableLogger: true,
+    automaticVercelMonitors: true,
+  }
+);

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Header from '../../app/components/Header';
 
 export default function GalleryPage() {
-  const images = ['/images/IMG_3241.JPG','/images/IMG_3241.JPG','/images/IMG_3241.JPG','/images/IMG_3241.JPG'];
+  const images = ['/_optimized/IMG_3241.JPG-w800.webp','/_optimized/IMG_3241.JPG-w800.webp','/_optimized/IMG_3241.JPG-w800.webp','/_optimized/IMG_3241.JPG-w800.webp'];
   return (
     <main id="content" className="min-h-screen p-8 bg-black/80 text-white">
       <Header />

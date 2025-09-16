@@ -6,7 +6,7 @@ import CookieConsent from './components/CookieConsent';
   const title = 'Iberico Experience — Small-group tours in Spain & Portugal';
   const description = 'Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.';
   const siteUrl = 'https://agencia-viajes2.vercel.app';
-  const ogImage = '/images/og-default.jpg';
+  const ogImage = '/_optimized/og-default-w1200.webp';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,6 +23,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   <meta property="og:url" content={siteUrl} />
   <meta property="og:image" content={`${siteUrl}${ogImage}`} />
   <link rel="canonical" href={siteUrl} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="/_optimized/IMG_3241.JPG-w1600.webp" fetchPriority="high" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />

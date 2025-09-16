@@ -68,8 +68,8 @@ export default function Page() {
       {/* Background image */}
       <div className="fixed inset-0 w-full h-full -z-10" aria-hidden>
         <div className="absolute inset-0 -z-10">
-          <div className="relative w-full h-full">
-            <Image src="/images/IMG_3241.JPG" alt="Iberico Experience landscape" fill className="object-cover" priority={false} sizes="100vw" draggable={false} />
+            <div className="relative w-full h-full">
+            <Image src="/_optimized/IMG_3241.JPG-w1600.webp" alt="Iberico Experience landscape" fill className="object-cover" priority={true} quality={75} sizes="100vw" draggable={false} />
           </div>
         </div>
         <div className="absolute inset-0 bg-black/40" />
@@ -80,13 +80,13 @@ export default function Page() {
 
       {/* Hero */}
       <section className="w-full flex items-center justify-center pt-28 pb-8 px-4">
-        <div className="bg-white/90 dark:bg-black/60 rounded-xl shadow-2xl p-8 max-w-3xl w-full text-center">
+  <div className="bg-white/90 dark:bg-black/60 rounded-xl shadow-2xl p-6 md:p-8 max-w-3xl w-full text-center">
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">Discover Iberico Experience</h1>
           <p className="text-gray-700 mb-6">Small-group bespoke trips connecting you with local culture, gastronomy and nature in Spain & Portugal.</p>
-          <div className="flex items-center justify-center gap-4">
-            <a href="/gallery" className="px-5 py-2 bg-amber-600 text-white rounded-full font-semibold hover:bg-amber-700">Gallery</a>
-            <a href="/destinations" className="px-5 py-2 border border-amber-600 text-amber-200 rounded-full font-semibold hover:bg-white/10">Destinations</a>
-            <a href="#booking" className="px-5 py-2 bg-emerald-600 text-white rounded-full font-semibold hover:bg-emerald-700">Request Booking</a>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a href="/gallery" className="w-full sm:w-auto text-center px-5 py-2 bg-amber-600 text-white rounded-full font-semibold hover:bg-amber-700">Gallery</a>
+            <a href="/destinations" className="w-full sm:w-auto text-center px-5 py-2 border border-amber-600 text-amber-200 rounded-full font-semibold hover:bg-white/10">Destinations</a>
+            <a href="#booking" className="w-full sm:w-auto text-center px-5 py-2 bg-emerald-600 text-white rounded-full font-semibold hover:bg-emerald-700">Request Booking</a>
           </div>
         </div>
       </section>
@@ -95,11 +95,11 @@ export default function Page() {
       <section id="gallery-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
         <h2 className="text-2xl text-white font-bold mb-4">Gallery</h2>
         <p className="text-white/90 mb-6">A few moments from our trips — small groups, real experiences.</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/images/IMG_3241.JPG" alt="Gallery 1" fill className="object-cover" priority={false} /></div>
-          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/images/IMG_3241.JPG" alt="Gallery 2" fill className="object-cover" priority={false} /></div>
-          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/images/IMG_3241.JPG" alt="Gallery 3" fill className="object-cover" priority={false} /></div>
-          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/images/IMG_3241.JPG" alt="Gallery 4" fill className="object-cover" priority={false} /></div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 1" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
+          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 2" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
+          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 3" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
+          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 4" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
         </div>
         <div className="mt-4">
           <a href="/gallery" className="text-amber-200 font-medium hover:underline">See the full gallery</a>
@@ -167,7 +167,7 @@ export default function Page() {
             <textarea name="notes" placeholder="Notes" className="px-3 py-2 rounded border mt-1" rows={4} aria-required="false" />
           </label>
           <div className="flex items-center gap-3">
-            <button type="submit" className="px-4 py-2 bg-amber-600 text-white rounded" disabled={status === 'sending'}>Send request</button>
+            <button type="submit" className="w-full sm:w-auto px-4 py-2 bg-amber-600 text-white rounded" disabled={status === 'sending'}>Send request</button>
             <span id="booking-status" className="sr-only" aria-live="polite">
               {status === 'sending' ? 'Sending request' : status === 'sent' ? (message || "Request sent — we'll contact you soon.") : status === 'error' ? (message || 'Error sending request. Try again later.') : ''}
             </span>
