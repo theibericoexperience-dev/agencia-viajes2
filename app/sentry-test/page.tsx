@@ -6,7 +6,7 @@ export default function SentryTestPage() {
     <main style={{padding: 24}}>
       <h1>Sentry Test</h1>
       <p>This page intentionally throws in a button click to test Sentry client captures.</p>
-      <button onClick={() => { /* @ts-ignore */ window.myUndefinedFunction(); }} className="btn">
+      <button onClick={() => { (window as any).myUndefinedFunction(); }} className="btn">
         Trigger client error
       </button>
     </main>
