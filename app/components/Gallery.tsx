@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Image from 'next/image';
 import Modal from "./Modal";
+import { optimizedImage } from '../../lib/imageHelper';
 
 const ALBUMS = [
-  { id: 'monfrague', title: 'Monfragüe', cover: '/images/IMG_3241.JPG', link: '/checkout' },
-  { id: 'album-2', title: 'Tour 2', cover: '/images/iberico-hero.jpg', link: '#' },
-  { id: 'album-3', title: 'Tour 3', cover: '/images/IMG_3241.JPG', link: '#' },
+  { id: 'monfrague', title: 'Monfragüe', cover: '/_optimized/IMG_3241.JPG-w800.webp', link: '/checkout' },
+  { id: 'album-2', title: 'Tour 2', cover: '/_optimized/IMG_3241.JPG-w800.webp', link: '#' },
+  { id: 'album-3', title: 'Tour 3', cover: '/_optimized/IMG_3241.JPG-w800.webp', link: '#' },
 ]
 
 export default function Gallery(){
@@ -22,7 +23,7 @@ export default function Gallery(){
             <article key={album.id} className="rounded-lg overflow-hidden shadow" aria-labelledby={`album-${album.id}`}>
               <button onClick={() => { setActive(album); setOpen(true); }} className="block w-full text-left" aria-haspopup="dialog">
                 <div className="aspect-[4/3] bg-gray-200 relative">
-                  <Image src={album.cover} alt={`Portada del álbum ${album.title}`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 33vw" />
+                  <Image src={album.cover} alt={`Portada del álbum ${album.title}`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 33vw" quality={65} />
                 </div>
                 <div className="p-4">
                   <h3 id={`album-${album.id}`} className="font-semibold">{album.title}</h3>
@@ -39,7 +40,7 @@ export default function Gallery(){
           <div>
             <h3 className="text-xl font-bold mb-4">{active.title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="relative w-full h-64 rounded overflow-hidden"><Image src={active.cover} alt={`Imagen representativa de ${active.title}`} fill className="object-cover rounded" sizes="(max-width: 768px) 100vw, 50vw" /></div>
+              <div className="relative w-full h-64 rounded overflow-hidden"><Image src={optimizedImage(active.cover, 1200)} alt={`Imagen representativa de ${active.title}`} fill className="object-cover rounded" sizes="(max-width: 768px) 100vw, 50vw" quality={70} /></div>
               <div>
                 <p className="text-gray-700">Álbum {active.title}. Aquí podrás colgar fotos o enlaces a galerías externas (Google Photos, albums, etc.).</p>
                 <div className="mt-4">
