@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { initSentry, captureException } from '../../../lib/sentry';
 import fs from 'fs';
 import path from 'path';
 
@@ -32,6 +33,7 @@ function ensureDataDir() {
 }
 
 export async function POST(req: Request) {
+  initSentry();
   const body = await req.json();
 
   // Basic validation
@@ -90,13 +92,14 @@ export async function POST(req: Request) {
       // backoff
       await new Promise((r) => setTimeout(r, 200 * Math.pow(2, attempt)));
     }
-    const errId = Math.random().toString(36).slice(2, 9);
-    console.error(`Supabase insert failed after ${maxAttempts} attempts. error_id=${errId}`, lastErr);
-    return NextResponse.json({ ok: false, error: 'Failed to persist order', error_id: errId }, { status: 500 });
+    // capture to Sentry if configured and use its id as error_id
+    const sentryId = captureException(lastErr) || Math.random().toString(36).slice(2, 9);
+    console.error(`Supabase insert failed after ${maxAttempts} attempts. error_id=${sentryId}`, lastErr);
+    return NextResponse.json({ ok: false, error: 'Failed to persist order', error_id: sentryId }, { status: 500 });
   } catch (err: any) {
-    const errId = Math.random().toString(36).slice(2, 9);
-    console.error(`Supabase exception error_id=${errId}`, err);
-    return NextResponse.json({ ok: false, error: err?.message || String(err), error_id: errId }, { status: 500 });
+    const sentryId = captureException(err) || Math.random().toString(36).slice(2, 9);
+    console.error(`Supabase exception error_id=${sentryId}`, err);
+    return NextResponse.json({ ok: false, error: err?.message || String(err), error_id: sentryId }, { status: 500 });
   }
 }
 
