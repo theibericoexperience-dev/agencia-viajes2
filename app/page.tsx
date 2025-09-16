@@ -2,187 +2,129 @@
 
 
 "use client";
+import { useState } from "react";
+import Header from './components/Header';
+
 export default function Page() {
+  const [status, setStatus] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form) as any);
+    setStatus("sending");
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'booking', payload: data, createdAt: new Date().toISOString() }),
+      });
+      if (res.ok) {
+        setStatus('sent');
+        form.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      setStatus('error');
+    }
+  }
+
   return (
-    <main className="relative min-h-screen w-full flex flex-col justify-start items-center overflow-hidden">
-      {/* Full Background Image */}
-      <div className="fixed inset-0 w-full h-full -z-10" aria-hidden="true">
+    <main className="relative min-h-screen w-full flex flex-col justify-start items-center overflow-hidden bg-gradient-to-b from-black/50 to-black/70">
+      {/* Background image */}
+      <div className="fixed inset-0 w-full h-full -z-10" aria-hidden>
         <picture>
           <source srcSet="/images/IMG_3241.JPG" type="image/jpeg" />
-          <img src="/iberico-hero.jpg" alt="Iberico Experience landscape" className="object-cover w-full h-full" draggable="false" />
+          <img src="/images/IMG_3241.JPG" alt="Iberico Experience landscape" className="object-cover w-full h-full" draggable="false" />
         </picture>
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      {/* Transparent Top Bar Header */}
-      <header className="w-full flex items-center justify-between px-8 py-6 bg-white/10 backdrop-blur-md fixed top-0 left-0 z-20 rounded-b-xl shadow-lg">
-        <h1 className="text-3xl font-bold text-white drop-shadow-lg tracking-tight">Iberico Experience</h1>
-        <nav className="flex gap-8">
-          <a href="#destinations" className="text-white font-medium hover:underline">Destinations</a>
-          <a href="#culture" className="text-white font-medium hover:underline">Culture</a>
-          <a href="#gastronomy" className="text-white font-medium hover:underline">Gastronomy</a>
-          <a href="#nature" className="text-white font-medium hover:underline">Nature</a>
-          <a href="#testimonials" className="text-white font-medium hover:underline">Testimonials</a>
-          <a href="#contact" className="text-white font-medium hover:underline">Contact</a>
-        </nav>
-      </header>
+      {/* Header */}
+      <Header />
 
-      {/* Hero Section Overlay */}
-      <section className="flex flex-col items-center justify-center w-full pt-40 pb-16 px-4">
-        <div className="bg-white/60 rounded-xl shadow-2xl p-8 max-w-2xl w-full text-center backdrop-blur-md" role="region" aria-labelledby="hero-title">
-          <h2 id="hero-title" className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Discover Iberico Experience</h2>
-          <p className="text-base md:text-lg text-gray-800 mb-6">Personalized trips in small groups that connect you with the culture, gastronomy, and nature of unique places in Spain and Portugal.</p>
-          <a href="#destinations" className="inline-block px-6 py-3 bg-amber-600 text-white rounded-full font-semibold text-base hover:bg-amber-700 transition">Start your journey</a>
-        </div>
-      </section>
-
-      {/* Destinations Section */}
-      <section id="destinations" className="w-full max-w-6xl mx-auto py-20 px-4">
-        <h3 className="text-4xl font-bold text-white mb-8 text-center bg-white/20 rounded-xl p-4 backdrop-blur-md">Featured Destinations</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Example destination cards with image spaces */}
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Destination Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Extremadura</h4>
-              <p className="text-white mb-4 bg-white/20 rounded p-2 backdrop-blur">Explore the wild beauty and rich history of Spain's hidden gem.</p>
-              <a href="#" className="text-amber-200 font-medium hover:underline">Learn more</a>
-            </div>
-          </div>
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Destination Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Alentejo</h4>
-              <p className="text-white mb-4 bg-white/20 rounded p-2 backdrop-blur">Discover rolling hills, vineyards, and authentic Portuguese charm.</p>
-              <a href="#" className="text-amber-200 font-medium hover:underline">Learn more</a>
-            </div>
-          </div>
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Destination Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Sierra de Gata</h4>
-              <p className="text-white mb-4 bg-white/20 rounded p-2 backdrop-blur">Experience nature, hiking, and picturesque villages in a tranquil setting.</p>
-              <a href="#" className="text-amber-200 font-medium hover:underline">Learn more</a>
-            </div>
+      {/* Hero */}
+      <section className="w-full flex items-center justify-center pt-28 pb-8 px-4">
+        <div className="bg-white/90 dark:bg-black/60 rounded-xl shadow-2xl p-8 max-w-3xl w-full text-center">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">Discover Iberico Experience</h1>
+          <p className="text-gray-700 mb-6">Small-group bespoke trips connecting you with local culture, gastronomy and nature in Spain & Portugal.</p>
+          <div className="flex items-center justify-center gap-4">
+            <a href="/gallery" className="px-5 py-2 bg-amber-600 text-white rounded-full font-semibold hover:bg-amber-700">Gallery</a>
+            <a href="/destinations" className="px-5 py-2 border border-amber-600 text-amber-200 rounded-full font-semibold hover:bg-white/10">Destinations</a>
+            <a href="#booking" className="px-5 py-2 bg-emerald-600 text-white rounded-full font-semibold hover:bg-emerald-700">Request Booking</a>
           </div>
         </div>
       </section>
 
-      {/* Culture Section */}
-      <section id="culture" className="w-full max-w-6xl mx-auto py-20 px-4">
-        <h3 className="text-4xl font-bold text-white mb-8 text-center bg-white/20 rounded-xl p-4 backdrop-blur-md">Local Culture</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Culture Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Traditions & Towns</h4>
-              <p className="text-white bg-white/20 rounded p-2 backdrop-blur">Immerse yourself in the traditions and life of charming towns.</p>
-            </div>
-          </div>
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Culture Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Festivals & Events</h4>
-              <p className="text-white bg-white/20 rounded p-2 backdrop-blur">Experience local festivals, music, and vibrant celebrations.</p>
-            </div>
-          </div>
+      {/* Gallery Teaser */}
+      <section id="gallery-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
+        <h2 className="text-2xl text-white font-bold mb-4">Gallery</h2>
+        <p className="text-white/90 mb-6">A few moments from our trips — small groups, real experiences.</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <img src="/images/IMG_3241.JPG" alt="Gallery 1" className="w-full h-36 object-cover rounded" loading="lazy" />
+          <img src="/images/IMG_3241.JPG" alt="Gallery 2" className="w-full h-36 object-cover rounded" loading="lazy" />
+          <img src="/images/IMG_3241.JPG" alt="Gallery 3" className="w-full h-36 object-cover rounded" loading="lazy" />
+          <img src="/images/IMG_3241.JPG" alt="Gallery 4" className="w-full h-36 object-cover rounded" loading="lazy" />
+        </div>
+        <div className="mt-4">
+          <a href="/gallery" className="text-amber-200 font-medium hover:underline">See the full gallery</a>
         </div>
       </section>
 
-      {/* Gastronomy Section */}
-      <section id="gastronomy" className="w-full max-w-6xl mx-auto py-20 px-4">
-        <h3 className="text-4xl font-bold text-white mb-8 text-center bg-white/20 rounded-xl p-4 backdrop-blur-md">Authentic Gastronomy</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Gastronomy Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Local Products</h4>
-              <p className="text-white bg-white/20 rounded p-2 backdrop-blur">Taste local products and dishes that tell stories.</p>
-            </div>
-          </div>
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Gastronomy Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Signature Dishes</h4>
-              <p className="text-white bg-white/20 rounded p-2 backdrop-blur">Enjoy authentic flavors and culinary experiences.</p>
-            </div>
-          </div>
+      {/* Destinations Teaser */}
+      <section id="destinations-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
+        <h2 className="text-2xl text-white font-bold mb-4">Destinations</h2>
+        <p className="text-white/90 mb-6">Hand-picked regions where we run our tours.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a href="/destinations#extremadura" className="block bg-white/10 p-4 rounded">
+            <h3 className="font-semibold">Extremadura</h3>
+            <p className="text-sm mt-2 text-white/80">Wild landscapes, history and traditional gastronomy.</p>
+          </a>
+          <a href="/destinations#alentejo" className="block bg-white/10 p-4 rounded">
+            <h3 className="font-semibold">Alentejo</h3>
+            <p className="text-sm mt-2 text-white/80">Rolling hills, vineyards and quiet villages.</p>
+          </a>
+          <a href="/destinations#sierradegata" className="block bg-white/10 p-4 rounded">
+            <h3 className="font-semibold">Sierra de Gata</h3>
+            <p className="text-sm mt-2 text-white/80">Hiking, nature and charming hamlets.</p>
+          </a>
+        </div>
+        <div className="mt-4">
+          <a href="/destinations" className="text-amber-200 font-medium hover:underline">View all destinations</a>
         </div>
       </section>
 
-      {/* Nature Section */}
-      <section id="nature" className="w-full max-w-6xl mx-auto py-20 px-4">
-        <h3 className="text-4xl font-bold text-white mb-8 text-center bg-white/20 rounded-xl p-4 backdrop-blur-md">Pure Nature</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Nature Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Landscapes</h4>
-              <p className="text-white bg-white/20 rounded p-2 backdrop-blur">Explore unique landscapes like the Extremadura dehesa and Alentejo.</p>
-            </div>
+      {/* Booking CTA */}
+      <section id="booking" className="w-full max-w-3xl mx-auto py-12 px-4">
+        <h2 className="text-2xl text-white font-bold mb-4">Request a Booking</h2>
+        <p className="text-white/90 mb-4">Fill the form below to request a tour. We'll contact you to confirm details and payment by bank transfer.</p>
+        <form onSubmit={handleSubmit} className="bg-white/90 rounded p-6 grid grid-cols-1 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <input name="name" required placeholder="Full name" className="px-3 py-2 rounded border" />
+            <input name="email" type="email" required placeholder="Email" className="px-3 py-2 rounded border" />
           </div>
-          <div className="bg-white/20 rounded-xl shadow-lg overflow-hidden flex flex-col backdrop-blur-md">
-            <div className="h-56 bg-gray-200/40 flex items-center justify-center">
-              <span className="text-white">Nature Image</span>
-            </div>
-            <div className="p-6 flex-1 flex flex-col justify-between">
-              <h4 className="text-2xl font-semibold text-white mb-2 bg-white/20 rounded p-2 backdrop-blur">Wildlife & Hiking</h4>
-              <p className="text-white bg-white/20 rounded p-2 backdrop-blur">Discover nature trails, wildlife, and outdoor adventures.</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <input name="phone" placeholder="Phone" className="px-3 py-2 rounded border" />
+            <input name="travelers" type="number" min={1} defaultValue={2} placeholder="Number of travellers" className="px-3 py-2 rounded border" />
           </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section id="testimonials" className="w-full max-w-4xl mx-auto py-20 px-4">
-        <h3 className="text-4xl font-bold text-white mb-8 text-center bg-white/20 rounded-xl p-4 backdrop-blur-md">Testimonials</h3>
-        <div className="space-y-8">
-          <blockquote className="bg-white/20 rounded-xl shadow p-6 text-lg text-white italic backdrop-blur-md">
-            “An unforgettable experience! The attention to detail and the local guides made our trip unique.”<br />
-            <span className="block mt-2 text-right text-amber-200 font-semibold">Ana G.</span>
-          </blockquote>
-          <blockquote className="bg-white/20 rounded-xl shadow p-6 text-lg text-white italic backdrop-blur-md">
-            “The gastronomy and landscapes were spectacular. Highly recommended for small groups.”<br />
-            <span className="block mt-2 text-right text-amber-200 font-semibold">Carlos M.</span>
-          </blockquote>
-          <blockquote className="bg-white/20 rounded-xl shadow p-6 text-lg text-white italic backdrop-blur-md">
-            “We felt truly immersed in the culture. Iberico Experience exceeded our expectations.”<br />
-            <span className="block mt-2 text-right text-amber-200 font-semibold">Lucía P.</span>
-          </blockquote>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="w-full max-w-4xl mx-auto py-20 px-4">
-        <h3 className="text-4xl font-bold text-white mb-8 text-center bg-white/20 rounded-xl p-4 backdrop-blur-md">Contact</h3>
-        <form className="bg-white/20 rounded-xl shadow-xl p-8 flex flex-col gap-4 backdrop-blur-md">
-          <div className="flex gap-4">
-            <input type="text" placeholder="Name" className="flex-1 px-4 py-2 rounded border border-gray-300/40 bg-white/10 text-white placeholder-white" />
-            <input type="email" placeholder="Email" className="flex-1 px-4 py-2 rounded border border-gray-300/40 bg-white/10 text-white placeholder-white" />
+          <input name="preferredDate" type="date" className="px-3 py-2 rounded border" />
+          <input name="billingAddress" placeholder="Billing address" className="px-3 py-2 rounded border" />
+          <textarea name="notes" placeholder="Notes" className="px-3 py-2 rounded border" rows={4} />
+          <div className="flex items-center gap-3">
+            <button type="submit" className="px-4 py-2 bg-amber-600 text-white rounded">Send request</button>
+            {status === 'sending' && <span className="text-sm text-gray-700">Sending...</span>}
+            {status === 'sent' && <span className="text-sm text-emerald-700">Request sent — we'll contact you soon.</span>}
+            {status === 'error' && <span className="text-sm text-red-600">Error sending request. Try again later.</span>}
           </div>
-          <textarea placeholder="Message" className="w-full px-4 py-2 rounded border border-gray-300/40 bg-white/10 text-white placeholder-white" rows={4} />
-          <button type="submit" className="self-end px-8 py-2 bg-amber-600 text-white rounded-full font-semibold hover:bg-amber-700 transition">Send</button>
         </form>
-        <footer className="mt-12 text-center text-white">
-          <p>© 2025 Iberico Experience</p>
-          <p>info@ibericoexperience.com</p>
-        </footer>
+      </section>
+
+      {/* Contact / Footer */}
+      <section id="contact" className="w-full max-w-3xl mx-auto py-8 px-4">
+        <h3 className="text-white font-bold mb-2">Contact</h3>
+        <p className="text-white/80">Email: info@ibericoexperience.com</p>
+        <p className="text-white/80">© 2025 Iberico Experience</p>
       </section>
     </main>
   );
