@@ -102,7 +102,7 @@ export default function Page() {
             { id: 2, title: 'Local food', img: '/images/hero-extras/IMG_3582.JPG', overlay: 'cyan' },
             { id: 3, title: 'Coastal hikes', img: '/images/hero-extras/IMG_3604.JPG', overlay: 'magenta' },
           ].map((s, i) => (
-            <motion.a key={s.id} href="/gallery" whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 30 }} viewport={{ once: true }} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'}`} style={{height: 360}}>
+            <motion.a key={s.id} href="/gallery" whileInView={{ opacity: 1, y: 0, scale: 1 }} initial={{ opacity: 0, y: 40, scale: 0.995 }} transition={{ duration: 0.7, ease: 'easeOut' }} viewport={{ once: true }} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'}`} style={{height: 360}}>
               <div className="bg-img" style={{position:'absolute', inset:0}}>
                 <Image src={s.img} alt={s.title} fill className="object-cover" priority={false} sizes="100vw" />
               </div>
@@ -122,7 +122,7 @@ export default function Page() {
         <h2 className="text-2xl text-white font-bold mb-6">Destinations</h2>
         <div className="space-y-8">
           {[{id: 'extremadura', title: 'Extremadura', img:'/images/hero-extras/IMG_3578.JPG', overlay:'magenta'}, {id:'alentejo', title:'Alentejo', img:'/images/hero-extras/IMG_3582.JPG', overlay:'cyan'}, {id:'sierradegata', title:'Sierra de Gata', img:'/images/hero-extras/IMG_3604.JPG', overlay:'magenta'}].map((d, i) => (
-            <motion.a key={d.id} href={`/destinations#${d.id}`} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'}`} style={{height: 320}} whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} viewport={{ once: true }}>
+            <motion.a key={d.id} href={`/destinations#${d.id}`} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'}`} style={{height: 320}} whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 24 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true }}>
               <div className="bg-img" style={{position:'absolute', inset:0}}>
                 <Image src={d.img} alt={d.title} fill className="object-cover" priority={false} sizes="100vw" />
               </div>
