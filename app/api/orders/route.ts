@@ -35,60 +35,55 @@ function ensureDataDir() {
 
 export async function POST(req: Request) {
   initSentry();
-  const body = await req.json();
-
-  // Basic validation
-  const name = typeof body.name === 'string' ? body.name.trim() : '';
-  const email = typeof body.email === 'string' ? body.email.trim() : '';
-  const phone = typeof body.phone === 'string' ? body.phone.trim() : '';
-  const travelers = body.travelers ? parseInt(String(body.travelers), 10) : null;
-  const preferred_date = body.preferred_date ? String(body.preferred_date) : null;
-  const billing_address = typeof body.billing_address === 'string' ? body.billing_address : null;
-  const notes = typeof body.notes === 'string' ? body.notes : null;
-
-  if (!name || !email || !travelers || Number.isNaN(travelers)) {
-    return NextResponse.json({ ok: false, error: 'Missing or invalid required fields (name, email, travelers)' }, { status: 400 });
-  }
-
-  const sb = getSupabase();
-  if (!sb) {
-    // Supabase not configured. On Vercel writing to repo files isn't persistent; use /tmp as a safe fallback
-    // so the API returns success and the owner can retrieve pending orders later.
-    try {
-      const fallbackDir = '/tmp';
-      const fallbackFile = path.join(fallbackDir, 'orders_fallback.json');
-      let arr: any[] = [];
-      try {
-        if (fs.existsSync(fallbackFile)) {
-          const raw = fs.readFileSync(fallbackFile, 'utf-8');
-          arr = JSON.parse(raw || '[]');
-        }
-      } catch (e) {
-        // ignore parse errors and overwrite
-        arr = [];
-      }
-      const record = { name, email, phone, travelers, preferred_date, billing_address, notes, created_at: new Date().toISOString() };
-      arr.push(record);
-      try {
-        fs.writeFileSync(fallbackFile, JSON.stringify(arr, null, 2));
-      } catch (e) {
-        // if writing to /tmp fails, fall back to returning success but include payload preview
-        console.error('Failed to write fallback order', String(e));
-        return NextResponse.json({ ok: true, supabase: false, stored: false, preview: record });
-      }
-      return NextResponse.json({ ok: true, supabase: false, stored: true });
-    } catch (err: any) {
-      const sentryId = captureException(err) || Math.random().toString(36).slice(2, 9);
-      console.error('Fallback order write failed error_id=', sentryId, err);
-      return NextResponse.json({ ok: false, error: String(err), error_id: sentryId }, { status: 500 });
-    }
-  }
-
-  // Try to insert into Supabase
   try {
-    const insert = { name, email, phone, travelers, preferred_date, billing_address, notes };
+    const body = await req.json();
 
-    // retry with exponential backoff
+    // Basic validation
+    const name = typeof body.name === 'string' ? body.name.trim() : '';
+    const email = typeof body.email === 'string' ? body.email.trim() : '';
+    const phone = typeof body.phone === 'string' ? body.phone.trim() : '';
+    const travelers = body.travelers ? parseInt(String(body.travelers), 10) : null;
+    const preferred_date = body.preferred_date ? String(body.preferred_date) : null;
+    const billing_address = typeof body.billing_address === 'string' ? body.billing_address : null;
+    const notes = typeof body.notes === 'string' ? body.notes : null;
+
+    if (!name || !email || !travelers || Number.isNaN(travelers)) {
+      return NextResponse.json({ ok: false, error: 'Missing or invalid required fields (name, email, travelers)' }, { status: 400 });
+    }
+
+    const sb = getSupabase();
+    if (!sb) {
+      // Supabase not configured. Use /tmp fallback so the API returns success on Vercel.
+      try {
+        const fallbackDir = '/tmp';
+        const fallbackFile = path.join(fallbackDir, 'orders_fallback.json');
+        let arr: any[] = [];
+        try {
+          if (fs.existsSync(fallbackFile)) {
+            const raw = fs.readFileSync(fallbackFile, 'utf-8');
+            arr = JSON.parse(raw || '[]');
+          }
+        } catch (e) {
+          arr = [];
+        }
+        const record = { name, email, phone, travelers, preferred_date, billing_address, notes, created_at: new Date().toISOString() };
+        arr.push(record);
+        try {
+          fs.writeFileSync(fallbackFile, JSON.stringify(arr, null, 2));
+          return NextResponse.json({ ok: true, supabase: false, stored: true });
+        } catch (e) {
+          console.error('Failed to write fallback order', String(e));
+          return NextResponse.json({ ok: true, supabase: false, stored: false, preview: record });
+        }
+      } catch (err: any) {
+        const sentryId = captureException(err) || Math.random().toString(36).slice(2, 9);
+        console.error('Fallback order write failed error_id=', sentryId, err);
+        return NextResponse.json({ ok: false, error: String(err), error_id: sentryId }, { status: 500 });
+      }
+    }
+
+    // Try to insert into Supabase with retries
+    const insert = { name, email, phone, travelers, preferred_date, billing_address, notes };
     const maxAttempts = 3;
     let attempt = 0;
     let lastErr: any = null;
@@ -108,17 +103,17 @@ export async function POST(req: Request) {
       // backoff
       await new Promise((r) => setTimeout(r, 200 * Math.pow(2, attempt)));
     }
-  // capture to Sentry if configured and use its id as error_id, otherwise generate one
-  const sentryId = captureException(lastErr) || Math.random().toString(36).slice(2, 9);
-  console.error(`Supabase insert failed after ${maxAttempts} attempts. error_id=${sentryId}`, lastErr);
-  // Log to Supabase errors table if possible
-  try { await logErrorToSupabase({ error_id: sentryId, route: '/api/orders', message: lastErr?.message || String(lastErr), stack: lastErr?.stack, payload_preview: insert }); } catch(e) {}
-  return NextResponse.json({ ok: false, error: 'Failed to persist order', error_id: sentryId }, { status: 500 });
+
+    const sentryId = captureException(lastErr) || Math.random().toString(36).slice(2, 9);
+    console.error(`Supabase insert failed after ${maxAttempts} attempts. error_id=${sentryId}`, lastErr);
+    try { await logErrorToSupabase({ error_id: sentryId, route: '/api/orders', message: lastErr?.message || String(lastErr), stack: lastErr?.stack, payload_preview: insert }); } catch(e) {}
+    return NextResponse.json({ ok: false, error: 'Failed to persist order', error_id: sentryId }, { status: 500 });
+
   } catch (err: any) {
-  const sentryId = captureException(err) || Math.random().toString(36).slice(2, 9);
-  console.error(`Supabase exception error_id=${sentryId}`, err);
-  try { await logErrorToSupabase({ error_id: sentryId, route: '/api/orders', message: err?.message || String(err), stack: err?.stack }); } catch(e) {}
-  return NextResponse.json({ ok: false, error: err?.message || String(err), error_id: sentryId }, { status: 500 });
+    const sentryId = captureException(err) || Math.random().toString(36).slice(2, 9);
+    console.error('Unhandled POST /api/orders exception error_id=', sentryId, err);
+    try { await logErrorToSupabase({ error_id: sentryId, route: '/api/orders', message: err?.message || String(err), stack: err?.stack }); } catch(e) {}
+    return NextResponse.json({ ok: false, error: String(err), error_id: sentryId }, { status: 500 });
   }
 }
 
