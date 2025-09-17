@@ -53,13 +53,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div>
               <h1 className="hero-title">Iberico Experience</h1>
               <p className="hero-sub">Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.</p>
-              <div style={{marginTop: '1.25rem'}}>
-                <a href="/contact" className="btn">Book a trip</a>
-                <a href="/destinations" className="btn btn-ghost" style={{marginLeft: '0.75rem'}}>Explore</a>
+              <div style={{marginTop: '1.25rem', display: 'flex', gap: '0.75rem'}}>
+                <a href="/contact" className="btn-duotone" role="button">Book a trip</a>
+                <a href="/destinations" className="btn btn-ghost" style={{marginLeft: '0'}} role="button">Explore</a>
               </div>
             </div>
-            <div aria-hidden>
-              <img src="/images/hero-extras/IMG_3578.JPG" alt="Decorative" className="w-80 rounded-hero shadow-lg" />
+            <div aria-hidden className="hidden md:block">
+              <img src="/images/hero-extras/IMG_3578.JPG" alt="Decorative" className="w-64 rounded-hero shadow-lg" />
             </div>
           </div>
         </header>

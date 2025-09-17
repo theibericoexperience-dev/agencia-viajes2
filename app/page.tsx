@@ -80,14 +80,14 @@ export default function Page() {
       {/* Header */}
       <Header />
 
-      {/* Hero */}
-      <section className="w-full flex items-center justify-center pt-28 pb-8 px-4">
-  <div className="bg-white/90 dark:bg-black/60 rounded-xl shadow-2xl p-6 md:p-8 max-w-3xl w-full text-center">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">Discover Iberico Experience</h1>
-          <p className="text-gray-700 mb-6">Small-group bespoke trips connecting you with local culture, gastronomy and nature in Spain & Portugal.</p>
+      {/* Hero CTA (minimal — header holds main hero) */}
+      <section className="w-full flex items-center justify-center pt-20 pb-4 px-4">
+        <div className="max-w-3xl w-full text-center">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-2">Discover Iberico Experience</h2>
+          <p className="text-white/90 mb-4">Small-group bespoke trips connecting you with local culture, gastronomy and nature in Spain & Portugal.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a href="/gallery" className="w-full sm:w-auto text-center px-5 py-2 bg-primary-500 text-white rounded-full font-semibold hover:bg-primary-600">Gallery</a>
-            <a href="/destinations" className="w-full sm:w-auto text-center px-5 py-2 border border-primary-500 text-primary-500 rounded-full font-semibold hover:bg-white/10">Destinations</a>
+            <Button variant="duotone" className="w-full sm:w-auto">Gallery</Button>
+            <a href="/destinations" className="w-full sm:w-auto text-center px-5 py-2 border border-white/20 text-white rounded-full font-semibold hover:bg-white/5">Destinations</a>
             <a href="#booking" className="w-full sm:w-auto text-center px-5 py-2 bg-emerald-600 text-white rounded-full font-semibold hover:bg-emerald-700">Request Booking</a>
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function Page() {
       <section id="booking" className="w-full max-w-3xl mx-auto py-12 px-4">
         <h2 className="text-2xl text-white font-bold mb-4">Request a Booking</h2>
         <p className="text-white/90 mb-4">Fill the form below to request a tour. We'll contact you to confirm details and payment by bank transfer.</p>
-  <form onSubmit={handleSubmit} className="bg-white/90 rounded p-6 grid grid-cols-1 gap-3" aria-describedby="booking-status">
+  <form onSubmit={handleSubmit} className="bg-black/40 rounded p-6 grid grid-cols-1 gap-3 backdrop-blur-sm" aria-describedby="booking-status">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <label className="flex flex-col">
               <span className="text-sm font-medium text-gray-700">Full name</span>
