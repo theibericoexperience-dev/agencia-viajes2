@@ -1,0 +1,41 @@
+name: Verify Sentry Client
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  trigger-client-error:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install deps
+        run: |
+          npm ci
+
+      - name: Install Playwright browsers
+        run: |
+          npx playwright install --with-deps
+
+      - name: Run trigger script
+        env:
+          TARGET_URL: https://agencia-viajes2-frjhdxuhi-theibericoexperience-devs-projects.vercel.app/sentry-test
+        run: |
+          node scripts/trigger-client-error.js
+
+      - name: Wait for Sentry ingestion (optional)
+        if: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: iberico-experience
+          SENTRY_PROJECT: javascript-nextjs
+          SENTRY_RELEASE: 1.0.1
+        run: |
+          echo "Sentry token present — querying for recent events"
+          node scripts/check-sentry.js
