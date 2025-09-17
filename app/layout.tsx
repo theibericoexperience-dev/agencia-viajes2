@@ -46,6 +46,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <a href="#content" className="skip-link">Skip to content</a>
+        <header className="duotone-hero" role="banner">
+          <img src="/images/hero-extras/IMG_3582.JPG" alt="Hero" className="w-full h-[420px] object-cover rounded-hero" />
+          <div className="duotone-overlay" />
+          <div className="hero-inner site-container">
+            <div>
+              <h1 className="hero-title">Iberico Experience</h1>
+              <p className="hero-sub">Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.</p>
+              <div style={{marginTop: '1.25rem'}}>
+                <a href="/contact" className="btn">Book a trip</a>
+                <a href="/destinations" className="btn btn-ghost" style={{marginLeft: '0.75rem'}}>Explore</a>
+              </div>
+            </div>
+            <div aria-hidden>
+              <img src="/images/hero-extras/IMG_3578.JPG" alt="Decorative" className="w-80 rounded-hero shadow-lg" />
+            </div>
+          </div>
+        </header>
         {children}
         <CookieConsent />
         <script dangerouslySetInnerHTML={{ __html: `(function(){

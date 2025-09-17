@@ -32,6 +32,12 @@ module.exports = {
           800: '#1f2937',
           900: '#111827'
         }
+        ,
+        duotone: {
+          magenta: '#ff2d95',
+          cyan: '#00d4ff',
+          indigo: '#2e1a8f'
+        }
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
