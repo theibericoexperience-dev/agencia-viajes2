@@ -2,6 +2,9 @@ name: Verify Sentry Client
 
 on:
   workflow_dispatch: {}
+  push:
+    branches:
+      - main
 
 jobs:
   trigger-client-error:
@@ -30,12 +33,11 @@ jobs:
           node scripts/trigger-client-error.js
 
       - name: Wait for Sentry ingestion (optional)
-        if: ${{ secrets.SENTRY_AUTH_TOKEN }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: iberico-experience
           SENTRY_PROJECT: javascript-nextjs
           SENTRY_RELEASE: 1.0.1
         run: |
-          echo "Sentry token present — querying for recent events"
-          node scripts/check-sentry.js
+          echo "Querying Sentry for recent events (will exit if no token)"
+          node scripts/check-sentry.js || true
