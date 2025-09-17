@@ -4,7 +4,7 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const baseConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  swcMinify: true,
+  // Next.js handles minification; remove explicit swcMinify to avoid warnings
   poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -13,6 +13,10 @@ const baseConfig = {
   experimental: {
     optimizeCss: true,
   },
+  // When Next.js detects multiple package lockfiles it may infer the wrong
+  // workspace root. Setting `outputFileTracingRoot` ensures correct tracing
+  // for standalone output.
+  outputFileTracingRoot: __dirname,
   async headers() {
     return [
       {
