@@ -35,39 +35,29 @@ export function initSentry(): void {
         console.error('Sentry server init failed', String((e as any)?.message ?? e));
       }
     } else {
-      // Client-side init (browser).
-      // Avoid initializing if the client has already been initialized elsewhere
-      // (for example `instrumentation-client.js`). If a Sentry client exists
-      // already, mark initialized and return.
+      // Client-side: do NOT auto-initialize Sentry here. The client should
+      // initialize Sentry exactly once (for example in `instrumentation-client.js`).
+      // This wrapper will attempt to use the client SDK if it's already present,
+      // but intentionally avoids calling `Sentry.init()` to prevent duplicate
+      // client initializations which lead to the runtime warning.
       try {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const SentryNext = require('@sentry/nextjs');
-
-        // If a Sentry client is already attached to the current hub, skip init.
         if (SentryNext && typeof SentryNext.getCurrentHub === 'function') {
           try {
             const client = SentryNext.getCurrentHub().getClient && SentryNext.getCurrentHub().getClient();
             if (client) {
               _initialized = true;
-              return;
             }
           } catch (inner) {
-            // ignore and fall through to init
+            // ignore — we'll not init on the client here
           }
         }
-
-        SentryNext.init({
-          dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || undefined,
-          environment: process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.VERCEL_ENV || process.env.NODE_ENV,
-          release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || process.env.SENTRY_RELEASE || undefined,
-          tracesSampleRate: Number(process.env.NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE) || 0,
-        });
-
-        _initialized = true;
+        // Do not call `SentryNext.init()` here.
         return;
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.error('Sentry client init failed', String((e as any)?.message ?? e));
+        console.error('Sentry client check failed', String((e as any)?.message ?? e));
       }
     }
   } catch (err) {
