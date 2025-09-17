@@ -23,7 +23,7 @@ export default function CookieConsent(){
         <p className="text-sm">We use analytics to improve the site. By accepting you allow anonymous usage tracking. No personal data is sold.</p>
         <div className="mt-3 flex justify-end">
           <button className="px-3 py-1 mr-2" onClick={()=>setShow(false)}>Dismiss</button>
-          <button className="px-3 py-1 bg-amber-600 text-white rounded" onClick={accept}>Accept</button>
+          <button className="px-3 py-1 bg-primary-500 text-white rounded" onClick={accept}>Accept</button>
         </div>
       </div>
     </div>

@@ -1,0 +1,3 @@
+// Backup of previous sentry.client.config.js
+// kept for safety — original file removed because we control client init via instrumentation-client.ts
+module.exports = {};

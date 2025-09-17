@@ -1,5 +1,13 @@
 import React from 'react';
+import clsx from 'clsx';
 
-export function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  return <button {...props}>{props.children}</button>;
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { className?: string };
+
+export function Button({ className, children, ...rest }: ButtonProps) {
+  const classes = clsx('btn', className);
+  return (
+    <button className={classes} {...rest}>
+      {children}
+    </button>
+  );
 }

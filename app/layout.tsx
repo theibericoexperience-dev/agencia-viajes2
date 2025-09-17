@@ -2,6 +2,7 @@
 import React from "react";
 import "./globals.css";
 import CookieConsent from './components/CookieConsent';
+import SentryInitClient from './components/SentryInitClient';
 
   const title = 'Iberico Experience — Small-group tours in Spain & Portugal';
   const description = 'Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.';
@@ -59,6 +60,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           if(document.cookie.indexOf('cookie_consent=yes') !== -1) loadGA();
           window.addEventListener('cookie-consent-accepted', loadGA);
         })();`}} />
+
+        <SentryInitClient />
       </body>
     </html>
   );

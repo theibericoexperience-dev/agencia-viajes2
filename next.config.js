@@ -9,6 +9,7 @@ const baseConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
+    qualities: [60, 75, 90],
   },
   experimental: {
     optimizeCss: true,
@@ -53,15 +54,12 @@ const baseConfig = {
   },
 };
 
-module.exports = withSentryConfig(
-  baseConfig,
-  {
-    org: "iberico-experience",
-    project: "javascript-nextjs",
-    silent: !process.env.CI,
-    widenClientFileUpload: true,
-    // tunnelRoute: "/monitoring", // uncomment to enable
-    disableLogger: true,
-    automaticVercelMonitors: true,
-  }
-);
+// We opt out of the `withSentryConfig` wrapper so the Sentry Next.js plugin
+// doesn't inject client-side instrumentation at build time. Client init is
+// handled explicitly by `instrumentation-client.ts` in the app code.
+// To re-enable the plugin, restore the following pattern:
+//
+// const sentryOptions = { org: 'iberico-experience', project: 'javascript-nextjs', /* ... */ };
+// module.exports = withSentryConfig(baseConfig, sentryOptions);
+//
+module.exports = baseConfig;

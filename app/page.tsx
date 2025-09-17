@@ -5,6 +5,7 @@
 import { useState } from "react";
 import Image from 'next/image';
 import Header from './components/Header';
+import { Button } from './components/ui/button';
 
 export default function Page() {
   const [status, setStatus] = useState<string | null>(null);
@@ -84,8 +85,8 @@ export default function Page() {
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">Discover Iberico Experience</h1>
           <p className="text-gray-700 mb-6">Small-group bespoke trips connecting you with local culture, gastronomy and nature in Spain & Portugal.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a href="/gallery" className="w-full sm:w-auto text-center px-5 py-2 bg-amber-600 text-white rounded-full font-semibold hover:bg-amber-700">Gallery</a>
-            <a href="/destinations" className="w-full sm:w-auto text-center px-5 py-2 border border-amber-600 text-amber-200 rounded-full font-semibold hover:bg-white/10">Destinations</a>
+            <a href="/gallery" className="w-full sm:w-auto text-center px-5 py-2 bg-primary-500 text-white rounded-full font-semibold hover:bg-primary-600">Gallery</a>
+            <a href="/destinations" className="w-full sm:w-auto text-center px-5 py-2 border border-primary-500 text-primary-500 rounded-full font-semibold hover:bg-white/10">Destinations</a>
             <a href="#booking" className="w-full sm:w-auto text-center px-5 py-2 bg-emerald-600 text-white rounded-full font-semibold hover:bg-emerald-700">Request Booking</a>
           </div>
         </div>
@@ -102,7 +103,7 @@ export default function Page() {
           <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 4" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
         </div>
         <div className="mt-4">
-          <a href="/gallery" className="text-amber-200 font-medium hover:underline">See the full gallery</a>
+          <a href="/gallery" className="text-primary-300 font-medium hover:underline">See the full gallery</a>
         </div>
       </section>
 
@@ -125,7 +126,7 @@ export default function Page() {
           </a>
         </div>
         <div className="mt-4">
-          <a href="/destinations" className="text-amber-200 font-medium hover:underline">View all destinations</a>
+          <a href="/destinations" className="text-primary-300 font-medium hover:underline">View all destinations</a>
         </div>
       </section>
 
@@ -167,7 +168,7 @@ export default function Page() {
             <textarea name="notes" placeholder="Notes" className="px-3 py-2 rounded border mt-1" rows={4} aria-required="false" />
           </label>
           <div className="flex items-center gap-3">
-            <button type="submit" className="w-full sm:w-auto px-4 py-2 bg-amber-600 text-white rounded" disabled={status === 'sending'}>Send request</button>
+            <Button type="submit" className="w-full sm:w-auto" disabled={status === 'sending'}>Send request</Button>
             <span id="booking-status" className="sr-only" aria-live="polite">
               {status === 'sending' ? 'Sending request' : status === 'sent' ? (message || "Request sent — we'll contact you soon.") : status === 'error' ? (message || 'Error sending request. Try again later.') : ''}
             </span>
