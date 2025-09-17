@@ -2,13 +2,19 @@
 // The added config here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from "@sentry/nextjs";
+// Avoid importing `@sentry/nextjs` at module load time to prevent any
+// accidental side-effects or auto-initialization in environments where a
+// `sentry.client.config.js` file is present. Use a dynamic import when the
+// helper is needed so we only access the SDK at runtime and after initialization
+// decisions have been made.
 
-// Initialize Sentry on the client only if it hasn't already been initialized
-// (e.g., by an automatic config loader). This prevents the runtime warning
-// about calling `Sentry.init()` more than once.
-// Client initialization is provided by the Next.js Sentry integration when using
-// a `sentry.client.config.js` file. Do not call `Sentry.init()` here to avoid
-// duplicate initializations — this file only exposes helper hooks.
-
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+export async function onRouterTransitionStart(...args) {
+	try {
+		const Sentry = await import('@sentry/nextjs');
+		if (Sentry && typeof Sentry.captureRouterTransitionStart === 'function') {
+			return Sentry.captureRouterTransitionStart(...args);
+		}
+	} catch (err) {
+		// If the SDK isn't available or import fails, just noop.
+	}
+}
