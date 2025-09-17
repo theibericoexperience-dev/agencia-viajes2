@@ -2,7 +2,7 @@
 
 
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from 'next/image';
 import Header from './components/Header';
 import { Button } from './components/ui/button';
@@ -94,42 +94,42 @@ export default function Page() {
       </section>
 
       {/* Gallery Teaser — Image-first alternating sections */}
-      <section id="gallery-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
-        <h2 className="text-2xl text-white font-bold mb-6">Gallery</h2>
-        <div className="space-y-8">
-          {[
-            { id: 1, title: 'Small groups', img: '/images/hero-extras/IMG_3578.JPG', overlay: 'magenta' },
-            { id: 2, title: 'Local food', img: '/images/hero-extras/IMG_3582.JPG', overlay: 'cyan' },
-            { id: 3, title: 'Coastal hikes', img: '/images/hero-extras/IMG_3604.JPG', overlay: 'magenta' },
-          ].map((s, i) => (
-            <motion.a key={s.id} href="/gallery" whileInView={{ opacity: 1, y: 0, scale: 1 }} initial={{ opacity: 0, y: 40, scale: 0.995 }} transition={{ duration: 0.7, ease: 'easeOut' }} viewport={{ once: true }} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'}`} style={{height: 360}}>
+      <section id="gallery-teaser" className="w-full py-8 px-0">
+        <h2 className="sr-only">Gallery</h2>
+        {[
+          { id: 1, title: 'Small groups', img: '/images/hero-extras/IMG_3578.JPG', overlay: 'magenta' },
+          { id: 2, title: 'Local food', img: '/images/hero-extras/IMG_3582.JPG', overlay: 'cyan' },
+          { id: 3, title: 'Coastal hikes', img: '/images/hero-extras/IMG_3604.JPG', overlay: 'magenta' },
+        ].map((s, i) => (
+          <motion.a key={s.id} href="/gallery" whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 28 }} transition={{ duration: 0.7, ease: 'easeOut' }} viewport={{ once: true }} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'} full-bleed`} aria-label={s.title}>
+            <div className="section-image-inner parallax" data-parallax="0.25">
               <div className="bg-img" style={{position:'absolute', inset:0}}>
                 <Image src={s.img} alt={s.title} fill className="object-cover" priority={false} sizes="100vw" />
               </div>
-              <div className={`section-content-overlay section-overlay-${s.overlay}`}> 
-                <div className="section-text">
-                  <h3 className="text-3xl font-bold mb-2">{s.title}</h3>
-                  <p className="text-white/90">{s.title} — captured across our curated small-group trips.</p>
-                </div>
+            </div>
+            <div className={`section-content-overlay section-overlay-${s.overlay}`}>
+              <div className="section-text section-text-minimal">
+                <h3 className="text-2xl font-semibold mb-1">{s.title}</h3>
               </div>
-            </motion.a>
-          ))}
-        </div>
+            </div>
+          </motion.a>
+        ))}
       </section>
 
       {/* Destinations Teaser */}
       <section id="destinations-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
         <h2 className="text-2xl text-white font-bold mb-6">Destinations</h2>
-        <div className="space-y-8">
+        <div className="space-y-6">
           {[{id: 'extremadura', title: 'Extremadura', img:'/images/hero-extras/IMG_3578.JPG', overlay:'magenta'}, {id:'alentejo', title:'Alentejo', img:'/images/hero-extras/IMG_3582.JPG', overlay:'cyan'}, {id:'sierradegata', title:'Sierra de Gata', img:'/images/hero-extras/IMG_3604.JPG', overlay:'magenta'}].map((d, i) => (
-            <motion.a key={d.id} href={`/destinations#${d.id}`} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'}`} style={{height: 320}} whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 24 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true }}>
-              <div className="bg-img" style={{position:'absolute', inset:0}}>
-                <Image src={d.img} alt={d.title} fill className="object-cover" priority={false} sizes="100vw" />
+            <motion.a key={d.id} href={`/destinations#${d.id}`} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'} full-bleed`} whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 24 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true }} aria-label={d.title}>
+              <div className="section-image-inner parallax" data-parallax="0.16">
+                <div className="bg-img" style={{position:'absolute', inset:0}}>
+                  <Image src={d.img} alt={d.title} fill className="object-cover" priority={false} sizes="100vw" />
+                </div>
               </div>
               <div className={`section-content-overlay section-overlay-${d.overlay}`}>
-                <div className="section-text">
-                  <h3 className="text-2xl font-bold mb-2">{d.title}</h3>
-                  <p className="text-white/90">{d.title} — {d.title === 'Alentejo' ? 'Rolling hills and vineyards.' : d.title === 'Sierra de Gata' ? 'Hiking, nature and charming hamlets.' : 'Wild landscapes and traditional gastronomy.'}</p>
+                <div className="section-text section-text-minimal">
+                  <h3 className="text-xl font-semibold mb-0">{d.title}</h3>
                 </div>
               </div>
             </motion.a>
@@ -195,3 +195,27 @@ export default function Page() {
     </main>
   );
 }
+
+  // small parallax effect for desktop: transform background layers based on scroll
+  function useParallax() {
+    useEffect(() => {
+      if (typeof window === 'undefined') return;
+      let raf = 0;
+      const handlers = () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const els = document.querySelectorAll<HTMLElement>('[data-parallax]');
+          const sc = window.scrollY;
+          els.forEach((el) => {
+            const factor = parseFloat(el.getAttribute('data-parallax') || '0.12');
+            const rect = el.getBoundingClientRect();
+            const offset = (rect.top + sc) * factor;
+            el.style.transform = `translateY(${offset * -0.03}px)`;
+          });
+        });
+      };
+      window.addEventListener('scroll', handlers, { passive: true });
+      handlers();
+      return () => { window.removeEventListener('scroll', handlers); cancelAnimationFrame(raf); };
+    }, []);
+  }
