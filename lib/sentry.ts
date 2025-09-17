@@ -32,7 +32,7 @@ export function initSentry(): void {
       } catch (e) {
         // If server Sentry init fails, log and continue — don't throw.
         // eslint-disable-next-line no-console
-        console.error('Sentry server init failed', e && e.message ? e.message : e);
+        console.error('Sentry server init failed', String((e as any)?.message ?? e));
       }
     } else {
       // Client-side init (browser)
@@ -51,13 +51,13 @@ export function initSentry(): void {
         return;
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.error('Sentry client init failed', e && e.message ? e.message : e);
+        console.error('Sentry client init failed', String((e as any)?.message ?? e));
       }
     }
   } catch (err) {
     // Unexpected errors should not break the app.
     // eslint-disable-next-line no-console
-    console.error('Sentry init unexpected error', err && err.message ? err.message : err);
+    console.error('Sentry init unexpected error', String((err as any)?.message ?? err));
   }
 }
 
@@ -83,7 +83,7 @@ export function captureException(e: any): string | null {
     }
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error('captureException failed', err && err.message ? err.message : err);
+    console.error('captureException failed', String((err as any)?.message ?? err));
   }
 
   return null;
