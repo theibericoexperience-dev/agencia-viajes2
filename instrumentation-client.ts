@@ -1,19 +1,9 @@
-// This file configures the initialization of Sentry on the client.
-// The added config here will be used whenever a users loads a page in their browser.
+// This file configures the initialization helpers for Sentry on the client.
+// It intentionally DOES NOT call `Sentry.init()` to avoid duplicate client inits.
+// A single canonical client initializer should be used (for example `sentry.client.config.js`).
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from "@sentry/nextjs";
 
-Sentry.init({
-  dsn: "https://61ccd07f60aa4c61adf7078f82912b7a@o4510029127548928.ingest.de.sentry.io/4510029129384016",
-
-  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-  tracesSampleRate: 1,
-  // Enable logs to be sent to Sentry
-  enableLogs: true,
-
-  // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false,
-});
-
+// Export helper that other parts of the app can use without causing a second init.
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
