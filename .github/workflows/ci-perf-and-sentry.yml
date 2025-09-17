@@ -15,6 +15,7 @@ jobs:
     env:
       SENTRY_ORG: iberico-experience
       SENTRY_PROJECT: javascript-nextjs
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -30,14 +31,15 @@ jobs:
         run: npm run build
 
       - name: Create Sentry release (if token present)
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
-          if [ -z "$SENTRY_AUTH_TOKEN" ]; then echo "SENTRY_AUTH_TOKEN not set; skipping sentry release."; exit 0; fi
+          if [ -z "$SENTRY_AUTH_TOKEN" ]; then
+            echo "SENTRY_AUTH_TOKEN not set; skipping sentry release."
+            exit 0
+          fi
           echo "Creating release from GITHUB_SHA"
           RELEASE=${GITHUB_SHA}
           npm exec -- sentry-cli releases new "$RELEASE" --org $SENTRY_ORG --project $SENTRY_PROJECT
-          npm exec -- sentry-cli releases files "$RELEASE" upload-sourcemaps .next --org $SENTRY_ORG --project $SENTRY_PROJECT --rewrite
+          npm exec -- sentry-cli releases files "$RELEASE" upload-sourcemaps .next --org $SENTRY_ORG --project $SENTRY_PROJECT --rewrite --ext map --ext js
           npm exec -- sentry-cli releases finalize "$RELEASE" --org $SENTRY_ORG --project $SENTRY_PROJECT
 
   lighthouse:
