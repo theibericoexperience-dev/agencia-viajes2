@@ -52,6 +52,13 @@ h2 { font-size: 1.5rem; font-weight: 600; }
 .btn:active { @apply bg-primary-700; }
 .btn-ghost { @apply bg-transparent text-primary-600; }
 
+.btn-duotone {
+  @apply inline-flex items-center justify-center rounded-md px-6 py-3 font-semibold text-white;
+  background: linear-gradient(90deg, #2e1a8f 0%, #ff2d95 60%);
+  box-shadow: 0 12px 30px rgba(46,26,143,0.18);
+}
+.btn-duotone:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(46,26,143,0.26); }
+
 /* Container helper used across pages */
 .site-container { max-width: 1100px; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
 
@@ -60,3 +67,28 @@ a { color: #ea580c; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Decorative image radius */
 .rounded-hero { border-radius: 12px; }
+
+/* Duotone hero utilities */
+.duotone-hero {
+  position: relative;
+  overflow: hidden;
+}
+.duotone-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,45,149,0.28), rgba(0,212,255,0.28));
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.duotone-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(46,26,143,0.35) 0%, rgba(255,45,149,0.18) 40%, rgba(0,212,255,0.18) 100%);
+  pointer-events: none;
+}
+
+/* Centered hero content */
+.hero-inner { position: relative; z-index: 10; padding: 6rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+.hero-title { font-size: 3rem; line-height: 1; font-weight: 800; color: white; text-shadow: 0 8px 30px rgba(2,6,23,0.6); }
+.hero-sub { color: rgba(255,255,255,0.85); max-width: 560px; }
