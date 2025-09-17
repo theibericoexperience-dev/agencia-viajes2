@@ -8,21 +8,36 @@
 // - `SENTRY_ENVIRONMENT` (optional)
 // See: https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from '@sentry/nextjs';
+/* eslint-disable @typescript-eslint/no-var-requires */
+try {
+  const Sentry = require('@sentry/nextjs');
 
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || undefined,
-  environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV,
-  release: process.env.SENTRY_RELEASE || process.env.VERCEL_GIT_COMMIT_SHA || undefined,
-  tracesSampleRate: Number(process.env.SENTRY_TRACES_SAMPLE_RATE) || 0,
-  // Keep debug off by default; enable with `SENTRY_DEBUG=1` in development only.
-  debug: Boolean(process.env.SENTRY_DEBUG && process.env.SENTRY_DEBUG !== '0'),
-});
+  const shouldInit = (() => {
+    try {
+      const hub = Sentry.getCurrentHub && Sentry.getCurrentHub();
+      const client = hub && hub.getClient && hub.getClient();
+      return !client;
+    } catch (e) {
+      return true;
+    }
+  })();
 
-export default Sentry;
-// This file provides a canonical client config object for Sentry.
-// Actual initialization should happen once in `instrumentation-client.js`.
-module.exports = {
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || '',
-  tracesSampleRate: 0.05,
-};
+  if (typeof window !== 'undefined' && shouldInit) {
+    Sentry.init({
+      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || undefined,
+      environment: process.env.SENTRY_ENVIRONMENT || process.env.NODE_ENV,
+      release: process.env.SENTRY_RELEASE || process.env.VERCEL_GIT_COMMIT_SHA || undefined,
+      tracesSampleRate: Number(process.env.SENTRY_TRACES_SAMPLE_RATE) || 0,
+      debug: Boolean(process.env.SENTRY_DEBUG && process.env.SENTRY_DEBUG !== '0'),
+    });
+  }
+
+  module.exports = Sentry;
+} catch (err) {
+  // If the SDK isn't available at runtime, fail silently — this keeps the
+  // application from crashing in environments where Sentry isn't installed.
+  // eslint-disable-next-line no-console
+  console.error('sentry.client.config.js load error:', String(err && err.message ? err.message : err));
+  module.exports = {};
+}
+
