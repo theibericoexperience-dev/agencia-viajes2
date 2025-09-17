@@ -35,10 +35,26 @@ export function initSentry(): void {
         console.error('Sentry server init failed', String((e as any)?.message ?? e));
       }
     } else {
-      // Client-side init (browser)
+      // Client-side init (browser).
+      // Avoid initializing if the client has already been initialized elsewhere
+      // (for example `instrumentation-client.js`). If a Sentry client exists
+      // already, mark initialized and return.
       try {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const SentryNext = require('@sentry/nextjs');
+
+        // If a Sentry client is already attached to the current hub, skip init.
+        if (SentryNext && typeof SentryNext.getCurrentHub === 'function') {
+          try {
+            const client = SentryNext.getCurrentHub().getClient && SentryNext.getCurrentHub().getClient();
+            if (client) {
+              _initialized = true;
+              return;
+            }
+          } catch (inner) {
+            // ignore and fall through to init
+          }
+        }
 
         SentryNext.init({
           dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || undefined,
