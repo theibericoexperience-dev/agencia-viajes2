@@ -104,3 +104,16 @@ a { color: #ea580c; text-decoration: underline; text-underline-offset: 3px; }
 .section-overlay-cyan { background: linear-gradient(90deg, rgba(0,20,30,0.45), rgba(0,212,255,0.12)); mix-blend-mode: screen; }
 .section-odd .section-content-overlay { justify-content: flex-start; }
 .section-even .section-content-overlay { justify-content: flex-end; }
+
+/* Full-bleed sections and parallax helpers */
+.full-bleed { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+.full-bleed .section-image-inner { height: 420px; position: relative; overflow: hidden; }
+.parallax { transform: translateZ(0); will-change: transform; }
+
+@media (max-width: 768px) {
+  .hero-inner { padding: 2rem 1rem; }
+  .hero-title { font-size: 1.75rem; }
+  .full-bleed .section-image-inner { height: 260px; }
+  .section-content-overlay { padding: 1rem; }
+  .section-text { max-width: 80%; font-size: 0.95rem; }
+}
