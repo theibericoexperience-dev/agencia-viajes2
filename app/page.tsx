@@ -6,6 +6,7 @@ import { useState } from "react";
 import Image from 'next/image';
 import Header from './components/Header';
 import { Button } from './components/ui/button';
+import { motion } from 'framer-motion';
 
 export default function Page() {
   const [status, setStatus] = useState<string | null>(null);
@@ -92,41 +93,47 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Gallery Teaser */}
+      {/* Gallery Teaser — Image-first alternating sections */}
       <section id="gallery-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
-        <h2 className="text-2xl text-white font-bold mb-4">Gallery</h2>
-        <p className="text-white/90 mb-6">A few moments from our trips — small groups, real experiences.</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 1" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
-          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 2" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
-          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 3" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
-          <div className="relative w-full h-36 rounded overflow-hidden"><Image src="/_optimized/IMG_3241.JPG-w800.webp" alt="Gallery 4" fill className="object-cover" priority={false} quality={60} sizes="(max-width: 640px) 100vw, 25vw" /></div>
-        </div>
-        <div className="mt-4">
-          <a href="/gallery" className="text-primary-300 font-medium hover:underline">See the full gallery</a>
+        <h2 className="text-2xl text-white font-bold mb-6">Gallery</h2>
+        <div className="space-y-8">
+          {[
+            { id: 1, title: 'Small groups', img: '/images/hero-extras/IMG_3578.JPG', overlay: 'magenta' },
+            { id: 2, title: 'Local food', img: '/images/hero-extras/IMG_3582.JPG', overlay: 'cyan' },
+            { id: 3, title: 'Coastal hikes', img: '/images/hero-extras/IMG_3604.JPG', overlay: 'magenta' },
+          ].map((s, i) => (
+            <motion.a key={s.id} href="/gallery" whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 30 }} viewport={{ once: true }} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'}`} style={{height: 360}}>
+              <div className="bg-img" style={{position:'absolute', inset:0}}>
+                <Image src={s.img} alt={s.title} fill className="object-cover" priority={false} sizes="100vw" />
+              </div>
+              <div className={`section-content-overlay section-overlay-${s.overlay}`}> 
+                <div className="section-text">
+                  <h3 className="text-3xl font-bold mb-2">{s.title}</h3>
+                  <p className="text-white/90">{s.title} — captured across our curated small-group trips.</p>
+                </div>
+              </div>
+            </motion.a>
+          ))}
         </div>
       </section>
 
       {/* Destinations Teaser */}
       <section id="destinations-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
-        <h2 className="text-2xl text-white font-bold mb-4">Destinations</h2>
-        <p className="text-white/90 mb-6">Hand-picked regions where we run our tours.</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <a href="/destinations#extremadura" className="block bg-white/10 p-4 rounded">
-            <h3 className="font-semibold">Extremadura</h3>
-            <p className="text-sm mt-2 text-white/80">Wild landscapes, history and traditional gastronomy.</p>
-          </a>
-          <a href="/destinations#alentejo" className="block bg-white/10 p-4 rounded">
-            <h3 className="font-semibold">Alentejo</h3>
-            <p className="text-sm mt-2 text-white/80">Rolling hills, vineyards and quiet villages.</p>
-          </a>
-          <a href="/destinations#sierradegata" className="block bg-white/10 p-4 rounded">
-            <h3 className="font-semibold">Sierra de Gata</h3>
-            <p className="text-sm mt-2 text-white/80">Hiking, nature and charming hamlets.</p>
-          </a>
-        </div>
-        <div className="mt-4">
-          <a href="/destinations" className="text-primary-300 font-medium hover:underline">View all destinations</a>
+        <h2 className="text-2xl text-white font-bold mb-6">Destinations</h2>
+        <div className="space-y-8">
+          {[{id: 'extremadura', title: 'Extremadura', img:'/images/hero-extras/IMG_3578.JPG', overlay:'magenta'}, {id:'alentejo', title:'Alentejo', img:'/images/hero-extras/IMG_3582.JPG', overlay:'cyan'}, {id:'sierradegata', title:'Sierra de Gata', img:'/images/hero-extras/IMG_3604.JPG', overlay:'magenta'}].map((d, i) => (
+            <motion.a key={d.id} href={`/destinations#${d.id}`} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'}`} style={{height: 320}} whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} viewport={{ once: true }}>
+              <div className="bg-img" style={{position:'absolute', inset:0}}>
+                <Image src={d.img} alt={d.title} fill className="object-cover" priority={false} sizes="100vw" />
+              </div>
+              <div className={`section-content-overlay section-overlay-${d.overlay}`}>
+                <div className="section-text">
+                  <h3 className="text-2xl font-bold mb-2">{d.title}</h3>
+                  <p className="text-white/90">{d.title} — {d.title === 'Alentejo' ? 'Rolling hills and vineyards.' : d.title === 'Sierra de Gata' ? 'Hiking, nature and charming hamlets.' : 'Wild landscapes and traditional gastronomy.'}</p>
+                </div>
+              </div>
+            </motion.a>
+          ))}
         </div>
       </section>
 
