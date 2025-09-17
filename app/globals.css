@@ -4,7 +4,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #f8fafc;
+  background: #fbfbfa;
+  color: #0f172a; /* neutral-900 */
 }
 
 /* Accessibility helpers */
@@ -33,3 +34,29 @@ body {
   outline: 3px solid #f59e0b; /* amber */
   outline-offset: 2px;
 }
+
+/* Headings */
+h1,h2,h3,h4 {
+  color: #0f172a; /* neutral-900 */
+  line-height: 1.1;
+}
+
+h1 { font-size: 2.25rem; font-weight: 800; }
+h2 { font-size: 1.5rem; font-weight: 600; }
+
+/* Button utilities */
+.btn {
+  @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors bg-primary-500 text-white shadow-sm;
+}
+.btn:hover { @apply bg-primary-600; }
+.btn:active { @apply bg-primary-700; }
+.btn-ghost { @apply bg-transparent text-primary-600; }
+
+/* Container helper used across pages */
+.site-container { max-width: 1100px; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+
+/* Subtle link style */
+a { color: #ea580c; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Decorative image radius */
+.rounded-hero { border-radius: 12px; }

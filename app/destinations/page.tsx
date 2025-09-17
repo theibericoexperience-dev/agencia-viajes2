@@ -18,7 +18,7 @@ export default function DestinationsPage() {
           <section id={d.id} key={d.id} className="bg-white/5 p-4 rounded">
             <h2 className="font-semibold text-lg">{d.name}</h2>
             <p className="text-sm mt-2 text-white/80">{d.desc}</p>
-            <a href="#booking" className="text-amber-200 mt-3 inline-block">Request this tour</a>
+            <a href="#booking" className="text-primary-300 mt-3 inline-block">Request this tour</a>
           </section>
         ))}
       </div>

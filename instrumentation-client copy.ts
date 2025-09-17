@@ -4,16 +4,17 @@
 
 export async function initSentryClient() {
 	try {
-		const Sentry: any = await import('@sentry/nextjs');
-		const shouldInit = (() => {
-			try {
-				const hub = Sentry.getCurrentHub && Sentry.getCurrentHub();
-				const client = hub && hub.getClient && hub.getClient();
-				return !client;
-			} catch (e) {
-				return true;
-			}
-		})();
+			const Sentry = await import('@sentry/nextjs');
+			const shouldInit = (() => {
+				try {
+					const anySentry: any = Sentry;
+					const hub = anySentry.getCurrentHub && anySentry.getCurrentHub();
+					const client = hub && hub.getClient && hub.getClient();
+					return !client;
+				} catch (e) {
+					return true;
+				}
+			})();
 		if (typeof window !== 'undefined' && shouldInit) {
 			Sentry.init({
 				dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || undefined,
@@ -23,11 +24,12 @@ export async function initSentryClient() {
 				debug: Boolean(process.env.SENTRY_DEBUG && process.env.SENTRY_DEBUG !== '0'),
 			});
 		}
-		return Sentry;
-	} catch (err: any) {
-		console.error('initSentryClient load error:', String(err?.message ?? err));
-		return null;
-	}
+		} catch (err: any) {
+			// If the SDK isn't available at runtime, fail silently — this keeps the
+			// application from crashing in environments where Sentry isn't installed.
+			// eslint-disable-next-line no-console
+			console.error('initSentryClient load error:', String(err?.message ?? err));
+		}
 }
 
 // Export helper that other parts of the app can use without causing a second init.

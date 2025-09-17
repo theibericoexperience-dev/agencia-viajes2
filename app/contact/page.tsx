@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Header from '../../app/components/Header';
+import { Button } from '../components/ui/button';
 
 export default function ContactPage(){
   const [status, setStatus] = useState<string | null>(null);
@@ -32,16 +33,16 @@ export default function ContactPage(){
 
   return (
   <main id="content" className="min-h-screen p-8 bg-black/80 text-white">
-      <Header />
-      <div className="max-w-3xl mx-auto mt-24">
+    <Header />
+    <div className="max-w-3xl mx-auto mt-24">
         <h1 className="text-3xl font-bold mb-4">Contact</h1>
-        <p className="mb-6">Email us at <a className="text-amber-200" href="mailto:info@ibericoexperience.com">info@ibericoexperience.com</a> or use the form below.</p>
+  <p className="mb-6">Email us at <a className="text-primary-300" href="mailto:info@ibericoexperience.com">info@ibericoexperience.com</a> or use the form below.</p>
         <form onSubmit={handleSubmit} className="bg-white/90 p-6 rounded text-black grid gap-3">
           <label className="flex flex-col"><span className="text-sm font-medium">Name</span><input name="name" className="px-3 py-2 rounded border mt-1" required aria-required="true" /></label>
           <label className="flex flex-col"><span className="text-sm font-medium">Email</span><input name="email" type="email" className="px-3 py-2 rounded border mt-1" required aria-required="true" /></label>
           <label className="flex flex-col"><span className="text-sm font-medium">Message</span><textarea name="message" rows={5} className="px-3 py-2 rounded border mt-1" aria-required="false" /></label>
           <div className="flex items-center gap-3">
-            <button type="submit" className="w-full sm:w-auto px-4 py-2 bg-amber-600 text-white rounded" disabled={status==='sending'}>Send</button>
+            <Button type="submit" className="w-full sm:w-auto" disabled={status==='sending'}>Send</Button>
             <span aria-live="polite" className="sr-only">{status==='sending' ? 'Sending' : status==='sent' ? (message||'Sent') : status==='error' ? (message||'Error') : ''}</span>
             {status==='sent' && <span className="text-emerald-700">{message}</span>}
             {status==='error' && <span className="text-red-600">{message}</span>}

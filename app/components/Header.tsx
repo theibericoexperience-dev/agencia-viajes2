@@ -28,10 +28,10 @@ export default function Header(){
       </button>
 
       <nav className={`hidden md:flex items-center gap-6`} aria-label="Main navigation">
-        <Link href="/" className={isActive('/')? 'text-amber-300 font-semibold' : 'text-white'}>Home</Link>
-        <Link href="/gallery" className={isActive('/gallery')? 'text-amber-300 font-semibold' : 'text-white'}>Gallery</Link>
-        <Link href="/destinations" className={isActive('/destinations')? 'text-amber-300 font-semibold' : 'text-white'}>Destinations</Link>
-        <a href="#contact" className={isActive('/contact')? 'text-amber-300 font-semibold' : 'text-white'}>Contact</a>
+        <Link href="/" className={isActive('/')? 'text-primary-300 font-semibold' : 'text-white'}>Home</Link>
+        <Link href="/gallery" className={isActive('/gallery')? 'text-primary-300 font-semibold' : 'text-white'}>Gallery</Link>
+        <Link href="/destinations" className={isActive('/destinations')? 'text-primary-300 font-semibold' : 'text-white'}>Destinations</Link>
+        <a href="#contact" className={isActive('/contact')? 'text-primary-300 font-semibold' : 'text-white'}>Contact</a>
       </nav>
 
       {open && (
