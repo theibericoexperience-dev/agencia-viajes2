@@ -7,31 +7,8 @@ import * as Sentry from "@sentry/nextjs";
 // Initialize Sentry on the client only if it hasn't already been initialized
 // (e.g., by an automatic config loader). This prevents the runtime warning
 // about calling `Sentry.init()` more than once.
-try {
-  // Some versions of `@sentry/nextjs` expose `getCurrentHub` as a named export,
-  // others attach it to the default export. We check both safely at runtime.
-  let currentHub = null;
-  if (typeof Sentry.getCurrentHub === 'function') {
-    currentHub = Sentry.getCurrentHub();
-  } else if (Sentry && typeof Sentry.getCurrentHub === 'function') {
-    currentHub = Sentry.getCurrentHub();
-  }
-
-  const existingClient = currentHub && typeof currentHub.getClient === 'function' ? currentHub.getClient() : null;
-  if (!existingClient) {
-    Sentry.init({
-      dsn: process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || '',
-      integrations: [Sentry.replayIntegration()],
-      tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 1,
-      enableLogs: true,
-      replaysSessionSampleRate: 0.1,
-      replaysOnErrorSampleRate: 1.0,
-      debug: false,
-    });
-  }
-} catch (e) {
-  // eslint-disable-next-line no-console
-  console.warn('instrumentation-client: Sentry init check failed', String((e && e.message) || e));
-}
+// Client initialization is provided by the Next.js Sentry integration when using
+// a `sentry.client.config.js` file. Do not call `Sentry.init()` here to avoid
+// duplicate initializations — this file only exposes helper hooks.
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
