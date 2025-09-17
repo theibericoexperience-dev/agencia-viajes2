@@ -1,0 +1,25 @@
+name: Capture screenshots
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        run: npm ci
+      - name: Wait for deploy
+        run: |
+          echo "Delay to allow Vercel to finish deploy (approx)"
+          sleep 30
+      - name: Capture screenshots
+        run: node scripts/ci_capture.js
+        env:
+          VERCEL_URL: ${{ secrets.VERCEL_URL }}

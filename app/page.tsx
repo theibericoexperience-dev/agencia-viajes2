@@ -224,8 +224,10 @@ export default function Page() {
           els.forEach((el) => {
             const factor = parseFloat(el.getAttribute('data-parallax') || '0.12');
             const rect = el.getBoundingClientRect();
-            const offset = (rect.top + sc) * factor;
-            el.style.transform = `translateY(${offset * -0.03}px)`;
+            // compute a subtle offset based on element center relative to viewport
+            const centerY = rect.top + rect.height / 2 - window.innerHeight / 2;
+            const offset = Math.max(Math.min(centerY * factor * -0.02, 40), -40); // clamp
+            el.style.transform = `translateY(${offset}px)`;
           });
         });
       };
