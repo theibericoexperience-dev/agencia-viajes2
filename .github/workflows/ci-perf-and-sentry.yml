@@ -38,9 +38,9 @@ jobs:
           fi
           echo "Creating release from GITHUB_SHA"
           RELEASE=${GITHUB_SHA}
-          npm exec -- sentry-cli releases new "$RELEASE" --org $SENTRY_ORG --project $SENTRY_PROJECT
-          npm exec -- sentry-cli releases files "$RELEASE" upload-sourcemaps .next --org $SENTRY_ORG --project $SENTRY_PROJECT --rewrite --ext map --ext js
-          npm exec -- sentry-cli releases finalize "$RELEASE" --org $SENTRY_ORG --project $SENTRY_PROJECT
+          npm exec -- sentry-cli releases new "$RELEASE" --org $SENTRY_ORG --project $SENTRY_PROJECT || true
+          npm exec -- sentry-cli releases files "$RELEASE" upload-sourcemaps .next --org $SENTRY_ORG --project $SENTRY_PROJECT --rewrite --ext map --ext js || true
+          npm exec -- sentry-cli releases finalize "$RELEASE" --org $SENTRY_ORG --project $SENTRY_PROJECT || true
 
   lighthouse:
     runs-on: ubuntu-latest
