@@ -12,6 +12,19 @@ export default function Page() {
   const [status, setStatus] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
+  // enable parallax on mount
+  useParallax();
+
+  const listVariants = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.08 } }
+  };
+
+  const itemVariant = {
+    hidden: { opacity: 0, y: 24 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+  };
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -96,12 +109,13 @@ export default function Page() {
       {/* Gallery Teaser — Image-first alternating sections */}
       <section id="gallery-teaser" className="w-full py-8 px-0">
         <h2 className="sr-only">Gallery</h2>
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={listVariants} className="">
         {[
           { id: 1, title: 'Small groups', img: '/images/hero-extras/IMG_3578.JPG', overlay: 'magenta' },
           { id: 2, title: 'Local food', img: '/images/hero-extras/IMG_3582.JPG', overlay: 'cyan' },
           { id: 3, title: 'Coastal hikes', img: '/images/hero-extras/IMG_3604.JPG', overlay: 'magenta' },
         ].map((s, i) => (
-          <motion.a key={s.id} href="/gallery" whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 28 }} transition={{ duration: 0.7, ease: 'easeOut' }} viewport={{ once: true }} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'} full-bleed`} aria-label={s.title}>
+          <motion.a key={s.id} href="/gallery" variants={itemVariant} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'} full-bleed`} aria-label={s.title}>
             <div className="section-image-inner parallax" data-parallax="0.25">
               <div className="bg-img" style={{position:'absolute', inset:0}}>
                 <Image src={s.img} alt={s.title} fill className="object-cover" priority={false} sizes="100vw" />
@@ -114,14 +128,15 @@ export default function Page() {
             </div>
           </motion.a>
         ))}
+        </motion.div>
       </section>
 
       {/* Destinations Teaser */}
       <section id="destinations-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
         <h2 className="text-2xl text-white font-bold mb-6">Destinations</h2>
-        <div className="space-y-6">
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={listVariants} className="space-y-6">
           {[{id: 'extremadura', title: 'Extremadura', img:'/images/hero-extras/IMG_3578.JPG', overlay:'magenta'}, {id:'alentejo', title:'Alentejo', img:'/images/hero-extras/IMG_3582.JPG', overlay:'cyan'}, {id:'sierradegata', title:'Sierra de Gata', img:'/images/hero-extras/IMG_3604.JPG', overlay:'magenta'}].map((d, i) => (
-            <motion.a key={d.id} href={`/destinations#${d.id}`} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'} full-bleed`} whileInView={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 24 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true }} aria-label={d.title}>
+            <motion.a key={d.id} href={`/destinations#${d.id}`} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'} full-bleed`} variants={itemVariant} aria-label={d.title}>
               <div className="section-image-inner parallax" data-parallax="0.16">
                 <div className="bg-img" style={{position:'absolute', inset:0}}>
                   <Image src={d.img} alt={d.title} fill className="object-cover" priority={false} sizes="100vw" />
@@ -134,7 +149,7 @@ export default function Page() {
               </div>
             </motion.a>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Booking CTA */}

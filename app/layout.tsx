@@ -3,6 +3,7 @@ import React from "react";
 import "./globals.css";
 import CookieConsent from './components/CookieConsent';
 import SentryInitClient from './components/SentryInitClient';
+import HeroCarousel from './components/HeroCarousel';
 
   const title = 'Iberico Experience — Small-group tours in Spain & Portugal';
   const description = 'Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.';
@@ -47,7 +48,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <a href="#content" className="skip-link">Skip to content</a>
         <header className="duotone-hero" role="banner">
-          <img src="/images/hero-extras/IMG_3582.JPG" alt="Hero" className="w-full h-[420px] object-cover rounded-hero" />
+          <div className="w-full h-[420px] rounded-hero overflow-hidden">
+            {/* Carousel rotates hero images on the client */}
+            <HeroCarousel />
+          </div>
           <div className="duotone-overlay" />
           <div className="hero-inner site-container">
             <div>
