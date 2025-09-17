@@ -8,7 +8,15 @@ import * as Sentry from "@sentry/nextjs";
 // (e.g., by an automatic config loader). This prevents the runtime warning
 // about calling `Sentry.init()` more than once.
 try {
-  const currentHub = typeof Sentry.getCurrentHub === 'function' ? Sentry.getCurrentHub() : null;
+  // Some versions of `@sentry/nextjs` expose `getCurrentHub` as a named export,
+  // others attach it to the default export. We check both safely at runtime.
+  let currentHub = null;
+  if (typeof Sentry.getCurrentHub === 'function') {
+    currentHub = Sentry.getCurrentHub();
+  } else if (Sentry && typeof Sentry.getCurrentHub === 'function') {
+    currentHub = Sentry.getCurrentHub();
+  }
+
   const existingClient = currentHub && typeof currentHub.getClient === 'function' ? currentHub.getClient() : null;
   if (!existingClient) {
     Sentry.init({
