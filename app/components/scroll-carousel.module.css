@@ -1,8 +1,9 @@
-.scroll-carousel { position: fixed; left: 50%; transform: translateX(-50%); bottom: 6rem; width: 68vw; max-width: 980px; pointer-events: auto; z-index: 45; opacity: 0; transition: opacity 420ms ease, transform 420ms ease; }
-.scroll-carousel.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.scroll-carousel .inner { display:flex; align-items:center; gap:12px; }
-.scroll-carousel .item { transition: transform 300ms ease; }
-.scroll-carousel.hover .item { transform: scale(1.2); }
-.scroll-carousel .item img{ display:block }
+:root { --carousel-bottom: 6rem; }
+.root { position: fixed; left: 50%; transform: translateX(-50%); bottom: var(--carousel-bottom); width: 68vw; max-width: 980px; pointer-events: auto; z-index: 45; opacity: 0; transition: opacity 420ms ease, transform 420ms ease; }
+.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.inner { display:flex; align-items:center; gap:12px; }
+.item { transition: transform 300ms ease; }
+.hover .item { transform: scale(1.2); }
+.item img{ display:block }
 
 @media (max-width: 768px){ .scroll-carousel { display:none; } }

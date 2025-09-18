@@ -5,7 +5,7 @@ import CookieConsent from './components/CookieConsent';
 import SentryInitClient from './components/SentryInitClient';
 import HeroCarousel from './components/HeroCarousel';
 
-  const title = 'Iberico Experience — Small-group tours in Spain & Portugal';
+  const title = 'IBERO Tours — Small-group tours in Spain & Portugal';
   const description = 'Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.';
   const siteUrl = 'https://agencia-viajes2.vercel.app';
   const ogImage = '/_optimized/og-default-w1200.webp';
@@ -53,13 +53,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <HeroCarousel />
           </div>
           <div className="duotone-overlay" />
-              <div className="hero-inner site-container">
-                <div />
-                <div className="hero-right-text" aria-hidden>
-                  <span className="bespoke-text">bespoke tours & events</span>
-                </div>
-                <div className="hero-bottom-left">Let us connect you to the essence of true travel.</div>
+            <div className="hero-inner site-container">
+              <div />
+              <div className="hero-right-text" aria-hidden>
+                <span className="bespoke-text">bespoke tours & events</span>
               </div>
+              <div className="hero-bottom-left">Let us connect you to the essence of true travel.</div>
+            </div>
         </header>
         {children}
         <CookieConsent />
