@@ -1,8 +1,8 @@
-.root { position: fixed; left: 50%; transform: translateX(-50%); bottom: 6rem; width: 68vw; max-width: 980px; pointer-events: auto; z-index: 45; opacity: 0; transition: opacity 420ms ease, transform 420ms ease; }
+.root { position: fixed; left: 50%; transform: translateX(-50%); bottom: 3.5rem; width: 92vw; max-width: 980px; pointer-events: auto; z-index: 45; opacity: 0; transition: opacity 420ms ease, transform 420ms ease; }
 .show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .inner { display:flex; align-items:center; gap:12px; }
 .item { transition: transform 300ms ease; }
 .hover .item { transform: scale(1.2); }
 .item img{ display:block }
 
-@media (max-width: 768px){ .scroll-carousel { display:none; } }
+@media (max-width: 768px){ .root { bottom: 2.25rem; width: 96vw; } .item { width: 160px !important; height: 110px !important; } }
