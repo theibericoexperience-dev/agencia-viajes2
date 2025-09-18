@@ -25,7 +25,7 @@ export default function ScrollCarousel(){
         triggered = true;
         // small nudge so user stays scrolled when carousel appears
         window.scrollTo({ top: window.scrollY + 1 });
-        el.classList.add(styles.show);
+        if (el) el.classList.add(styles.show);
       }
     }
     window.addEventListener('wheel', onWheel, { passive: true });
@@ -48,9 +48,9 @@ export default function ScrollCarousel(){
     }
     animRef.current = requestAnimationFrame(step);
 
-    // hover interactions (slow + scale)
-    el.addEventListener('mouseenter', () => { speed = 0.25; el.classList.add(styles.hover); });
-    el.addEventListener('mouseleave', () => { speed = 0.8; el.classList.remove(styles.hover); });
+  // hover interactions (slow + scale)
+  el.addEventListener('mouseenter', () => { speed = 0.25; if (el) el.classList.add(styles.hover); });
+  el.addEventListener('mouseleave', () => { speed = 0.8; if (el) el.classList.remove(styles.hover); });
 
     return () => { window.removeEventListener('wheel', onWheel); if (animRef.current) cancelAnimationFrame(animRef.current); };
   }, []);
