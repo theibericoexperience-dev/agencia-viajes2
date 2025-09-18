@@ -17,8 +17,12 @@ export default function Header(){
 
   return (
     <header className="w-full flex items-center justify-between px-4 md:px-6 py-3 bg-transparent fixed top-0 left-0 z-40">
-      <div className="flex items-center gap-4">
-        <h1 className="text-xl md:text-2xl font-bold"><Link href="/">Agencia Viajes</Link></h1>
+      <div className="flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-6 uppercase tracking-widest text-sm" aria-label="Main navigation">
+          <Link href="/destinations" className={isActive('/destinations')? 'text-white font-semibold' : 'text-white/90'}>destinations</Link>
+          <Link href="/contact" className={isActive('/contact')? 'text-white font-semibold' : 'text-white/90'}>contact</Link>
+          <Link href="/more" className={isActive('/more')? 'text-white font-semibold' : 'text-white/90'}>más</Link>
+        </nav>
       </div>
 
   <button aria-label="Toggle menu" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(!open)} className="md:hidden p-2 rounded bg-black/30 text-white">
@@ -27,20 +31,16 @@ export default function Header(){
         </svg>
       </button>
 
-      <nav className={`hidden md:flex items-center gap-6`} aria-label="Main navigation">
-        <Link href="/" className={isActive('/')? 'text-primary-300 font-semibold' : 'text-white'}>Home</Link>
-        <Link href="/gallery" className={isActive('/gallery')? 'text-primary-300 font-semibold' : 'text-white'}>Gallery</Link>
-        <Link href="/destinations" className={isActive('/destinations')? 'text-primary-300 font-semibold' : 'text-white'}>Destinations</Link>
-        <a href="#contact" className={isActive('/contact')? 'text-primary-300 font-semibold' : 'text-white'}>Contact</a>
-      </nav>
+      <div className="hidden md:block ml-auto mr-4 font-bold text-white text-lg md:text-xl" style={{fontFamily: 'Verdana, Geneva, sans-serif', textTransform: 'uppercase'}}>
+        IBERO Tours
+      </div>
 
       {open && (
         <div id="mobile-menu" className="absolute top-full left-0 right-0 bg-black/80 p-4 md:hidden">
           <nav className="flex flex-col gap-3" aria-label="Mobile navigation">
-            <Link href="/" onClick={() => setOpen(false)} className="text-white">Home</Link>
-            <Link href="/gallery" onClick={() => setOpen(false)} className="text-white">Gallery</Link>
-            <Link href="/destinations" onClick={() => setOpen(false)} className="text-white">Destinations</Link>
-            <a href="#contact" onClick={() => setOpen(false)} className="text-white">Contact</a>
+            <Link href="/destinations" onClick={() => setOpen(false)} className="text-white">destinations</Link>
+            <Link href="/contact" onClick={() => setOpen(false)} className="text-white">contact</Link>
+            <Link href="/more" onClick={() => setOpen(false)} className="text-white">más</Link>
           </nav>
         </div>
       )}

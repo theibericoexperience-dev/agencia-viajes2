@@ -1,0 +1,18 @@
+[
+  {
+    "filename": "hero-placeholder-01.jpg",
+    "target": "hero",
+    "alt": "Placeholder hero image",
+    "caption": "",
+    "priority": "hero",
+    "focalPoint": { "x": 50, "y": 50 }
+  },
+  {
+    "filename": "gallery-placeholder-01.jpg",
+    "target": "gallery",
+    "alt": "Placeholder gallery image",
+    "caption": "",
+    "priority": "high",
+    "focalPoint": { "x": 50, "y": 50 }
+  }
+]

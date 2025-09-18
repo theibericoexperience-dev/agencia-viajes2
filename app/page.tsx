@@ -5,6 +5,7 @@
 import { useState, useEffect } from "react";
 import Image from 'next/image';
 import Header from './components/Header';
+import ScrollCarousel from './components/ScrollCarousel';
 import { Button } from './components/ui/button';
 import { motion } from 'framer-motion';
 
@@ -92,6 +93,9 @@ export default function Page() {
 
       {/* Header */}
       <Header />
+
+  {/* Scroll-triggered small carousel — appears when user scrolls down */}
+  <ScrollCarousel />
 
       {/* Hero CTA (minimal — header holds main hero) */}
       <section className="w-full flex items-center justify-center pt-20 pb-4 px-4">
