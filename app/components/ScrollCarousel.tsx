@@ -59,16 +59,27 @@ export default function ScrollCarousel(){
     }
     animRef.current = requestAnimationFrame(step);
 
-    // hover / pointer interactions
-  el.addEventListener('pointerenter', () => { speedRef.current = 0.25; if (el) el.classList.add(styles.hover); });
-  el.addEventListener('pointerleave', () => { speedRef.current = 0.8; if (el) el.classList.remove(styles.hover); });
+    // hover / pointer interactions (named handlers for proper cleanup)
+    const onPointerEnter = () => {
+      speedRef.current = 0.25;
+      const current = ref.current;
+      if (current) current.classList.add(styles.hover);
+    };
+    const onPointerLeave = () => {
+      speedRef.current = 0.8;
+      const current = ref.current;
+      if (current) current.classList.remove(styles.hover);
+    };
+    el.addEventListener('pointerenter', onPointerEnter);
+    el.addEventListener('pointerleave', onPointerLeave);
 
     // touch handlers for mobile swipe control (option B)
     let lastX = 0;
     function onTouchStart(e: TouchEvent){
       touching.current = true;
       lastX = e.touches[0].clientX;
-      el.classList.add(styles.hover);
+      const current = ref.current;
+      if (current) current.classList.add(styles.hover);
       speedRef.current = 0.25;
     }
     function onTouchMove(e: TouchEvent){
@@ -80,7 +91,8 @@ export default function ScrollCarousel(){
     }
     function onTouchEnd(){
       touching.current = false;
-      el.classList.remove(styles.hover);
+      const current = ref.current;
+      if (current) current.classList.remove(styles.hover);
       speedRef.current = 0.8;
     }
     el.addEventListener('touchstart', onTouchStart, { passive: true });
@@ -89,11 +101,11 @@ export default function ScrollCarousel(){
 
     return () => {
       window.removeEventListener('wheel', onWheel as EventListener);
-      el.removeEventListener('pointerenter', () => {});
-      el.removeEventListener('pointerleave', () => {});
-      el.removeEventListener('touchstart', onTouchStart as EventListener);
-      el.removeEventListener('touchmove', onTouchMove as EventListener);
-      el.removeEventListener('touchend', onTouchEnd as EventListener);
+  el.removeEventListener('pointerenter', onPointerEnter);
+  el.removeEventListener('pointerleave', onPointerLeave);
+  el.removeEventListener('touchstart', onTouchStart as EventListener);
+  el.removeEventListener('touchmove', onTouchMove as EventListener);
+  el.removeEventListener('touchend', onTouchEnd as EventListener);
       if (animRef.current) cancelAnimationFrame(animRef.current);
       document.body.style.overflow = '';
     };
