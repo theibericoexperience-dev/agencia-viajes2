@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Page() {
-  const [showHeader, setShowHeader] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [carouselSpeed, setCarouselSpeed] = useState(1);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -29,18 +28,12 @@ export default function Page() {
   ];
 
   useEffect(() => {
-    // Show header after 2 seconds
-    const timer = setTimeout(() => {
-      setShowHeader(true);
-    }, 2000);
-
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -60,82 +53,17 @@ export default function Page() {
       {/* Initial Hero Image - Only image visible on load */}
       <section className="relative h-screen w-full bg-gray-900">
         <Image 
-          src="/images/hero-main.JPG" 
-          alt="Ibero Tours Experience" 
+          src="/iberico-hero.jpg" 
+          alt="Travel Experience" 
           fill 
           className="object-cover z-10" 
           priority 
           quality={95}
           sizes="100vw"
+          unoptimized
         />
         
-        {/* Elegant Header Appearance */}
-        <AnimatePresence>
-          {showHeader && (
-            <motion.header
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="absolute top-0 left-0 right-0 z-50 p-8"
-            >
-              <nav className="flex justify-between items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                >
-                  <h1 className="text-2xl font-light text-white tracking-widest">
-                    IBERO TOURS
-                  </h1>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7, duration: 0.8 }}
-                  className="flex gap-8 items-center"
-                >
-                  <Link href="/gallery" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
-                    Gallery
-                  </Link>
-                  <Link href="/destinations" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
-                    Destinations
-                  </Link>
-                  <Link href="/contact" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
-                    Contact
-                  </Link>
-                  <Link 
-                    href="/contact" 
-                    className="border border-white/30 px-6 py-2 text-white hover:bg-white hover:text-black transition-all text-sm uppercase tracking-wider"
-                  >
-                    Book a Trip
-                  </Link>
-                </motion.div>
-              </nav>
-            </motion.header>
-          )}
-        </AnimatePresence>
-
-        {/* Subtle hint for more content below */}
-        <AnimatePresence>
-          {showHeader && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2, duration: 1 }}
-              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-40"
-            >
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-                className="text-white text-center"
-              >
-                <div className="w-px h-16 bg-white/30 mx-auto mb-4"></div>
-                <p className="text-xs uppercase tracking-widest">Scroll to explore</p>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* No header - only hero image on load */}
       </section>
 
       {/* Photo Carousel - Appears on scroll */}
