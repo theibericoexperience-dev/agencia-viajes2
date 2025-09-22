@@ -3,7 +3,6 @@ import React from "react";
 import "./globals.css";
 import CookieConsent from './components/CookieConsent';
 import SentryInitClient from './components/SentryInitClient';
-import HeroCarousel from './components/HeroCarousel';
 
   const title = 'Ibero Tours — Authentic travels across Spain & Portugal';
   const description = 'Authentic small-group travels focused on local food, culture and nature across Spain and Portugal.';
@@ -47,26 +46,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <a href="#content" className="skip-link">Skip to content</a>
-        <header className="duotone-hero" role="banner">
-          <div className="w-full h-[420px] rounded-hero overflow-hidden">
-            {/* Carousel rotates hero images on the client */}
-            <HeroCarousel />
-          </div>
-          <div className="duotone-overlay" />
-          <div className="hero-inner site-container">
-            <div>
-              <h1 className="hero-title">Ibero Tours</h1>
-              <p className="hero-sub">Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.</p>
-              <div style={{marginTop: '1.25rem', display: 'flex', gap: '0.75rem'}}>
-                <a href="/contact" className="btn-duotone" role="button">Book a trip</a>
-                <a href="/destinations" className="btn btn-ghost" style={{marginLeft: '0'}} role="button">Explore</a>
-              </div>
-            </div>
-            <div aria-hidden className="hidden md:block">
-              <img src="/images/hero-extras/IMG_3578.JPG" alt="Decorative" className="w-64 rounded-hero shadow-lg" />
-            </div>
-          </div>
-        </header>
         {children}
         <CookieConsent />
         <script dangerouslySetInnerHTML={{ __html: `(function(){
