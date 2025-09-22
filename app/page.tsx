@@ -63,17 +63,19 @@ export default function Page() {
     <main className="min-h-screen overflow-x-hidden">
       {/* Hero Section with 3D Parallax Effect */}
       <section className="relative h-screen w-full bg-black overflow-hidden">
-        {/* Subtle Animated Background */}
+        {/* Elegant Floating Background */}
         <motion.div
           className="absolute inset-0 w-full h-full"
           animate={{
-            x: [0, -20, 0, 15, 0],
-            y: [0, 10, -15, 5, 0],
+            x: [0, -8, 0, 6, 0],
+            y: [0, 4, -6, 3, 0],
+            scale: [1.05, 1.07, 1.05, 1.06, 1.05],
           }}
           transition={{
-            duration: 20,
+            duration: 25,
             repeat: Infinity,
             ease: "easeInOut",
+            times: [0, 0.25, 0.5, 0.75, 1],
           }}
         >
           <Image 
@@ -93,23 +95,24 @@ export default function Page() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
         </motion.div>
 
-        {/* Elegant Header Animation - Left Aligned */}
+        {/* Elegant Header Animation - Top Right with Black Background */}
         <AnimatePresence>
           {showHeader && (
             <motion.div
-              initial={{ opacity: 0, x: -100 }}
+              initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="absolute top-16 left-8 z-30"
+              className="absolute top-8 right-8 z-30"
             >
-              <h1 
-                className="text-6xl md:text-8xl font-light text-white tracking-widest"
-                style={{
-                  textShadow: '0 4px 20px rgba(0,0,0,0.5)',
-                }}
+              <div 
+                className="bg-black/80 backdrop-blur-sm px-6 py-4 rounded-lg border border-white/20"
               >
-                IBERO TOURS
-              </h1>
+                <h1 
+                  className="text-2xl md:text-3xl font-light text-white tracking-widest"
+                >
+                  IBERO TOURS
+                </h1>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -150,7 +153,7 @@ export default function Page() {
           )}
         </AnimatePresence>
 
-        {/* Scroll Down Invitation - Fixed Position */}
+        {/* Enhanced Scroll Down Invitation */}
         <AnimatePresence>
           {showScrollHint && (
             <motion.div
@@ -159,15 +162,16 @@ export default function Page() {
               transition={{ duration: 1.5, ease: "easeOut" }}
               className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-30"
             >
-              <motion.div
-                animate={{ y: [0, 15, 0] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                className="text-center text-white"
-              >
-                <div className="w-px h-20 bg-white/40 mx-auto mb-6"></div>
-                <p className="text-sm uppercase tracking-widest font-light mb-4" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
-                  Discover More
-                </p>
+              <div className="bg-black/60 backdrop-blur-sm px-8 py-6 rounded-full border border-white/30">
+                <motion.div
+                  animate={{ y: [0, 12, 0] }}
+                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                  className="text-center"
+                >
+                  <div className="w-px h-16 bg-white/60 mx-auto mb-4"></div>
+                  <p className="text-white text-sm uppercase tracking-widest font-light mb-3">
+                    Discover More
+                  </p>
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
@@ -177,68 +181,78 @@ export default function Page() {
                     height="24" 
                     viewBox="0 0 24 24" 
                     fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="1"
+                    stroke="white" 
+                    strokeWidth="2"
                     className="mx-auto"
-                    style={{ filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.5))' }}
                   >
                     <polyline points="6,9 12,15 18,9"></polyline>
                   </svg>
                 </motion.div>
-              </motion.div>
+                </motion.div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </section>
 
-      {/* Photo Carousel with Pull Effect */}
-      <motion.section 
-        className="py-24 bg-black relative"
-        initial={{ y: 150, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
+      {/* Overlay Carousel that pulls up from bottom */}
+      <motion.div 
+        className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
+        initial={{ y: "100%" }}
+        animate={{ y: scrollY > 300 ? "0%" : "100%" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{ height: "40vh" }}
       >
-        {/* Smooth transition overlay */}
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black to-transparent z-10" />
+        {/* Carousel Header */}
+        <div className="p-6 border-b border-white/10">
+          <h3 className="text-white text-xl font-light tracking-wider text-center">
+            Explore Our Experiences
+          </h3>
+        </div>
         
-        <motion.div
-          ref={carouselRef}
-          className="relative overflow-hidden"
-          onMouseEnter={handleCarouselMouseEnter}
-          onMouseLeave={handleCarouselMouseLeave}
-        >
+        {/* Carousel Content */}
+        <div className="px-6 py-4 h-full">
           <motion.div
-            className="flex gap-8"
-            animate={{ x: [0, -1000] }}
-            transition={{
-              duration: 20 / carouselSpeed,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            style={{ width: 'fit-content' }}
+            ref={carouselRef}
+            className="relative overflow-hidden h-full"
+            onMouseEnter={handleCarouselMouseEnter}
+            onMouseLeave={handleCarouselMouseLeave}
           >
-            {[...carouselImages, ...carouselImages, ...carouselImages].map((image, index) => (
-              <div key={index} className="relative w-96 h-64 flex-shrink-0">
-                <Image
-                  src={image}
-                  alt={`Experience ${index + 1}`}
-                  fill
-                  className="object-cover rounded"
-                />
-              </div>
-            ))}
+            <motion.div
+              className="flex gap-6 h-full"
+              animate={{ x: [0, -1000] }}
+              transition={{
+                duration: 20 / carouselSpeed,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+              style={{ width: 'fit-content' }}
+            >
+              {[...carouselImages, ...carouselImages, ...carouselImages].map((image, index) => (
+                <div key={index} className="relative w-72 h-40 flex-shrink-0">
+                  <Image
+                    src={image}
+                    alt={`Experience ${index + 1}`}
+                    fill
+                    className="object-cover rounded-lg"
+                  />
+                </div>
+              ))}
+            </motion.div>
+            
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60 pointer-events-none"></div>
           </motion.div>
-          
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none"></div>
-        </motion.div>
-        
-        <div className="text-center mt-16 px-8">
+        </div>
+      </motion.div>
+
+      {/* Content Section to Enable Scroll */}
+      <section className="py-32 bg-gray-900 relative z-20">
+        <div className="max-w-4xl mx-auto px-8 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl font-light text-white mb-8 tracking-wider"
+            className="text-5xl font-light text-white mb-12 tracking-wider"
           >
             Authentic Experiences
           </motion.h2>
@@ -247,13 +261,34 @@ export default function Page() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="text-white/80 max-w-2xl mx-auto leading-relaxed"
+            className="text-white/80 text-lg max-w-2xl mx-auto leading-relaxed mb-16"
           >
             Immerse yourself in the genuine culture, gastronomy, and landscapes of the Iberian Peninsula. 
             Every moment is carefully curated to create lasting memories.
           </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+            className="grid md:grid-cols-3 gap-8 mt-20"
+          >
+            <div className="text-center">
+              <h3 className="text-xl font-light text-white mb-4">Cultural Immersion</h3>
+              <p className="text-white/60">Deep connections with local traditions</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-xl font-light text-white mb-4">Culinary Excellence</h3>
+              <p className="text-white/60">Authentic flavors and hidden gems</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-xl font-light text-white mb-4">Small Groups</h3>
+              <p className="text-white/60">Intimate experiences, maximum 8 travelers</p>
+            </div>
+          </motion.div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Video Section */}
       <section className="py-24 bg-gray-900">
