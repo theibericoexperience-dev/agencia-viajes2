@@ -2,8 +2,9 @@
 
 
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from 'next/image';
+import Link from 'next/link';
 import Header from './components/Header';
 import { Button } from './components/ui/button';
 import { motion } from 'framer-motion';
@@ -12,17 +13,49 @@ export default function Page() {
   const [status, setStatus] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  // enable parallax on mount
-  useParallax();
+  const destinations = [
+    {
+      id: 'porto-galicia',
+      name: 'Porto & Galicia',
+      subtitle: 'Atlantic Heritage',
+      image: null, // Placeholder for future content
+      description: 'Discovering northern treasures',
+      available: false
+    },
+    {
+      id: 'madrid-lisboa',
+      name: 'Madrid & Lisboa',
+      subtitle: 'Iberian Capitals',
+      image: '/images/destinations/madrid-lisboa/IMG_4335.JPG',
+      description: 'Where tradition meets modernity',
+      available: true
+    },
+    {
+      id: 'barcelona-bordeaux',
+      name: 'Barcelona & Bordeaux',
+      subtitle: 'Mediterranean to Atlantic',
+      image: null, // Placeholder for future content
+      description: 'From Catalan culture to French elegance',
+      available: false
+    },
+    {
+      id: 'southeast-asia',
+      name: 'Southeast Asia',
+      subtitle: 'Exotic Wanderings',
+      image: null, // Placeholder for future content
+      description: 'Temples, beaches, and vibrant cultures',
+      available: false
+    }
+  ];
 
-  const listVariants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.08 } }
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 60 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } }
   };
 
-  const itemVariant = {
-    hidden: { opacity: 0, y: 24 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+  const staggerContainer = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.2 } }
   };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -79,160 +112,260 @@ export default function Page() {
   }
 
   return (
-    <main id="content" className="relative min-h-screen w-full flex flex-col justify-start items-center overflow-hidden bg-gradient-to-b from-black/50 to-black/70">
-      {/* Background image */}
-      <div className="fixed inset-0 w-full h-full -z-10" aria-hidden>
-        <div className="absolute inset-0 -z-10">
-            <div className="relative w-full h-full">
-            <Image src="/_optimized/IMG_3241.JPG-w1600.webp" alt="Iberico Experience landscape" fill className="object-cover" priority={true} quality={75} sizes="100vw" draggable={false} />
-          </div>
+    <main className="min-h-screen bg-white">
+      {/* Hero Section - Full viewport with minimal overlay */}
+      <section className="relative h-screen w-full flex items-center justify-center">
+        <div className="absolute inset-0">
+          <Image 
+            src="/images/destinations/madrid-lisboa/IMG_4335.JPG" 
+            alt="Travel experiences" 
+            fill 
+            className="object-cover" 
+            priority 
+            quality={90}
+          />
+          <div className="absolute inset-0 bg-black/30" />
         </div>
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
-
-      {/* Header */}
-      <Header />
-
-      {/* Hero CTA (minimal — header holds main hero) */}
-      <section className="w-full flex items-center justify-center pt-20 pb-4 px-4">
-        <div className="max-w-3xl w-full text-center">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-2">Discover Iberico Experience</h2>
-          <p className="text-white/90 mb-4">Small-group bespoke trips connecting you with local culture, gastronomy and nature in Spain & Portugal.</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button variant="duotone" className="w-full sm:w-auto">Gallery</Button>
-            <a href="/destinations" className="w-full sm:w-auto text-center px-5 py-2 border border-white/20 text-white rounded-full font-semibold hover:bg-white/5">Destinations</a>
-            <a href="#booking" className="w-full sm:w-auto text-center px-5 py-2 bg-emerald-600 text-white rounded-full font-semibold hover:bg-emerald-700">Request Booking</a>
-          </div>
+        
+        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
+          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
+            <h1 className="text-6xl md:text-8xl font-light tracking-wider mb-6">
+              IBERICO
+              <br />
+              <span className="font-normal">EXPERIENCE</span>
+            </h1>
+            <p className="text-xl md:text-2xl font-light tracking-wide opacity-90 mb-8 max-w-2xl mx-auto">
+              Curated journeys through the heart of the Iberian Peninsula
+            </p>
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.8 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
+              <Link href="#destinations">
+                <Button className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg font-medium">
+                  Explore Destinations
+                </Button>
+              </Link>
+              <Link href="#contact" className="text-white hover:text-gray-300 underline underline-offset-4">
+                Plan Your Journey
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Gallery Teaser — Image-first alternating sections */}
-      <section id="gallery-teaser" className="w-full py-8 px-0">
-        <h2 className="sr-only">Gallery</h2>
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={listVariants} className="">
-        {[
-          { id: 1, title: 'Small groups', img: '/images/hero-extras/IMG_3578.JPG', overlay: 'magenta' },
-          { id: 2, title: 'Local food', img: '/images/hero-extras/IMG_3582.JPG', overlay: 'cyan' },
-          { id: 3, title: 'Coastal hikes', img: '/images/hero-extras/IMG_3604.JPG', overlay: 'magenta' },
-        ].map((s, i) => (
-          <motion.a key={s.id} href="/gallery" variants={itemVariant} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'} full-bleed`} aria-label={s.title}>
-            <div className="section-image-inner parallax" data-parallax="0.25">
-              <div className="bg-img" style={{position:'absolute', inset:0}}>
-                <Image src={s.img} alt={s.title} fill className="object-cover" priority={false} sizes="100vw" />
-              </div>
-            </div>
-            <div className={`section-content-overlay section-overlay-${s.overlay}`}>
-              <div className="section-text section-text-minimal">
-                <h3 className="text-2xl font-semibold mb-1">{s.title}</h3>
-              </div>
-            </div>
-          </motion.a>
-        ))}
-        </motion.div>
+      {/* About Section - Minimal text */}
+      <section className="py-24 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+            <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-8">
+              Beyond Luxury
+            </h2>
+            <p className="text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
+              We craft bespoke travel experiences that connect you with the authentic soul of Spain and Portugal. 
+              Each journey is meticulously designed to reveal hidden treasures, local gastronomy, and cultural 
+              encounters that transform the way you see the world.
+            </p>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Destinations Teaser */}
-      <section id="destinations-teaser" className="w-full max-w-5xl mx-auto py-12 px-4">
-        <h2 className="text-2xl text-white font-bold mb-6">Destinations</h2>
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={listVariants} className="space-y-6">
-          {[{id: 'extremadura', title: 'Extremadura', img:'/images/hero-extras/IMG_3578.JPG', overlay:'magenta'}, {id:'alentejo', title:'Alentejo', img:'/images/hero-extras/IMG_3582.JPG', overlay:'cyan'}, {id:'sierradegata', title:'Sierra de Gata', img:'/images/hero-extras/IMG_3604.JPG', overlay:'magenta'}].map((d, i) => (
-            <motion.a key={d.id} href={`/destinations#${d.id}`} className={`block section-image-first ${i % 2 === 0 ? 'section-odd' : 'section-even'} full-bleed`} variants={itemVariant} aria-label={d.title}>
-              <div className="section-image-inner parallax" data-parallax="0.16">
-                <div className="bg-img" style={{position:'absolute', inset:0}}>
-                  <Image src={d.img} alt={d.title} fill className="object-cover" priority={false} sizes="100vw" />
+      {/* Destinations Grid - Photo-forward design */}
+      <section id="destinations" className="py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+            <h2 className="text-4xl font-light text-center mb-16 text-gray-900">Our Destinations</h2>
+          </motion.div>
+          
+          <motion.div 
+            initial="hidden" 
+            whileInView="visible" 
+            viewport={{ once: true }} 
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          >
+            {destinations.map((destination) => (
+              <motion.div key={destination.id} variants={fadeInUp}>
+                <Link href={destination.available ? `/destinations/${destination.id}` : '#'}>
+                  <div className={`group relative h-96 overflow-hidden ${destination.available ? 'cursor-pointer' : 'cursor-default'}`}>
+                    {destination.image ? (
+                      <Image 
+                        src={destination.image} 
+                        alt={destination.name}
+                        fill 
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                        <p className="text-gray-400 text-lg">Coming Soon</p>
+                      </div>
+                    )}
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    
+                    <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                      <h3 className="text-2xl font-light mb-2">{destination.name}</h3>
+                      <p className="text-sm uppercase tracking-wider text-gray-300 mb-2">
+                        {destination.subtitle}
+                      </p>
+                      <p className="text-gray-200 opacity-90">{destination.description}</p>
+                      {!destination.available && (
+                        <p className="text-yellow-400 text-sm mt-2">Available Soon</p>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="bg-gray-50 py-24">
+        <div className="max-w-4xl mx-auto px-6">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+            <h2 className="text-4xl font-light text-center mb-16 text-gray-900">Plan Your Journey</h2>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-2 gap-16">
+            {/* Contact Form */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Full Name *
+                    </label>
+                    <input 
+                      name="name" 
+                      required 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" 
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email *
+                    </label>
+                    <input 
+                      name="email" 
+                      type="email" 
+                      required 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" 
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone
+                    </label>
+                    <input 
+                      name="phone" 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" 
+                      placeholder="+34 600 000 000"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Travelers *
+                    </label>
+                    <input 
+                      name="travelers" 
+                      type="number" 
+                      min={1} 
+                      defaultValue={2} 
+                      required 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Preferred Date
+                  </label>
+                  <input 
+                    name="preferred_date" 
+                    type="date" 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tell us about your perfect journey
+                  </label>
+                  <textarea 
+                    name="notes" 
+                    rows={4} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-none focus:ring-2 focus:ring-gray-900 focus:border-transparent resize-none" 
+                    placeholder="What experiences are you looking for? Any special requirements?"
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  disabled={status === 'sending'}
+                  className="w-full bg-gray-900 hover:bg-gray-800 text-white py-4 px-8 font-medium"
+                >
+                  {status === 'sending' ? 'Sending...' : 'Send Inquiry'}
+                </Button>
+                
+                {status === 'sent' && (
+                  <p className="text-green-600 text-center">{message || "Thank you! We'll be in touch soon."}</p>
+                )}
+                {status === 'error' && (
+                  <p className="text-red-600 text-center">{message || 'Error sending message. Please try again.'}</p>
+                )}
+              </form>
+            </motion.div>
+            
+            {/* Contact Information */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-xl font-medium text-gray-900 mb-4">Get In Touch</h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    Ready to embark on an extraordinary journey? Our travel specialists are here 
+                    to craft your perfect Iberian experience. Whether you're drawn to historic cities, 
+                    culinary adventures, or hidden cultural gems, we'll design something uniquely yours.
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium text-gray-900">Email</h4>
+                    <p className="text-gray-700">info@ibericoexperience.com</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium text-gray-900">Response Time</h4>
+                    <p className="text-gray-700">Within 24 hours</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium text-gray-900">Languages</h4>
+                    <p className="text-gray-700">English, Spanish, Portuguese</p>
+                  </div>
                 </div>
               </div>
-              <div className={`section-content-overlay section-overlay-${d.overlay}`}>
-                <div className="section-text section-text-minimal">
-                  <h3 className="text-xl font-semibold mb-0">{d.title}</h3>
-                </div>
-              </div>
-            </motion.a>
-          ))}
-        </motion.div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
-      {/* Booking CTA */}
-      <section id="booking" className="w-full max-w-3xl mx-auto py-12 px-4">
-        <h2 className="text-2xl text-white font-bold mb-4">Request a Booking</h2>
-        <p className="text-white/90 mb-4">Fill the form below to request a tour. We'll contact you to confirm details and payment by bank transfer.</p>
-  <form onSubmit={handleSubmit} className="bg-black/40 rounded p-6 grid grid-cols-1 gap-3 backdrop-blur-sm" aria-describedby="booking-status">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <label className="flex flex-col">
-              <span className="text-sm font-medium text-gray-700">Full name</span>
-              <input name="name" required aria-required="true" placeholder="Full name" className="px-3 py-2 rounded border mt-1" />
-            </label>
-            <label className="flex flex-col">
-              <span className="text-sm font-medium text-gray-700">Email</span>
-              <input name="email" type="email" required aria-required="true" placeholder="Email" className="px-3 py-2 rounded border mt-1" />
-            </label>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <label className="flex flex-col">
-              <span className="text-sm font-medium text-gray-700">Phone</span>
-              <input name="phone" placeholder="Phone" aria-required="false" className="px-3 py-2 rounded border mt-1" />
-            </label>
-            <label className="flex flex-col">
-              <span className="text-sm font-medium text-gray-700">Number of travellers</span>
-              <input name="travelers" type="number" min={1} defaultValue={2} placeholder="Number of travellers" aria-required="true" className="px-3 py-2 rounded border mt-1" />
-            </label>
-          </div>
-          <label className="flex flex-col">
-            <span className="text-sm font-medium text-gray-700">Preferred date</span>
-            <input name="preferred_date" type="date" className="px-3 py-2 rounded border mt-1" aria-required="false" />
-          </label>
-          <label className="flex flex-col">
-            <span className="text-sm font-medium text-gray-700">Billing address</span>
-            <input name="billing_address" placeholder="Billing address" className="px-3 py-2 rounded border mt-1" aria-required="false" />
-          </label>
-          <label className="flex flex-col">
-            <span className="text-sm font-medium text-gray-700">Notes</span>
-            <textarea name="notes" placeholder="Notes" className="px-3 py-2 rounded border mt-1" rows={4} aria-required="false" />
-          </label>
-          <div className="flex items-center gap-3">
-            <Button type="submit" className="w-full sm:w-auto" disabled={status === 'sending'}>Send request</Button>
-            <span id="booking-status" className="sr-only" aria-live="polite">
-              {status === 'sending' ? 'Sending request' : status === 'sent' ? (message || "Request sent — we'll contact you soon.") : status === 'error' ? (message || 'Error sending request. Try again later.') : ''}
-            </span>
-            {status === 'sending' && <span className="text-sm text-gray-700" aria-hidden>Sending...</span>}
-            {status === 'sent' && <span className="text-sm text-emerald-700" aria-hidden>{message || "Request sent — we'll contact you soon."}</span>}
-            {status === 'error' && <span className="text-sm text-red-600" aria-hidden>{message || 'Error sending request. Try again later.'}</span>}
-          </div>
-        </form>
-      </section>
-
-      {/* Contact / Footer */}
-      <section id="contact" className="w-full max-w-3xl mx-auto py-8 px-4">
-        <h3 className="text-white font-bold mb-2">Contact</h3>
-        <p className="text-white/80">Email: info@ibericoexperience.com</p>
-        <p className="text-white/80">© 2025 Iberico Experience</p>
-      </section>
+      {/* Footer */}
+      <footer className="bg-white border-t py-12">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <p className="text-gray-600">© 2025 Iberico Experience. Crafted journeys through Spain & Portugal.</p>
+        </div>
+      </footer>
     </main>
   );
 }
-
-  // small parallax effect for desktop: transform background layers based on scroll
-  function useParallax() {
-    useEffect(() => {
-      if (typeof window === 'undefined') return;
-      let raf = 0;
-      const handlers = () => {
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(() => {
-          const els = document.querySelectorAll<HTMLElement>('[data-parallax]');
-          const sc = window.scrollY;
-          els.forEach((el) => {
-            const factor = parseFloat(el.getAttribute('data-parallax') || '0.12');
-            const rect = el.getBoundingClientRect();
-            // compute a subtle offset based on element center relative to viewport
-            const centerY = rect.top + rect.height / 2 - window.innerHeight / 2;
-            const offset = Math.max(Math.min(centerY * factor * -0.02, 40), -40); // clamp
-            el.style.transform = `translateY(${offset}px)`;
-          });
-        });
-      };
-      window.addEventListener('scroll', handlers, { passive: true });
-      handlers();
-      return () => { window.removeEventListener('scroll', handlers); cancelAnimationFrame(raf); };
-    }, []);
-  }
