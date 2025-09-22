@@ -63,12 +63,17 @@ export default function Page() {
     <main className="min-h-screen overflow-x-hidden">
       {/* Hero Section with 3D Parallax Effect */}
       <section className="relative h-screen w-full bg-black overflow-hidden">
-        {/* 3D Parallax Hero Image */}
+        {/* Subtle Animated Background */}
         <motion.div
           className="absolute inset-0 w-full h-full"
-          style={{
-            transform: `translateZ(0) scale(${1 + scrollY * 0.0005}) translateY(${scrollY * 0.5}px)`,
-            transformStyle: 'preserve-3d',
+          animate={{
+            x: [0, -20, 0, 15, 0],
+            y: [0, 10, -15, 5, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
           }}
         >
           <Image 
@@ -81,32 +86,26 @@ export default function Page() {
             sizes="100vw"
             unoptimized
             style={{
-              transform: `translateZ(-1px) scale(1.1)`,
+              transform: `scale(1.05)`,
             }}
           />
-          {/* 3D Depth overlay */}
-          <div 
-            className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20"
-            style={{
-              transform: `translateZ(0px)`,
-            }}
-          />
+          {/* Subtle depth overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
         </motion.div>
 
-        {/* Elegant Header Animation */}
+        {/* Elegant Header Animation - Left Aligned */}
         <AnimatePresence>
           {showHeader && (
             <motion.div
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="absolute top-16 left-1/2 transform -translate-x-1/2 z-30"
+              className="absolute top-16 left-8 z-30"
             >
               <h1 
-                className="text-6xl md:text-8xl font-light text-white tracking-widest text-center"
+                className="text-6xl md:text-8xl font-light text-white tracking-widest"
                 style={{
                   textShadow: '0 4px 20px rgba(0,0,0,0.5)',
-                  transform: `translateY(${scrollY * 0.2}px)`,
                 }}
               >
                 IBERO TOURS
@@ -115,7 +114,7 @@ export default function Page() {
           )}
         </AnimatePresence>
 
-        {/* Navigation Menu */}
+        {/* Navigation Menu - Fixed Position */}
         <AnimatePresence>
           {showNavigation && (
             <motion.nav
@@ -123,29 +122,26 @@ export default function Page() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
               className="absolute top-32 left-1/2 transform -translate-x-1/2 z-30 mt-16"
-              style={{
-                transform: `translateX(-50%) translateY(${scrollY * 0.15}px)`,
-              }}
             >
               <div className="flex gap-12 items-center justify-center">
                 <Link 
                   href="/gallery" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105"
-                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)', textDecoration: 'none' }}
                 >
                   Gallery
                 </Link>
                 <Link 
                   href="/destinations" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105"
-                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)', textDecoration: 'none' }}
                 >
                   Destinations
                 </Link>
                 <Link 
                   href="/contact" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105"
-                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)', textDecoration: 'none' }}
                 >
                   Contact
                 </Link>
@@ -154,7 +150,7 @@ export default function Page() {
           )}
         </AnimatePresence>
 
-        {/* Scroll Down Invitation */}
+        {/* Scroll Down Invitation - Fixed Position */}
         <AnimatePresence>
           {showScrollHint && (
             <motion.div
@@ -162,9 +158,6 @@ export default function Page() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
               className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-30"
-              style={{
-                transform: `translateX(-50%) translateY(${-scrollY * 0.1}px)`,
-              }}
             >
               <motion.div
                 animate={{ y: [0, 15, 0] }}
@@ -201,21 +194,13 @@ export default function Page() {
       {/* Photo Carousel with Pull Effect */}
       <motion.section 
         className="py-24 bg-black relative"
-        style={{
-          transform: `translateY(${Math.max(0, (scrollY - 400) * -0.3)}px)`,
-        }}
-        initial={{ y: 100, opacity: 0 }}
+        initial={{ y: 150, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
       >
-        {/* Pull transition overlay */}
-        <motion.div 
-          className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black to-transparent z-10"
-          style={{
-            opacity: Math.min(1, scrollY / 200),
-          }}
-        />
+        {/* Smooth transition overlay */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black to-transparent z-10" />
         
         <motion.div
           ref={carouselRef}
