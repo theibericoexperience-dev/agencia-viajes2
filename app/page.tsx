@@ -56,16 +56,17 @@ export default function Page() {
 
 
   return (
-    <main className="min-h-screen bg-black overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden">
       {/* Initial Hero Image - Only image visible on load */}
-      <section className="relative h-screen w-full">
+      <section className="relative h-screen w-full bg-gray-900">
         <Image 
           src="/images/hero-main.JPG" 
           alt="Ibero Tours Experience" 
           fill 
-          className="object-cover" 
+          className="object-cover z-10" 
           priority 
           quality={95}
+          sizes="100vw"
         />
         
         {/* Elegant Header Appearance */}
