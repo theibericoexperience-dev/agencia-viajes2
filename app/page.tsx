@@ -10,6 +10,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Page() {
   const [scrollY, setScrollY] = useState(0);
   const [carouselSpeed, setCarouselSpeed] = useState(1);
+  const [showHeader, setShowHeader] = useState(false);
+  const [showNavigation, setShowNavigation] = useState(false);
+  const [showScrollHint, setShowScrollHint] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const carouselImages = [
@@ -28,12 +31,20 @@ export default function Page() {
   ];
 
   useEffect(() => {
+    // Sequence of animations
+    const timer1 = setTimeout(() => setShowHeader(true), 1500); // Header appears after 1.5s
+    const timer2 = setTimeout(() => setShowNavigation(true), 2500); // Navigation after 2.5s
+    const timer3 = setTimeout(() => setShowScrollHint(true), 3500); // Scroll hint after 3.5s
+
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -50,33 +61,167 @@ export default function Page() {
 
   return (
     <main className="min-h-screen overflow-x-hidden">
-      {/* Initial Hero Image - Only image visible on load */}
-      <section className="relative h-screen w-full bg-gray-900">
-        <Image 
-          src="/hero.jpg" 
-          alt="Ibero Tours" 
-          fill 
-          className="object-cover z-10" 
-          priority 
-          quality={95}
-          sizes="100vw"
-          unoptimized
-        />
-        
-        {/* No header - only hero image on load */}
+      {/* Hero Section with 3D Parallax Effect */}
+      <section className="relative h-screen w-full bg-black overflow-hidden">
+        {/* 3D Parallax Hero Image */}
+        <motion.div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            transform: `translateZ(0) scale(${1 + scrollY * 0.0005}) translateY(${scrollY * 0.5}px)`,
+            transformStyle: 'preserve-3d',
+          }}
+        >
+          <Image 
+            src="/hero.jpg" 
+            alt="Ibero Tours" 
+            fill 
+            className="object-cover"
+            priority 
+            quality={95}
+            sizes="100vw"
+            unoptimized
+            style={{
+              transform: `translateZ(-1px) scale(1.1)`,
+            }}
+          />
+          {/* 3D Depth overlay */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20"
+            style={{
+              transform: `translateZ(0px)`,
+            }}
+          />
+        </motion.div>
+
+        {/* Elegant Header Animation */}
+        <AnimatePresence>
+          {showHeader && (
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="absolute top-16 left-1/2 transform -translate-x-1/2 z-30"
+            >
+              <h1 
+                className="text-6xl md:text-8xl font-light text-white tracking-widest text-center"
+                style={{
+                  textShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                  transform: `translateY(${scrollY * 0.2}px)`,
+                }}
+              >
+                IBERO TOURS
+              </h1>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Navigation Menu */}
+        <AnimatePresence>
+          {showNavigation && (
+            <motion.nav
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+              className="absolute top-32 left-1/2 transform -translate-x-1/2 z-30 mt-16"
+              style={{
+                transform: `translateX(-50%) translateY(${scrollY * 0.15}px)`,
+              }}
+            >
+              <div className="flex gap-12 items-center justify-center">
+                <Link 
+                  href="/gallery" 
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105"
+                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+                >
+                  Gallery
+                </Link>
+                <Link 
+                  href="/destinations" 
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105"
+                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+                >
+                  Destinations
+                </Link>
+                <Link 
+                  href="/contact" 
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105"
+                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+                >
+                  Contact
+                </Link>
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+
+        {/* Scroll Down Invitation */}
+        <AnimatePresence>
+          {showScrollHint && (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-30"
+              style={{
+                transform: `translateX(-50%) translateY(${-scrollY * 0.1}px)`,
+              }}
+            >
+              <motion.div
+                animate={{ y: [0, 15, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                className="text-center text-white"
+              >
+                <div className="w-px h-20 bg-white/40 mx-auto mb-6"></div>
+                <p className="text-sm uppercase tracking-widest font-light mb-4" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
+                  Discover More
+                </p>
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                >
+                  <svg 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="1"
+                    className="mx-auto"
+                    style={{ filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.5))' }}
+                  >
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                  </svg>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
-      {/* Photo Carousel - Appears on scroll */}
-      <section className="py-24 bg-black">
+      {/* Photo Carousel with Pull Effect */}
+      <motion.section 
+        className="py-24 bg-black relative"
+        style={{
+          transform: `translateY(${Math.max(0, (scrollY - 400) * -0.3)}px)`,
+        }}
+        initial={{ y: 100, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
+        {/* Pull transition overlay */}
+        <motion.div 
+          className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black to-transparent z-10"
+          style={{
+            opacity: Math.min(1, scrollY / 200),
+          }}
+        />
+        
         <motion.div
           ref={carouselRef}
           className="relative overflow-hidden"
           onMouseEnter={handleCarouselMouseEnter}
           onMouseLeave={handleCarouselMouseLeave}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
         >
           <motion.div
             className="flex gap-8"
@@ -123,7 +268,7 @@ export default function Page() {
             Every moment is carefully curated to create lasting memories.
           </motion.p>
         </div>
-      </section>
+      </motion.section>
 
       {/* Video Section */}
       <section className="py-24 bg-gray-900">
