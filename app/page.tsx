@@ -53,8 +53,8 @@ export default function Page() {
       {/* Initial Hero Image - Only image visible on load */}
       <section className="relative h-screen w-full bg-gray-900">
         <Image 
-          src="/iberico-hero.jpg" 
-          alt="Travel Experience" 
+          src="/hero.jpg" 
+          alt="Ibero Tours" 
           fill 
           className="object-cover z-10" 
           priority 
