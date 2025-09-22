@@ -1,53 +1,126 @@
 "use client";
-import React, { useState } from 'react';
-import Header from '../../app/components/Header';
-import { Button } from '../components/ui/button';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useState } from 'react';
 
-export default function ContactPage(){
-  const [status, setStatus] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
+export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget) as any;
-    const data = Object.fromEntries(fd);
-    if(!data.name || !data.email){
-      setStatus('error'); setMessage('Please provide name and email.');
-      return;
-    }
-    setStatus('sending'); setMessage(null);
-    try{
-      const payload = {
-        type: 'contact',
-        createdAt: new Date().toISOString(),
-        name: data.name,
-        email: data.email,
-        message: data.message || null,
-      };
-      const res = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      const json = await res.json().catch(()=>null);
-      if(res.ok){ setStatus('sent'); setMessage('Thanks — we will reply soon.'); e.currentTarget.reset(); }
-      else { setStatus('error'); setMessage(json?.error || 'Server error.'); if(json?.error_id) setMessage((m)=> (m? m+` (id: ${json.error_id})` : `Error id: ${json.error_id}`)); }
-    }catch(err){ setStatus('error'); setMessage('Network error.'); }
-  }
+    // Handle form submission
+    console.log('Form submitted:', formData);
+  };
 
   return (
-  <main id="content" className="min-h-screen p-8 bg-black/80 text-white">
-    <Header />
-    <div className="max-w-3xl mx-auto mt-24">
-        <h1 className="text-3xl font-bold mb-4">Contact</h1>
-  <p className="mb-6">Email us at <a className="text-primary-300" href="mailto:info@ibericoexperience.com">info@ibericoexperience.com</a> or use the form below.</p>
-        <form onSubmit={handleSubmit} className="bg-white/90 p-6 rounded text-black grid gap-3">
-          <label className="flex flex-col"><span className="text-sm font-medium">Name</span><input name="name" className="px-3 py-2 rounded border mt-1" required aria-required="true" /></label>
-          <label className="flex flex-col"><span className="text-sm font-medium">Email</span><input name="email" type="email" className="px-3 py-2 rounded border mt-1" required aria-required="true" /></label>
-          <label className="flex flex-col"><span className="text-sm font-medium">Message</span><textarea name="message" rows={5} className="px-3 py-2 rounded border mt-1" aria-required="false" /></label>
-          <div className="flex items-center gap-3">
-            <Button type="submit" className="w-full sm:w-auto" disabled={status==='sending'}>Send</Button>
-            <span aria-live="polite" className="sr-only">{status==='sending' ? 'Sending' : status==='sent' ? (message||'Sent') : status==='error' ? (message||'Error') : ''}</span>
-            {status==='sent' && <span className="text-emerald-700">{message}</span>}
-            {status==='error' && <span className="text-red-600">{message}</span>}
+    <main className="min-h-screen bg-black">
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-50 p-8">
+        <nav className="flex justify-between items-center">
+          <Link href="/" className="text-2xl font-light text-white tracking-widest">
+            IBERO TOURISM
+          </Link>
+          <div className="flex gap-8 items-center">
+            <Link href="/gallery" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
+              Gallery
+            </Link>
+            <Link href="/destinations" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
+              Destinations
+            </Link>
+            <Link href="/contact" className="text-white border-b border-white text-sm uppercase tracking-wider">
+              Contact
+            </Link>
           </div>
-        </form>
+        </nav>
+      </header>
+
+      <div className="pt-24 pb-16">
+        <div className="max-w-4xl mx-auto px-8">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-6xl font-light text-white text-center mb-16 tracking-wider"
+          >
+            Contact
+          </motion.h1>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            {/* Contact Info */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h2 className="text-3xl font-light text-white mb-8 tracking-wide">
+                Get in Touch
+              </h2>
+              <div className="space-y-6 text-white/80">
+                <div>
+                  <h3 className="text-xl font-light text-white mb-2">Email</h3>
+                  <p>info@iberotourism.com</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-light text-white mb-2">Phone</h3>
+                  <p>+34 123 456 789</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-light text-white mb-2">Address</h3>
+                  <p>Madrid, España</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    className="w-full bg-transparent border-b border-white/30 text-white placeholder-white/50 py-3 focus:border-white focus:outline-none transition-colors"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="w-full bg-transparent border-b border-white/30 text-white placeholder-white/50 py-3 focus:border-white focus:outline-none transition-colors"
+                    required
+                  />
+                </div>
+                <div>
+                  <textarea
+                    placeholder="Your Message"
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    rows={5}
+                    className="w-full bg-transparent border-b border-white/30 text-white placeholder-white/50 py-3 focus:border-white focus:outline-none transition-colors resize-none"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-white text-black py-3 px-6 font-light tracking-wider uppercase hover:bg-white/90 transition-colors duration-300"
+                >
+                  Send Message
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        </div>
       </div>
     </main>
   );
