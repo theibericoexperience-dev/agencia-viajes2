@@ -22,10 +22,10 @@ export default function Page() {
     '/images/carousel/IMG_4447.JPG',
   ];
 
-  const videos = [
-    { src: '/images/IMG_4499.MOV', title: 'Authentic Experiences' },
-    { src: '/images/IOQJ9896.MP4', title: 'Cultural Immersion' },
-    { src: '/images/plaza alta timelapse.MP4', title: 'Historic Moments' },
+  const experienceVideos = [
+    { src: '/images/experience-1.mp4', title: 'Authentic Experiences' },
+    { src: '/images/experience-2.mp4', title: 'Cultural Immersion' },
+    { src: '/images/experience-3.mp4', title: 'Historic Moments' },
   ];
 
   useEffect(() => {
@@ -209,7 +209,7 @@ export default function Page() {
           </motion.h2>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {videos.map((video, index) => (
+            {experienceVideos.map((video, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -227,7 +227,6 @@ export default function Page() {
                     playsInline
                   >
                     <source src={video.src} type="video/mp4" />
-                    <source src={video.src} type="video/quicktime" />
                   </video>
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
                 </div>
