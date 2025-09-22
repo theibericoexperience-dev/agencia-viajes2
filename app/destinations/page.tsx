@@ -37,7 +37,7 @@ export default function DestinationsPage() {
       <header className="absolute top-0 left-0 right-0 z-50 p-8">
         <nav className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-light text-white tracking-widest">
-            IBERO TOURISM
+            IBERO TOURS
           </Link>
           <div className="flex gap-8 items-center">
             <Link href="/gallery" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">

@@ -61,7 +61,7 @@ export default function Page() {
       <section className="relative h-screen w-full">
         <Image 
           src="/images/hero-main.JPG" 
-          alt="Ibero Tourism Experience" 
+          alt="Ibero Tours Experience" 
           fill 
           className="object-cover" 
           priority 
@@ -84,7 +84,7 @@ export default function Page() {
                   transition={{ delay: 0.5, duration: 0.8 }}
                 >
                   <h1 className="text-2xl font-light text-white tracking-widest">
-                    IBERO TOURISM
+                    IBERO TOURS
                   </h1>
                 </motion.div>
                 
@@ -277,7 +277,7 @@ export default function Page() {
       {/* Footer */}
       <footer className="bg-gray-900 py-8">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <p className="text-white/60 text-sm tracking-wider">© 2025 Ibero Tourism. Authentic experiences across the Iberian Peninsula.</p>
+          <p className="text-white/60 text-sm tracking-wider">© 2025 Ibero Tours. Authentic experiences across the Iberian Peninsula.</p>
         </div>
       </footer>
     </main>
