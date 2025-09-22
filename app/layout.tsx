@@ -5,8 +5,8 @@ import CookieConsent from './components/CookieConsent';
 import SentryInitClient from './components/SentryInitClient';
 import HeroCarousel from './components/HeroCarousel';
 
-  const title = 'Iberico Experience — Small-group tours in Spain & Portugal';
-  const description = 'Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.';
+  const title = 'Ibero Tours — Authentic travels across Spain & Portugal';
+  const description = 'Authentic small-group travels focused on local food, culture and nature across Spain and Portugal.';
   const siteUrl = 'https://agencia-viajes2.vercel.app';
   const ogImage = '/_optimized/og-default-w1200.webp';
 
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Iberico Experience" />
+  <meta property="og:site_name" content="Ibero Tours" />
   <meta property="og:url" content={siteUrl} />
   <meta property="og:image" content={`${siteUrl}${ogImage}`} />
   <link rel="canonical" href={siteUrl} />
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "TravelAgency",
-          "name": "Iberico Experience",
+          "name": "Ibero Tours",
           "url": siteUrl,
           "description": description,
           "sameAs": [
@@ -55,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="duotone-overlay" />
           <div className="hero-inner site-container">
             <div>
-              <h1 className="hero-title">Iberico Experience</h1>
+              <h1 className="hero-title">Ibero Tours</h1>
               <p className="hero-sub">Bespoke small-group trips focused on local food, culture and nature across Spain and Portugal.</p>
               <div style={{marginTop: '1.25rem', display: 'flex', gap: '0.75rem'}}>
                 <a href="/contact" className="btn-duotone" role="button">Book a trip</a>
