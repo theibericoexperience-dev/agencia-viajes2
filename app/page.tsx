@@ -33,9 +33,9 @@ export default function Page() {
 
   useEffect(() => {
     // Sequence of animations
-    const timer1 = setTimeout(() => setShowHeader(true), 1500); // Header appears after 1.5s
-    const timer2 = setTimeout(() => setShowNavigation(true), 2500); // Navigation after 2.5s
-    const timer3 = setTimeout(() => setShowScrollHint(true), 3500); // Scroll hint after 3.5s
+    const timer1 = setTimeout(() => setShowHeader(true), 800); // Header appears after 0.8s
+    const timer2 = setTimeout(() => setShowNavigation(true), 1200); // Navigation after 1.2s
+    const timer3 = setTimeout(() => setShowScrollHint(true), 2000); // Scroll hint after 2s
 
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -61,27 +61,9 @@ export default function Page() {
 
 
   return (
-    <main className="min-h-screen overflow-x-hidden">
-      {/* Hero Section with 3D Parallax Effect */}
-      <section className="relative h-screen w-full bg-black overflow-hidden">
-        {/* Fixed Hero Background */}
-        <div className="absolute inset-0 w-full h-full">
-          <Image 
-            src="/hero.jpg" 
-            alt="Ibero Tours" 
-            fill 
-            className="object-cover"
-            priority 
-            quality={95}
-            sizes="100vw"
-            unoptimized
-            style={{
-              transform: `scale(1.05)`,
-            }}
-          />
-          {/* Subtle depth overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
-        </div>
+    <>
+      {/* Fixed Hero Background - Never moves, always visible */}
+      <section className="fixed inset-0 w-full h-screen bg-black overflow-hidden z-10">
 
         {/* Ibero Tours - Top Left without black background - Updated */}
         <AnimatePresence>
@@ -182,78 +164,59 @@ export default function Page() {
         </AnimatePresence>
       </section>
 
-      {/* Sidebar Menu */}
+      {/* Simple Sidebar Menu - No backdrop, slides from right */}
       <AnimatePresence>
         {showSidebar && (
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50"
-            >
-              {/* Close button */}
-              <button
-                onClick={() => setShowSidebar(false)}
-                className="absolute top-6 right-6 text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-
-              {/* Sidebar content */}
-              <div className="p-8 pt-16">
-                <h3 className="text-2xl font-light text-gray-900 mb-8 tracking-wide">Menu</h3>
+          <motion.div
+            initial={{ x: 200, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 200, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed top-20 right-8 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-4 z-50"
+            style={{ minWidth: '180px' }}
+          >
+              <nav className="space-y-3">
+                <Link
+                  href="/contact"
+                  className="block text-black hover:text-gray-700 transition-colors text-sm font-light tracking-wide"
+                  style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
+                  onClick={() => setShowSidebar(false)}
+                >
+                  Registrarse
+                </Link>
                 
-                <nav className="space-y-6">
-                  <Link
-                    href="/contact"
-                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide"
-                    onClick={() => setShowSidebar(false)}
-                  >
-                    Registrarse
-                  </Link>
-                  
-                  <Link
-                    href="/contact"
-                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide"
-                    onClick={() => setShowSidebar(false)}
-                  >
-                    Contacto
-                  </Link>
-                  
-                  <button
-                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide text-left"
-                    onClick={() => {
-                      // Aquí puedes agregar la lógica para abrir un modal de videollamada
-                      alert('Funcionalidad de videollamada próximamente');
-                      setShowSidebar(false);
-                    }}
-                  >
-                    Reservar Videollamada
-                  </button>
-                </nav>
-              </div>
+                <Link
+                  href="/contact"
+                  className="block text-black hover:text-gray-700 transition-colors text-sm font-light tracking-wide"
+                  style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
+                  onClick={() => setShowSidebar(false)}
+                >
+                  Contacto
+                </Link>
+                
+                <button
+                  className="block text-black hover:text-gray-700 transition-colors text-sm font-light tracking-wide text-left w-full"
+                  style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
+                  onClick={() => {
+                    alert('Funcionalidad de videollamada próximamente');
+                    setShowSidebar(false);
+                  }}
+                >
+                  Reservar Videollamada
+                </button>
+              </nav>
             </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Interactive Pull-up Carousel */}
-      <motion.div 
+      {/* VectorThree Style Carousel - Slides up with scroll */}
+      <div 
         className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
-        initial={{ y: "100%" }}
-        animate={{ 
-          y: scrollY > 100 ? 
-            `${Math.max(0, 100 - scrollY * 0.8)}%` : 
-            "100%" 
+        style={{
+          height: '100vh',
+          transform: scrollY > 50 ? 'translateY(0)' : 'translateY(100vh)',
+          transition: 'transform 0.2s ease-out'
         }}
-        transition={{ 
-          duration: 0.1, 
-          ease: [0.25, 0.46, 0.45, 0.94] 
-        }}
-        style={{ height: "45vh" }}
       >
         {/* Carousel Header */}
         <div className="p-6 border-b border-white/10">
@@ -295,7 +258,7 @@ export default function Page() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60 pointer-events-none"></div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Content Section to Enable Scroll */}
       <section className="py-32 bg-gray-900 relative z-20">
@@ -426,6 +389,11 @@ export default function Page() {
           <p className="text-white/60 text-sm tracking-wider">© 2025 Ibero Tours. Authentic experiences across the Iberian Peninsula.</p>
         </div>
       </footer>
-    </main>
+
+      {/* Scrollable main content */}
+      <main className="relative z-20" style={{ height: '200vh' }}>
+        <div style={{ height: '100vh' }}></div>
+      </main>
+    </>
   );
 }
