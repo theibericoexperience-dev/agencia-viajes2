@@ -29,7 +29,7 @@ export default function Page() {
     <>
       {/* Hero Background - Fixed initially, becomes scrollable after carousel */}
       <div 
-        className={scrollY > 400 ? "absolute top-0 w-full h-screen z-0" : "fixed inset-0 w-full h-screen z-0"}
+        className={scrollY > 300 ? "absolute top-0 w-full h-screen z-0" : "fixed inset-0 w-full h-screen z-0"}
         style={{
           backgroundImage: 'url(/hero.jpg)',
           backgroundSize: 'cover',
@@ -38,11 +38,21 @@ export default function Page() {
         }}
       />
 
-      {/* Header: IBERO TOURS left, hamburger menu right */}
+      {/* Header: IBERO TOURS left, navigation center, hamburger menu right */}
       <header className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center p-6 bg-black/20 backdrop-blur-sm">
         <h1 className="text-3xl font-bold text-white tracking-wider">
           IBERO TOURS
         </h1>
+        
+        {/* Navigation Links - visible on desktop */}
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link href="/gallery" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
+            Gallery
+          </Link>
+          <Link href="/destinations" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
+            Destinations
+          </Link>
+        </nav>
         
         {/* Hamburger Menu Button */}
         <button 
@@ -79,6 +89,9 @@ export default function Page() {
               <Link href="/contact" className="block text-white/80 hover:text-white text-lg py-2 border-b border-white/10">
                 Contacto
               </Link>
+              <Link href="/auth" className="block text-white/80 hover:text-white text-lg py-2 border-b border-white/10">
+                Log in / Sign up
+              </Link>
             </nav>
           </div>
         </div>
@@ -107,14 +120,14 @@ export default function Page() {
         </div>
       )}
 
-      {/* Carousel - Appears on scroll, covers part of hero, then both scroll together */}
+      {/* Carousel - Appears immediately, covers part of hero, then both scroll together */}
       <div 
-        className={scrollY > 400 ? "absolute left-0 right-0 bg-black/90 backdrop-blur-md z-40" : "fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md z-40"}
+        className={scrollY > 300 ? "absolute left-0 right-0 bg-black/90 backdrop-blur-md z-40" : "fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md z-40"}
         style={{
           height: '45vh',
-          transform: scrollY > 150 ? 'translateY(0)' : 'translateY(100%)',
+          transform: scrollY > 50 ? 'translateY(0)' : 'translateY(100%)',
           transition: 'transform 0.6s ease-out',
-          top: scrollY > 400 ? '55vh' : 'auto'
+          top: scrollY > 300 ? '55vh' : 'auto'
         }}
       >
         <div className="p-6 border-b border-white/10">
@@ -149,11 +162,8 @@ export default function Page() {
 
       {/* Scrollable content */}
       <div className="relative z-10">
-        {/* Hero view space */}
+        {/* Hero view space - reduced to eliminate white space */}
         <div className="h-screen bg-transparent"></div>
-        
-        {/* Additional space for smooth carousel transition */}
-        <div className="h-96 bg-transparent"></div>
         
         {/* Main content sections */}
         <section className="py-20 bg-gray-900 min-h-screen">
