@@ -33,9 +33,9 @@ export default function Page() {
 
   useEffect(() => {
     // Sequence of animations
-    const timer1 = setTimeout(() => setShowHeader(true), 1500); // Header appears after 1.5s
-    const timer2 = setTimeout(() => setShowNavigation(true), 2500); // Navigation after 2.5s
-    const timer3 = setTimeout(() => setShowScrollHint(true), 3500); // Scroll hint after 3.5s
+    const timer1 = setTimeout(() => setShowHeader(true), 800); // Header appears after 0.8s
+    const timer2 = setTimeout(() => setShowNavigation(true), 1200); // Navigation after 1.2s
+    const timer3 = setTimeout(() => setShowScrollHint(true), 2000); // Scroll hint after 2s
 
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -93,8 +93,8 @@ export default function Page() {
               className="absolute top-8 left-8 z-30"
             >
               <h1 
-                className="text-3xl md:text-4xl lg:text-5xl font-medium text-white tracking-widest"
-                style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
+                className="text-3xl md:text-4xl lg:text-5xl font-medium text-black tracking-widest"
+                style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}
               >
                 IBERO TOURS
               </h1>
@@ -114,22 +114,22 @@ export default function Page() {
               <nav className="flex items-center gap-6">
                 <Link 
                   href="/gallery" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', textDecoration: 'none' }}
+                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)', textDecoration: 'none' }}
                 >
                   Gallery
                 </Link>
                 <Link 
                   href="/destinations" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', textDecoration: 'none' }}
+                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)', textDecoration: 'none' }}
                 >
                   Destinations
                 </Link>
                 <button
                   onClick={() => setShowSidebar(true)}
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105"
-                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
+                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105"
+                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}
                 >
                   Menu
                 </button>
@@ -198,56 +198,43 @@ export default function Page() {
             
             {/* Sidebar */}
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="fixed top-20 right-8 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-4 z-50"
+              style={{ minWidth: '180px' }}
             >
-              {/* Close button */}
-              <button
-                onClick={() => setShowSidebar(false)}
-                className="absolute top-6 right-6 text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-
-              {/* Sidebar content */}
-              <div className="p-8 pt-16">
-                <h3 className="text-2xl font-light text-gray-900 mb-8 tracking-wide">Menu</h3>
+              <nav className="space-y-3">
+                <Link
+                  href="/contact"
+                  className="block text-black hover:text-gray-700 transition-colors text-sm font-light tracking-wide"
+                  style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
+                  onClick={() => setShowSidebar(false)}
+                >
+                  Registrarse
+                </Link>
                 
-                <nav className="space-y-6">
-                  <Link
-                    href="/contact"
-                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide"
-                    onClick={() => setShowSidebar(false)}
-                  >
-                    Registrarse
-                  </Link>
-                  
-                  <Link
-                    href="/contact"
-                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide"
-                    onClick={() => setShowSidebar(false)}
-                  >
-                    Contacto
-                  </Link>
-                  
-                  <button
-                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide text-left"
-                    onClick={() => {
-                      // Aquí puedes agregar la lógica para abrir un modal de videollamada
-                      alert('Funcionalidad de videollamada próximamente');
-                      setShowSidebar(false);
-                    }}
-                  >
-                    Reservar Videollamada
-                  </button>
-                </nav>
-              </div>
+                <Link
+                  href="/contact"
+                  className="block text-black hover:text-gray-700 transition-colors text-sm font-light tracking-wide"
+                  style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
+                  onClick={() => setShowSidebar(false)}
+                >
+                  Contacto
+                </Link>
+                
+                <button
+                  className="block text-black hover:text-gray-700 transition-colors text-sm font-light tracking-wide text-left w-full"
+                  style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
+                  onClick={() => {
+                    alert('Funcionalidad de videollamada próximamente');
+                    setShowSidebar(false);
+                  }}
+                >
+                  Reservar Videollamada
+                </button>
+              </nav>
             </motion.div>
           </>
         )}
