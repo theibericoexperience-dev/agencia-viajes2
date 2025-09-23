@@ -64,21 +64,8 @@ export default function Page() {
     <main className="min-h-screen overflow-x-hidden">
       {/* Hero Section with 3D Parallax Effect */}
       <section className="relative h-screen w-full bg-black overflow-hidden">
-        {/* Smooth Floating Background */}
-        <motion.div
-          className="absolute inset-0 w-full h-full"
-          animate={{
-            x: [0, -4, 0, 3, 0],
-            y: [0, 2, -3, 1.5, 0],
-            scale: [1.02, 1.03, 1.02, 1.025, 1.02],
-          }}
-          transition={{
-            duration: 40,
-            repeat: Infinity,
-            ease: [0.4, 0, 0.6, 1],
-            times: [0, 0.25, 0.5, 0.75, 1],
-          }}
-        >
+        {/* Fixed Hero Background */}
+        <div className="absolute inset-0 w-full h-full">
           <Image 
             src="/hero.jpg" 
             alt="Ibero Tours" 
@@ -94,7 +81,7 @@ export default function Page() {
           />
           {/* Subtle depth overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
-        </motion.div>
+        </div>
 
         {/* Ibero Tours - Top Left without black background - Updated */}
         <AnimatePresence>
@@ -106,7 +93,7 @@ export default function Page() {
               className="absolute top-8 left-8 z-30"
             >
               <h1 
-                className="text-2xl md:text-3xl font-light text-white tracking-widest"
+                className="text-3xl md:text-4xl lg:text-5xl font-medium text-white tracking-widest"
                 style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
               >
                 IBERO TOURS
@@ -266,13 +253,20 @@ export default function Page() {
         )}
       </AnimatePresence>
 
-      {/* Overlay Carousel that pulls up from bottom */}
+      {/* Interactive Pull-up Carousel */}
       <motion.div 
         className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
         initial={{ y: "100%" }}
-        animate={{ y: scrollY > 300 ? "0%" : "100%" }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        style={{ height: "40vh" }}
+        animate={{ 
+          y: scrollY > 100 ? 
+            `${Math.max(0, 100 - scrollY * 0.8)}%` : 
+            "100%" 
+        }}
+        transition={{ 
+          duration: 0.1, 
+          ease: [0.25, 0.46, 0.45, 0.94] 
+        }}
+        style={{ height: "45vh" }}
       >
         {/* Carousel Header */}
         <div className="p-6 border-b border-white/10">
