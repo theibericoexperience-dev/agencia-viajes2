@@ -45,7 +45,7 @@ export default function Page() {
 
   return (
     <>
-      {/* Hero Background - Moves up on scroll after carousel */}
+      {/* Hero Background - Fixed initially, then moves up on scroll */}
       <div 
         className="fixed inset-0 w-full h-screen z-0"
         style={{
@@ -53,17 +53,17 @@ export default function Page() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          transform: scrollY > 1500 ? `translateY(-${(scrollY - 1500) * 0.5}px)` : 'translateY(0)',
-          transition: 'transform 0.1s linear'
+          transform: scrollY > 1400 ? `translateY(-${scrollY - 1400}px)` : 'translateY(0)',
+          transition: 'transform 0.3s ease-out'
         }}
       />
 
-      {/* Header Elements - Always visible and responsive */}
+      {/* Header Elements - Fixed initially, then moves up on scroll */}
       <div 
         className="fixed inset-0 z-50 pointer-events-none"
         style={{
-          transform: scrollY > 1500 ? `translateY(-${(scrollY - 1500) * 0.5}px)` : 'translateY(0)',
-          transition: 'transform 0.1s linear'
+          transform: scrollY > 1400 ? `translateY(-${scrollY - 1400}px)` : 'translateY(0)',
+          transition: 'transform 0.3s ease-out'
         }}
       >
         {/* IBERO TOURS Header - Simple and Fixed */}
@@ -136,23 +136,26 @@ export default function Page() {
       <div 
         className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
         style={{
-          height: '40vh',
-          transform: scrollY > 100 && scrollY <= 1500 
+          height: '50vh',
+          transform: scrollY > 200 && scrollY <= 1400 
             ? 'translateY(0)' 
-            : scrollY > 1500 
-              ? `translateY(-${(scrollY - 1500) * 0.5}px)` 
+            : scrollY > 1400 
+              ? `translateY(-${scrollY - 1400}px)` 
               : 'translateY(100%)',
-          transition: scrollY <= 1500 ? 'transform 0.6s ease-out' : 'transform 0.1s linear'
+          transition: scrollY <= 1400 ? 'transform 0.8s ease-out' : 'transform 0.3s ease-out'
         }}
       >
-        <div className="p-4 border-b border-white/10">
-          <h3 className="text-white text-lg font-light tracking-wider text-center">
+        <div className="p-6 border-b border-white/10">
+          <h3 className="text-white text-2xl font-light tracking-wider text-center">
             Nuestros Destinos
           </h3>
+          <p className="text-white/70 text-center mt-2 text-sm">
+            Explora experiencias auténticas
+          </p>
         </div>
         
         {/* Carousel Content with Images */}
-        <div className="px-4 py-3 h-full overflow-hidden">
+        <div className="px-6 py-4 h-full overflow-hidden">
           <motion.div
             className="flex gap-6 h-full"
             animate={{ x: [0, -1200] }}
@@ -166,13 +169,18 @@ export default function Page() {
             onMouseLeave={handleCarouselMouseLeave}
           >
             {[...carouselImages, ...carouselImages].map((image, index) => (
-              <div key={index} className="relative w-80 h-40 flex-shrink-0">
+              <div key={index} className="relative w-96 h-48 flex-shrink-0 group cursor-pointer">
                 <Image
                   src={image}
                   alt={`Experience ${index + 1}`}
                   fill
-                  className="object-cover rounded-lg"
+                  className="object-cover rounded-lg transition-transform group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-black/20 rounded-lg group-hover:bg-black/10 transition-colors"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <h4 className="font-medium text-lg">Destino {(index % 4) + 1}</h4>
+                  <p className="text-sm text-white/80">Experiencia auténtica</p>
+                </div>
               </div>
             ))}
           </motion.div>
@@ -181,13 +189,16 @@ export default function Page() {
 
       {/* Scrollable content */}
       <div className="relative z-10">
-        {/* First empty screen to enable carousel appear */}
+        {/* First empty screen for initial hero view */}
         <div className="h-screen bg-transparent"></div>
         
-        {/* Space for carousel interaction */}
+        {/* Second screen for carousel interaction */}
         <div className="h-screen bg-transparent"></div>
         
-        {/* Authentic Experiences section - appears when hero starts moving up */}
+        {/* Third screen for transition to normal content */}
+        <div className="h-96 bg-transparent"></div>
+        
+        {/* Authentic Experiences section - appears when hero moves up */}
         <section className="py-20 bg-gray-900 relative z-20 min-h-screen">
           <div className="max-w-4xl mx-auto px-8 text-center">
             <h2 className="text-4xl font-light text-white mb-8 tracking-wider">
