@@ -63,14 +63,15 @@ export default function Page() {
   return (
     <>
       {/* Fixed Hero Background - Never moves, always visible */}
-      <section className="fixed inset-0 w-full h-screen overflow-hidden z-50 bg-gray-800">
-        <Image
-          src="/hero.jpg"
-          alt="Hero Background"
-          fill
-          className="object-cover"
-          priority
-        />
+      <section 
+        className="fixed inset-0 w-full h-screen overflow-hidden z-50"
+        style={{
+          backgroundImage: 'url(/hero.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
 
         {/* Ibero Tours - Top Left without black background - Updated */}
         <AnimatePresence>
