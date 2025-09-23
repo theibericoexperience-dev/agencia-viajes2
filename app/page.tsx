@@ -45,7 +45,7 @@ export default function Page() {
 
   return (
     <>
-      {/* Hero Background - Moves up on scroll */}
+      {/* Hero Background - Moves up on scroll after carousel */}
       <div 
         className="fixed inset-0 w-full h-screen z-0"
         style={{
@@ -53,8 +53,8 @@ export default function Page() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          transform: scrollY > 1600 ? `translateY(-${scrollY - 1600}px)` : 'translateY(0)',
-          transition: 'transform 0.1s ease-out'
+          transform: scrollY > 1500 ? `translateY(-${(scrollY - 1500) * 0.5}px)` : 'translateY(0)',
+          transition: 'transform 0.1s linear'
         }}
       />
 
@@ -62,8 +62,8 @@ export default function Page() {
       <div 
         className="fixed inset-0 z-50 pointer-events-none"
         style={{
-          transform: scrollY > 1600 ? `translateY(-${scrollY - 1600}px)` : 'translateY(0)',
-          transition: 'transform 0.1s ease-out'
+          transform: scrollY > 1500 ? `translateY(-${(scrollY - 1500) * 0.5}px)` : 'translateY(0)',
+          transition: 'transform 0.1s linear'
         }}
       >
         {/* IBERO TOURS Header - Simple and Fixed */}
@@ -137,12 +137,12 @@ export default function Page() {
         className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
         style={{
           height: '40vh',
-          transform: scrollY > 100 && scrollY < 1600 
+          transform: scrollY > 100 && scrollY <= 1500 
             ? 'translateY(0)' 
-            : scrollY >= 1600 
-              ? `translateY(-${scrollY - 1600}px)` 
+            : scrollY > 1500 
+              ? `translateY(-${(scrollY - 1500) * 0.5}px)` 
               : 'translateY(100%)',
-          transition: scrollY < 1600 ? 'transform 0.6s ease-out' : 'transform 0.1s ease-out'
+          transition: scrollY <= 1500 ? 'transform 0.6s ease-out' : 'transform 0.1s linear'
         }}
       >
         <div className="p-4 border-b border-white/10">
@@ -184,11 +184,11 @@ export default function Page() {
         {/* First empty screen to enable carousel appear */}
         <div className="h-screen bg-transparent"></div>
         
-        {/* Space for carousel interaction, then transition to normal scroll */}
+        {/* Space for carousel interaction */}
         <div className="h-screen bg-transparent"></div>
         
-        {/* Authentic Experiences section - appears after carousel */}
-        <section className="py-20 bg-gray-900 relative z-20">
+        {/* Authentic Experiences section - appears when hero starts moving up */}
+        <section className="py-20 bg-gray-900 relative z-20 min-h-screen">
           <div className="max-w-4xl mx-auto px-8 text-center">
             <h2 className="text-4xl font-light text-white mb-8 tracking-wider">
               Authentic Experiences
