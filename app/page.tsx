@@ -9,14 +9,13 @@ export default function Page() {
   const [showHeader, setShowHeader] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
+  const [carouselSpeed, setCarouselSpeed] = useState(1);
 
   const carouselImages = [
     '/images/carousel/IMG_3951.JPG',
     '/images/carousel/IMG_4008.JPG',
     '/images/carousel/IMG_4015.JPG',
     '/images/carousel/IMG_4326.JPG',
-    '/images/carousel/IMG_4446.JPG',
-    '/images/carousel/IMG_4447.JPG',
   ];
 
   useEffect(() => {
@@ -25,6 +24,7 @@ export default function Page() {
     
     const handleScroll = () => {
       setScrollY(window.scrollY);
+      console.log('ScrollY:', window.scrollY); // Debug
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -35,9 +35,17 @@ export default function Page() {
     };
   }, []);
 
+  const handleCarouselMouseEnter = () => {
+    setCarouselSpeed(0.2);
+  };
+
+  const handleCarouselMouseLeave = () => {
+    setCarouselSpeed(1);
+  };
+
   return (
     <>
-      {/* Hero Background - Always visible */}
+      {/* Hero Background - Always fixed, never moves */}
       <div 
         className="fixed inset-0 w-full h-screen z-0"
         style={{
@@ -48,9 +56,9 @@ export default function Page() {
         }}
       />
 
-      {/* Header Elements - High z-index */}
+      {/* Header Elements - Always visible and responsive */}
       <div className="fixed inset-0 z-50 pointer-events-none">
-        {/* IBERO TOURS Header */}
+        {/* IBERO TOURS Header - Simple and Fixed */}
         <AnimatePresence>
           {showHeader && (
             <motion.div
@@ -69,41 +77,7 @@ export default function Page() {
           )}
         </AnimatePresence>
 
-        {/* Navigation Menu */}
-        <AnimatePresence>
-          {showHeader && (
-            <motion.div
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-              className="absolute top-8 right-8 pointer-events-auto"
-            >
-              <nav className="flex items-center gap-6">
-                <Link 
-                  href="/gallery" 
-                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)', textDecoration: 'none' }}
-                >
-                  Gallery
-                </Link>
-                <Link 
-                  href="/destinations" 
-                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)', textDecoration: 'none' }}
-                >
-                  Destinations
-                </Link>
-                <button
-                  onClick={() => setShowSidebar(true)}
-                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105"
-                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}
-                >
-                  Menu
-                </button>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
+
 
         {/* Enhanced Scroll Down Invitation */}
         <AnimatePresence>
@@ -147,83 +121,39 @@ export default function Page() {
         </AnimatePresence>
       </div>
 
-      {/* Sidebar */}
-      <AnimatePresence>
-        {showSidebar && (
-          <motion.div
-            initial={{ x: 200, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 200, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed top-20 right-8 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-4 z-50"
-            style={{ minWidth: '200px' }}
-          >
-            {/* Close button */}
-            <button
-              onClick={() => setShowSidebar(false)}
-              className="absolute top-2 right-2 text-black hover:text-gray-700 transition-colors p-1"
-              style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
 
-            <nav className="space-y-3 mt-4">
-              <Link
-                href="/contact"
-                className="block text-black hover:text-gray-700 transition-colors text-sm font-light tracking-wide"
-                style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
-                onClick={() => setShowSidebar(false)}
-              >
-                Contacto
-              </Link>
-              
-              <button
-                className="block text-black hover:text-gray-700 transition-colors text-sm font-light tracking-wide text-left w-full"
-                style={{ textShadow: '0 1px 5px rgba(255,255,255,0.6)' }}
-                onClick={() => {
-                  alert('Book a Call feature coming soon!');
-                  setShowSidebar(false);
-                }}
-              >
-                Book a Call
-              </button>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Carousel that slides up */}
       <div 
         className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
         style={{
           height: '40vh',
-          transform: scrollY > 100 ? 'translateY(0)' : 'translateY(100%)',
+          transform: scrollY > 100 && scrollY < 1600 ? 'translateY(0)' : 'translateY(100%)',
           transition: 'transform 0.6s ease-out'
         }}
       >
         <div className="p-4 border-b border-white/10">
           <h3 className="text-white text-lg font-light tracking-wider text-center">
-            Explore Our Experiences
+            Nuestros Destinos
           </h3>
         </div>
         
         {/* Carousel Content with Images */}
         <div className="px-4 py-3 h-full overflow-hidden">
           <motion.div
-            className="flex gap-4 h-full"
-            animate={{ x: [0, -1000] }}
+            className="flex gap-6 h-full"
+            animate={{ x: [0, -1200] }}
             transition={{
-              duration: 20,
+              duration: 15 / carouselSpeed,
               repeat: Infinity,
               ease: "linear"
             }}
             style={{ width: 'fit-content' }}
+            onMouseEnter={handleCarouselMouseEnter}
+            onMouseLeave={handleCarouselMouseLeave}
           >
-            {[...carouselImages, ...carouselImages, ...carouselImages].map((image, index) => (
-              <div key={index} className="relative w-64 h-32 flex-shrink-0">
+            {[...carouselImages, ...carouselImages].map((image, index) => (
+              <div key={index} className="relative w-80 h-40 flex-shrink-0">
                 <Image
                   src={image}
                   alt={`Experience ${index + 1}`}
@@ -237,18 +167,62 @@ export default function Page() {
       </div>
 
       {/* Scrollable content */}
-      <div className="relative z-10 mt-screen">
-        <section className="h-screen bg-transparent"></section>
-        <section className="py-32 bg-gray-900">
+      <div className="relative z-10">
+        {/* First empty screen to enable carousel appear */}
+        <div className="h-screen bg-transparent"></div>
+        
+        {/* Space for carousel interaction, then transition to normal scroll */}
+        <div className="h-screen bg-transparent"></div>
+        
+        {/* Authentic Experiences section - appears after carousel */}
+        <section className="py-20 bg-gray-900 relative z-20">
           <div className="max-w-4xl mx-auto px-8 text-center">
-            <h2 className="text-5xl font-light text-white mb-12 tracking-wider">
+            <h2 className="text-4xl font-light text-white mb-8 tracking-wider">
               Authentic Experiences
             </h2>
             <p className="text-white/80 text-lg max-w-2xl mx-auto leading-relaxed">
               Immerse yourself in the genuine culture, gastronomy, and landscapes of the Iberian Peninsula.
             </p>
+            
+            {/* Add some content cards */}
+            <div className="grid md:grid-cols-3 gap-8 mt-16">
+              <div className="bg-gray-800 p-6 rounded-lg">
+                <h4 className="text-white text-lg mb-3">Cultural Immersion</h4>
+                <p className="text-white/70 text-sm">Deep connections with local traditions and customs.</p>
+              </div>
+              <div className="bg-gray-800 p-6 rounded-lg">
+                <h4 className="text-white text-lg mb-3">Culinary Excellence</h4>
+                <p className="text-white/70 text-sm">Authentic flavors and hidden gastronomic gems.</p>
+              </div>
+              <div className="bg-gray-800 p-6 rounded-lg">
+                <h4 className="text-white text-lg mb-3">Small Groups</h4>
+                <p className="text-white/70 text-sm">Intimate experiences, maximum 8 travelers.</p>
+              </div>
+            </div>
           </div>
         </section>
+        
+        {/* Extra content to make it scrollable */}
+        <section className="py-20 bg-black">
+          <div className="max-w-4xl mx-auto px-8 text-center">
+            <h3 className="text-2xl font-light text-white mb-6 tracking-wider">
+              Begin Your Journey
+            </h3>
+            <p className="text-white/60 text-base max-w-xl mx-auto leading-relaxed mb-8">
+              Discover the essence of the Iberian Peninsula through carefully curated experiences.
+            </p>
+            <button className="bg-white text-black px-8 py-3 rounded-lg hover:bg-gray-200 transition-colors">
+              Start Planning
+            </button>
+          </div>
+        </section>
+        
+        {/* Footer */}
+        <footer className="bg-gray-900 py-8">
+          <div className="max-w-4xl mx-auto px-8 text-center">
+            <p className="text-white/60 text-sm">© 2025 Ibero Tours. Authentic experiences across the Iberian Peninsula.</p>
+          </div>
+        </footer>
       </div>
     </>
   );

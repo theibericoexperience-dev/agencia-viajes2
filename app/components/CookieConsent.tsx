@@ -18,12 +18,12 @@ export default function CookieConsent(){
 
   if(!show) return null;
   return (
-    <div className="fixed bottom-4 right-4 bg-white p-4 rounded shadow text-black z-50" role="dialog" aria-live="polite">
-      <div className="max-w-xs">
-        <p className="text-sm">We use analytics to improve the site. By accepting you allow anonymous usage tracking. No personal data is sold.</p>
-        <div className="mt-3 flex justify-end">
-          <button className="px-3 py-1 mr-2" onClick={()=>setShow(false)}>Dismiss</button>
-          <button className="px-3 py-1 bg-primary-500 text-white rounded" onClick={accept}>Accept</button>
+    <div className="fixed bottom-4 right-4 bg-black/80 backdrop-blur-sm p-3 rounded-lg text-white text-xs z-30 max-w-xs opacity-90" role="dialog" aria-live="polite">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs leading-tight">Analytics cookies help improve the site.</p>
+        <div className="flex gap-2 shrink-0">
+          <button className="text-xs underline hover:no-underline" onClick={()=>setShow(false)}>Dismiss</button>
+          <button className="text-xs bg-white text-black px-2 py-1 rounded hover:bg-gray-200 transition-colors" onClick={accept}>Accept</button>
         </div>
       </div>
     </div>
