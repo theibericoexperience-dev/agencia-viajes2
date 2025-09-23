@@ -18,13 +18,11 @@ export default function CookieConsent(){
 
   if(!show) return null;
   return (
-    <div className="fixed bottom-4 right-4 bg-black/80 backdrop-blur-sm p-3 rounded-lg text-white text-xs z-30 max-w-xs opacity-90" role="dialog" aria-live="polite">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-xs leading-tight">Analytics cookies help improve the site.</p>
-        <div className="flex gap-2 shrink-0">
-          <button className="text-xs underline hover:no-underline" onClick={()=>setShow(false)}>Dismiss</button>
-          <button className="text-xs bg-white text-black px-2 py-1 rounded hover:bg-gray-200 transition-colors" onClick={accept}>Accept</button>
-        </div>
+    <div className="fixed bottom-2 right-2 bg-black/50 backdrop-blur-sm p-2 rounded text-white text-xs z-20 max-w-xs opacity-60 hover:opacity-80 transition-opacity" role="dialog" aria-live="polite">
+      <div className="flex items-center gap-2">
+        <p className="text-xs">Cookies</p>
+        <button className="text-xs underline hover:no-underline" onClick={()=>setShow(false)}>✕</button>
+        <button className="text-xs bg-white/20 px-1 py-0.5 rounded hover:bg-white/30 transition-colors" onClick={accept}>OK</button>
       </div>
     </div>
   );

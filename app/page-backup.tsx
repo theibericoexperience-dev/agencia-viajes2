@@ -25,9 +25,11 @@ export default function Page() {
     };
   }, []);
 
+
+
   return (
     <>
-      {/* Hero Background - Fixed initially, becomes scrollable after carousel */}
+      {/* Hero Background - Fixed initially, then becomes scrollable */}
       <div 
         className={scrollY > 400 ? "absolute top-0 w-full h-screen z-0" : "fixed inset-0 w-full h-screen z-0"}
         style={{
@@ -38,13 +40,18 @@ export default function Page() {
         }}
       />
 
-      {/* Header: IBERO TOURS left, hamburger menu right */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-6 bg-black/20 backdrop-blur-sm">
-        <h1 className="text-3xl font-bold text-white tracking-wider">
-          IBERO TOURS
-        </h1>
+      {/* Header with Menu - Always visible */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-6 bg-black/30 backdrop-blur-sm">
+        <div className="flex items-center">
+          <h1 
+            className="text-2xl md:text-3xl font-bold text-white tracking-wider"
+            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
+          >
+            IBERO TOURS
+          </h1>
+        </div>
         
-        {/* Hamburger Menu Button */}
+        {/* Menu Button */}
         <button 
           onClick={() => setShowSidebar(!showSidebar)}
           className="flex flex-col space-y-1 p-2 hover:bg-white/10 rounded-md transition-colors z-50"
@@ -57,7 +64,7 @@ export default function Page() {
 
       {/* Sidebar Menu */}
       {showSidebar && (
-        <div className="fixed top-0 right-0 h-full w-80 bg-black/95 backdrop-blur-md z-60 border-l border-white/20 transition-transform duration-300">
+        <div className="fixed top-0 right-0 h-full w-80 bg-black/95 backdrop-blur-md z-60 border-l border-white/20 transition-transform duration-300 ease-in-out">
           <div className="p-6">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-xl font-bold text-white">Menú</h2>
@@ -84,37 +91,43 @@ export default function Page() {
         </div>
       )}
 
-      {/* Scroll Down hint */}
+
+
+      {/* Scroll Down Invitation */}
       {scrollY < 100 && (
         <div className="fixed bottom-12 left-1/2 transform -translate-x-1/2 z-30">
           <div className="text-center">
             <p className="text-white text-sm uppercase tracking-widest font-medium mb-3"
-               style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}>
+               style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', fontWeight: '500' }}>
               Scroll Down
             </p>
-            <svg 
-              width="28" 
-              height="28" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="white" 
-              strokeWidth="2.5"
-              className="mx-auto animate-bounce"
-            >
-              <polyline points="6,9 12,15 18,9"></polyline>
-            </svg>
+            <div>
+              <svg 
+                width="28" 
+                height="28" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="white" 
+                strokeWidth="2.5"
+                className="mx-auto"
+                style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.6))' }}
+              >
+                <polyline points="6,9 12,15 18,9"></polyline>
+              </svg>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Carousel - Appears on scroll, covers part of hero, then both scroll together */}
+
+
+      {/* Carousel - Appears on scroll and covers hero bottom */}
       <div 
-        className={scrollY > 400 ? "absolute left-0 right-0 bg-black/90 backdrop-blur-md z-40" : "fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md z-40"}
+        className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md z-40"
         style={{
-          height: '45vh',
+          height: '40vh',
           transform: scrollY > 150 ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.6s ease-out',
-          top: scrollY > 400 ? '55vh' : 'auto'
+          transition: 'transform 0.6s ease-out'
         }}
       >
         <div className="p-6 border-b border-white/10">
@@ -126,6 +139,7 @@ export default function Page() {
           </p>
         </div>
         
+        {/* Carousel Content with Images */}
         <div className="px-6 py-4 h-full overflow-hidden">
           <div className="flex gap-6 h-full animate-scroll">
             {carouselImages.map((image, index) => (
@@ -149,14 +163,14 @@ export default function Page() {
 
       {/* Scrollable content */}
       <div className="relative z-10">
-        {/* Hero view space */}
+        {/* Hero view with space for carousel to appear */}
         <div className="h-screen bg-transparent"></div>
         
-        {/* Additional space for smooth carousel transition */}
+        {/* Extra space for smooth scroll transition */}
         <div className="h-96 bg-transparent"></div>
         
-        {/* Main content sections */}
-        <section className="py-20 bg-gray-900 min-h-screen">
+        {/* Carousel covers hero, then normal scroll starts */}
+        <section className="py-20 bg-gray-900 relative z-60 min-h-screen">
           <div className="max-w-4xl mx-auto px-8 text-center">
             <h2 className="text-4xl font-light text-white mb-8 tracking-wider">
               Authentic Experiences
@@ -165,6 +179,7 @@ export default function Page() {
               Immerse yourself in the genuine culture, gastronomy, and landscapes of the Iberian Peninsula.
             </p>
             
+            {/* Add some content cards */}
             <div className="grid md:grid-cols-3 gap-8 mt-16">
               <div className="bg-gray-800 p-6 rounded-lg">
                 <h4 className="text-white text-lg mb-3">Cultural Immersion</h4>
@@ -182,6 +197,7 @@ export default function Page() {
           </div>
         </section>
         
+        {/* Extra content to make it scrollable */}
         <section className="py-20 bg-black">
           <div className="max-w-4xl mx-auto px-8 text-center">
             <h3 className="text-2xl font-light text-white mb-6 tracking-wider">
@@ -196,6 +212,7 @@ export default function Page() {
           </div>
         </section>
         
+        {/* Footer */}
         <footer className="bg-gray-900 py-8">
           <div className="max-w-4xl mx-auto px-8 text-center">
             <p className="text-white/60 text-sm">© 2025 Ibero Tours. Authentic experiences across the Iberian Peninsula.</p>
