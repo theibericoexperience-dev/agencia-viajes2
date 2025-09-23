@@ -56,23 +56,74 @@ export default function Page() {
         }}
       />
 
-      {/* Header Elements - Always fixed over hero */}
+      {/* Header with Menu - Fixed over hero */}
       <div className="fixed inset-0 z-50 pointer-events-none">
-        {/* IBERO TOURS Header - Simple and Fixed */}
+        {/* Main Header with Menu */}
         <AnimatePresence>
           {showHeader && (
             <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-              className="absolute top-8 left-8 pointer-events-auto"
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="absolute top-0 left-0 right-0 pointer-events-auto"
             >
-              <h1 
-                className="text-3xl md:text-4xl lg:text-5xl font-medium text-black tracking-widest"
-                style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}
-              >
-                IBERO TOURS
-              </h1>
+              <header className="flex justify-between items-center p-6 bg-black/20 backdrop-blur-sm">
+                <div className="flex items-center">
+                  <h1 
+                    className="text-2xl md:text-3xl font-bold text-white tracking-wider"
+                    style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
+                  >
+                    IBERO TOURS
+                  </h1>
+                </div>
+                
+                {/* Menu Button */}
+                <button 
+                  onClick={() => setShowSidebar(!showSidebar)}
+                  className="flex flex-col space-y-1 p-2 hover:bg-white/10 rounded-md transition-colors"
+                >
+                  <span className="w-6 h-0.5 bg-white rounded-full"></span>
+                  <span className="w-6 h-0.5 bg-white rounded-full"></span>
+                  <span className="w-6 h-0.5 bg-white rounded-full"></span>
+                </button>
+              </header>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Sidebar Menu */}
+        <AnimatePresence>
+          {showSidebar && (
+            <motion.div
+              initial={{ opacity: 0, x: '100%' }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: '100%' }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="absolute top-0 right-0 h-full w-80 bg-black/95 backdrop-blur-md pointer-events-auto border-l border-white/20"
+            >
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-xl font-bold text-white">Menú</h2>
+                  <button 
+                    onClick={() => setShowSidebar(false)}
+                    className="text-white text-2xl hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center"
+                  >
+                    ×
+                  </button>
+                </div>
+                
+                <nav className="space-y-4">
+                  <Link href="/destinations" className="block text-white/80 hover:text-white text-lg py-2 border-b border-white/10">
+                    Destinos
+                  </Link>
+                  <Link href="/gallery" className="block text-white/80 hover:text-white text-lg py-2 border-b border-white/10">
+                    Galería
+                  </Link>
+                  <Link href="/contact" className="block text-white/80 hover:text-white text-lg py-2 border-b border-white/10">
+                    Contacto
+                  </Link>
+                </nav>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -124,11 +175,11 @@ export default function Page() {
 
 
 
-      {/* Carousel that slides up when scrolling, hero stays fixed behind */}
+      {/* Carousel that appears covering part of hero and stays fixed */}
       <div 
-        className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
+        className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-md z-40"
         style={{
-          height: '50vh',
+          height: '45vh',
           transform: scrollY > 200 ? 'translateY(0)' : 'translateY(100%)',
           transition: 'transform 0.8s ease-out'
         }}
@@ -177,14 +228,11 @@ export default function Page() {
 
       {/* Scrollable content */}
       <div className="relative z-10">
-        {/* First empty screen for initial hero view */}
+        {/* Hero view with space for carousel to appear */}
         <div className="h-screen bg-transparent"></div>
         
-        {/* Second screen for carousel interaction - hero stays fixed */}
-        <div className="h-screen bg-transparent"></div>
-        
-        {/* Now normal scrollable content starts */}
-        <section className="py-20 bg-gray-900 relative z-50 min-h-screen">
+        {/* Carousel covers hero, then normal scroll starts */}
+        <section className="py-20 bg-gray-900 relative z-60 min-h-screen">
           <div className="max-w-4xl mx-auto px-8 text-center">
             <h2 className="text-4xl font-light text-white mb-8 tracking-wider">
               Authentic Experiences
