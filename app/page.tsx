@@ -61,27 +61,9 @@ export default function Page() {
 
 
   return (
-    <main className="min-h-screen overflow-x-hidden">
-      {/* Hero Section with 3D Parallax Effect */}
-      <section className="relative h-screen w-full bg-black overflow-hidden">
-        {/* Fixed Hero Background */}
-        <div className="absolute inset-0 w-full h-full">
-          <Image 
-            src="/hero.jpg" 
-            alt="Ibero Tours" 
-            fill 
-            className="object-cover"
-            priority 
-            quality={95}
-            sizes="100vw"
-            unoptimized
-            style={{
-              transform: `scale(1.05)`,
-            }}
-          />
-          {/* Subtle depth overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
-        </div>
+    <>
+      {/* Fixed Hero Background - Never moves, always visible */}
+      <section className="fixed inset-0 w-full h-screen bg-black overflow-hidden z-10">
 
         {/* Ibero Tours - Top Left without black background - Updated */}
         <AnimatePresence>
@@ -227,20 +209,14 @@ export default function Page() {
         )}
       </AnimatePresence>
 
-      {/* Interactive Pull-up Carousel */}
-      <motion.div 
+      {/* VectorThree Style Carousel - Slides up with scroll */}
+      <div 
         className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
-        initial={{ y: "100%" }}
-        animate={{ 
-          y: scrollY > 100 ? 
-            `${Math.max(0, 100 - scrollY * 0.8)}%` : 
-            "100%" 
+        style={{
+          height: '100vh',
+          transform: scrollY > 50 ? 'translateY(0)' : 'translateY(100vh)',
+          transition: 'transform 0.2s ease-out'
         }}
-        transition={{ 
-          duration: 0.1, 
-          ease: [0.25, 0.46, 0.45, 0.94] 
-        }}
-        style={{ height: "45vh" }}
       >
         {/* Carousel Header */}
         <div className="p-6 border-b border-white/10">
@@ -282,7 +258,7 @@ export default function Page() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60 pointer-events-none"></div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Content Section to Enable Scroll */}
       <section className="py-32 bg-gray-900 relative z-20">
@@ -413,6 +389,11 @@ export default function Page() {
           <p className="text-white/60 text-sm tracking-wider">© 2025 Ibero Tours. Authentic experiences across the Iberian Peninsula.</p>
         </div>
       </footer>
-    </main>
+
+      {/* Scrollable main content */}
+      <main className="relative z-20" style={{ height: '200vh' }}>
+        <div style={{ height: '100vh' }}></div>
+      </main>
+    </>
   );
 }
