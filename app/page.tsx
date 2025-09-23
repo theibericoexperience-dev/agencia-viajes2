@@ -95,7 +95,7 @@ export default function Page() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
         </motion.div>
 
-        {/* Ibero Tours - Top Left without black background */}
+        {/* Ibero Tours - Top Left without black background - Updated */}
         <AnimatePresence>
           {showHeader && (
             <motion.div
