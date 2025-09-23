@@ -63,7 +63,14 @@ export default function Page() {
   return (
     <>
       {/* Fixed Hero Background - Never moves, always visible */}
-      <section className="fixed inset-0 w-full h-screen bg-black overflow-hidden z-10">
+      <section className="fixed inset-0 w-full h-screen overflow-hidden z-10">
+        <Image
+          src="/hero-landscape.jpg"
+          alt="Hero Background"
+          fill
+          className="object-cover"
+          priority
+        />
 
         {/* Ibero Tours - Top Left without black background - Updated */}
         <AnimatePresence>
@@ -213,20 +220,20 @@ export default function Page() {
       <div 
         className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
         style={{
-          height: '100vh',
-          transform: scrollY > 50 ? 'translateY(0)' : 'translateY(100vh)',
-          transition: 'transform 0.2s ease-out'
+          height: '40vh',
+          transform: scrollY > 100 ? 'translateY(0)' : 'translateY(100%)',
+          transition: 'transform 0.6s ease-out'
         }}
       >
         {/* Carousel Header */}
-        <div className="p-6 border-b border-white/10">
-          <h3 className="text-white text-xl font-light tracking-wider text-center">
+        <div className="p-4 border-b border-white/10">
+          <h3 className="text-white text-lg font-light tracking-wider text-center">
             Explore Our Experiences
           </h3>
         </div>
         
         {/* Carousel Content */}
-        <div className="px-6 py-4 h-full">
+        <div className="px-4 py-3 h-full">
           <motion.div
             ref={carouselRef}
             className="relative overflow-hidden h-full"
@@ -244,7 +251,7 @@ export default function Page() {
               style={{ width: 'fit-content' }}
             >
               {[...carouselImages, ...carouselImages, ...carouselImages].map((image, index) => (
-                <div key={index} className="relative w-72 h-40 flex-shrink-0">
+                <div key={index} className="relative w-64 h-32 flex-shrink-0">
                   <Image
                     src={image}
                     alt={`Experience ${index + 1}`}
