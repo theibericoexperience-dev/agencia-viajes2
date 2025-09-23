@@ -19,8 +19,8 @@ export default function Page() {
   ];
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setShowHeader(true), 800);
-    const timer2 = setTimeout(() => setShowScrollHint(true), 2000);
+    const timer1 = setTimeout(() => setShowHeader(true), 500);
+    const timer2 = setTimeout(() => setShowScrollHint(true), 1500);
     
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -45,19 +45,27 @@ export default function Page() {
 
   return (
     <>
-      {/* Hero Background - Always fixed, never moves */}
+      {/* Hero Background - Moves up on scroll */}
       <div 
         className="fixed inset-0 w-full h-screen z-0"
         style={{
           backgroundImage: 'url(/hero.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
+          transform: scrollY > 1600 ? `translateY(-${scrollY - 1600}px)` : 'translateY(0)',
+          transition: 'transform 0.1s ease-out'
         }}
       />
 
       {/* Header Elements - Always visible and responsive */}
-      <div className="fixed inset-0 z-50 pointer-events-none">
+      <div 
+        className="fixed inset-0 z-50 pointer-events-none"
+        style={{
+          transform: scrollY > 1600 ? `translateY(-${scrollY - 1600}px)` : 'translateY(0)',
+          transition: 'transform 0.1s ease-out'
+        }}
+      >
         {/* IBERO TOURS Header - Simple and Fixed */}
         <AnimatePresence>
           {showHeader && (
@@ -79,12 +87,13 @@ export default function Page() {
 
 
 
-        {/* Enhanced Scroll Down Invitation */}
+        {/* Enhanced Scroll Down Invitation - Disappears on scroll */}
         <AnimatePresence>
-          {showScrollHint && (
+          {showScrollHint && scrollY < 100 && (
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -50 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
               className="absolute bottom-12 left-1/2 transform -translate-x-1/2 pointer-events-auto"
             >
@@ -123,13 +132,17 @@ export default function Page() {
 
 
 
-      {/* Carousel that slides up */}
+      {/* Carousel that slides up and then moves up with scroll */}
       <div 
         className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-md border-t border-white/20 z-40"
         style={{
           height: '40vh',
-          transform: scrollY > 100 && scrollY < 1600 ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.6s ease-out'
+          transform: scrollY > 100 && scrollY < 1600 
+            ? 'translateY(0)' 
+            : scrollY >= 1600 
+              ? `translateY(-${scrollY - 1600}px)` 
+              : 'translateY(100%)',
+          transition: scrollY < 1600 ? 'transform 0.6s ease-out' : 'transform 0.1s ease-out'
         }}
       >
         <div className="p-4 border-b border-white/10">
