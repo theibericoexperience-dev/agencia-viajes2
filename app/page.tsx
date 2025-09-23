@@ -397,10 +397,9 @@ export default function Page() {
         </div>
       </footer>
 
-      {/* Scrollable main content */}
-      <main className="relative z-20" style={{ height: '200vh' }}>
-        <div style={{ height: '100vh' }}></div>
-      </main>
+      {/* Extra content to enable scroll */}
+      <div className="h-screen bg-transparent relative z-10"></div>
+
     </>
   );
 }
