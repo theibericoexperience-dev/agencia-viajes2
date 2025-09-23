@@ -13,6 +13,7 @@ export default function Page() {
   const [showHeader, setShowHeader] = useState(false);
   const [showNavigation, setShowNavigation] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const carouselImages = [
@@ -114,7 +115,7 @@ export default function Page() {
           )}
         </AnimatePresence>
 
-        {/* Hero - Top Right */}
+        {/* Navigation Menu - Top Right */}
         <AnimatePresence>
           {showHeader && (
             <motion.div
@@ -123,51 +124,34 @@ export default function Page() {
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
               className="absolute top-8 right-8 z-30"
             >
-              <h2 
-                className="text-xl md:text-2xl font-light text-white tracking-widest"
-                style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
-              >
-                HERO
-              </h2>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Navigation Menu - Fixed Position */}
-        <AnimatePresence>
-          {showNavigation && (
-            <motion.nav
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-              className="absolute top-32 left-1/2 transform -translate-x-1/2 z-30 mt-16"
-            >
-              <div className="flex gap-12 items-center justify-center">
+              <nav className="flex items-center gap-6">
                 <Link 
                   href="/gallery" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)', textDecoration: 'none' }}
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', textDecoration: 'none' }}
                 >
                   Gallery
                 </Link>
                 <Link 
                   href="/destinations" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)', textDecoration: 'none' }}
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', textDecoration: 'none' }}
                 >
                   Destinations
                 </Link>
-                <Link 
-                  href="/contact" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-lg uppercase tracking-widest font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)', textDecoration: 'none' }}
+                <button
+                  onClick={() => setShowSidebar(true)}
+                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105"
+                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
                 >
-                  Contact
-                </Link>
-              </div>
-            </motion.nav>
+                  Menu
+                </button>
+              </nav>
+            </motion.div>
           )}
         </AnimatePresence>
+
+
 
         {/* Enhanced Scroll Down Invitation - No Background */}
         <AnimatePresence>
@@ -183,9 +167,9 @@ export default function Page() {
                 transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
                 className="text-center"
               >
-                <div className="w-1 h-20 bg-white mx-auto mb-6 rounded-full" style={{ boxShadow: '0 0 10px rgba(255,255,255,0.5)' }}></div>
-                <p className="text-white text-base uppercase tracking-widest font-semibold mb-4"
-                   style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', fontWeight: '600' }}>
+                <div className="w-0.5 h-18 bg-white mx-auto mb-5 rounded-full" style={{ boxShadow: '0 0 8px rgba(255,255,255,0.4)' }}></div>
+                <p className="text-white text-sm uppercase tracking-widest font-medium mb-3"
+                   style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', fontWeight: '500' }}>
                   Discover More
                 </p>
               <motion.div
@@ -193,12 +177,12 @@ export default function Page() {
                 transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
               >
                 <svg 
-                  width="32" 
-                  height="32" 
+                  width="28" 
+                  height="28" 
                   viewBox="0 0 24 24" 
                   fill="none" 
                   stroke="white" 
-                  strokeWidth="3"
+                  strokeWidth="2.5"
                   className="mx-auto"
                   style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.6))' }}
                 >
@@ -210,6 +194,77 @@ export default function Page() {
           )}
         </AnimatePresence>
       </section>
+
+      {/* Sidebar Menu */}
+      <AnimatePresence>
+        {showSidebar && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              onClick={() => setShowSidebar(false)}
+            />
+            
+            {/* Sidebar */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50"
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setShowSidebar(false)}
+                className="absolute top-6 right-6 text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+
+              {/* Sidebar content */}
+              <div className="p-8 pt-16">
+                <h3 className="text-2xl font-light text-gray-900 mb-8 tracking-wide">Menu</h3>
+                
+                <nav className="space-y-6">
+                  <Link
+                    href="/contact"
+                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide"
+                    onClick={() => setShowSidebar(false)}
+                  >
+                    Registrarse
+                  </Link>
+                  
+                  <Link
+                    href="/contact"
+                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide"
+                    onClick={() => setShowSidebar(false)}
+                  >
+                    Contacto
+                  </Link>
+                  
+                  <button
+                    className="block text-gray-700 hover:text-gray-900 transition-colors text-lg font-light tracking-wide text-left"
+                    onClick={() => {
+                      // Aquí puedes agregar la lógica para abrir un modal de videollamada
+                      alert('Funcionalidad de videollamada próximamente');
+                      setShowSidebar(false);
+                    }}
+                  >
+                    Reservar Videollamada
+                  </button>
+                </nav>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Overlay Carousel that pulls up from bottom */}
       <motion.div 
