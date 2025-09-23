@@ -39,7 +39,7 @@ export default function Page() {
       />
 
       {/* Header: IBERO TOURS left, hamburger menu right */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-6 bg-black/20 backdrop-blur-sm">
+      <header className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center p-6 bg-black/20 backdrop-blur-sm">
         <h1 className="text-3xl font-bold text-white tracking-wider">
           IBERO TOURS
         </h1>
@@ -47,7 +47,7 @@ export default function Page() {
         {/* Hamburger Menu Button */}
         <button 
           onClick={() => setShowSidebar(!showSidebar)}
-          className="flex flex-col space-y-1 p-2 hover:bg-white/10 rounded-md transition-colors z-50"
+          className="flex flex-col space-y-1 p-2 hover:bg-white/10 rounded-md transition-colors z-[100]"
         >
           <span className="w-6 h-0.5 bg-white rounded-full"></span>
           <span className="w-6 h-0.5 bg-white rounded-full"></span>
@@ -57,7 +57,7 @@ export default function Page() {
 
       {/* Sidebar Menu */}
       {showSidebar && (
-        <div className="fixed top-0 right-0 h-full w-80 bg-black/95 backdrop-blur-md z-60 border-l border-white/20 transition-transform duration-300">
+        <div className="fixed top-0 right-0 h-full w-80 bg-black/95 backdrop-blur-md z-[110] border-l border-white/20 transition-transform duration-300">
           <div className="p-6">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-xl font-bold text-white">Menú</h2>
