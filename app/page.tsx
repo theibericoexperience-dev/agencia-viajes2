@@ -182,29 +182,17 @@ export default function Page() {
         </AnimatePresence>
       </section>
 
-      {/* Sidebar Menu */}
+      {/* Simple Sidebar Menu - No backdrop, slides from right */}
       <AnimatePresence>
         {showSidebar && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
-              onClick={() => setShowSidebar(false)}
-            />
-            
-            {/* Sidebar */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="fixed top-20 right-8 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-4 z-50"
-              style={{ minWidth: '180px' }}
-            >
+          <motion.div
+            initial={{ x: 200, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 200, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed top-20 right-8 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-4 z-50"
+            style={{ minWidth: '180px' }}
+          >
               <nav className="space-y-3">
                 <Link
                   href="/contact"
@@ -236,7 +224,6 @@ export default function Page() {
                 </button>
               </nav>
             </motion.div>
-          </>
         )}
       </AnimatePresence>
 
