@@ -63,18 +63,18 @@ export default function Page() {
     <main className="min-h-screen overflow-x-hidden">
       {/* Hero Section with 3D Parallax Effect */}
       <section className="relative h-screen w-full bg-black overflow-hidden">
-        {/* Elegant Floating Background */}
+        {/* Smooth Floating Background */}
         <motion.div
           className="absolute inset-0 w-full h-full"
           animate={{
-            x: [0, -8, 0, 6, 0],
-            y: [0, 4, -6, 3, 0],
-            scale: [1.05, 1.07, 1.05, 1.06, 1.05],
+            x: [0, -4, 0, 3, 0],
+            y: [0, 2, -3, 1.5, 0],
+            scale: [1.02, 1.03, 1.02, 1.025, 1.02],
           }}
           transition={{
-            duration: 25,
+            duration: 40,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: [0.4, 0, 0.6, 1],
             times: [0, 0.25, 0.5, 0.75, 1],
           }}
         >
@@ -95,24 +95,40 @@ export default function Page() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
         </motion.div>
 
-        {/* Elegant Header Animation - Top Right with Black Background */}
+        {/* Ibero Tours - Top Left without black background */}
+        <AnimatePresence>
+          {showHeader && (
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="absolute top-8 left-8 z-30"
+            >
+              <h1 
+                className="text-2xl md:text-3xl font-light text-white tracking-widest"
+                style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
+              >
+                IBERO TOURS
+              </h1>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Hero - Top Right */}
         <AnimatePresence>
           {showHeader && (
             <motion.div
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
+              transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
               className="absolute top-8 right-8 z-30"
             >
-              <div 
-                className="bg-black/80 backdrop-blur-sm px-6 py-4 rounded-lg border border-white/20"
+              <h2 
+                className="text-xl md:text-2xl font-light text-white tracking-widest"
+                style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
               >
-                <h1 
-                  className="text-2xl md:text-3xl font-light text-white tracking-widest"
-                >
-                  IBERO TOURS
-                </h1>
-              </div>
+                HERO
+              </h2>
             </motion.div>
           )}
         </AnimatePresence>
@@ -153,7 +169,7 @@ export default function Page() {
           )}
         </AnimatePresence>
 
-        {/* Enhanced Scroll Down Invitation */}
+        {/* Enhanced Scroll Down Invitation - No Background */}
         <AnimatePresence>
           {showScrollHint && (
             <motion.div
@@ -162,34 +178,34 @@ export default function Page() {
               transition={{ duration: 1.5, ease: "easeOut" }}
               className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-30"
             >
-              <div className="bg-black/60 backdrop-blur-sm px-8 py-6 rounded-full border border-white/30">
-                <motion.div
-                  animate={{ y: [0, 12, 0] }}
-                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-                  className="text-center"
+              <motion.div
+                animate={{ y: [0, 12, 0] }}
+                transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                className="text-center"
+              >
+                <div className="w-1 h-20 bg-white mx-auto mb-6 rounded-full" style={{ boxShadow: '0 0 10px rgba(255,255,255,0.5)' }}></div>
+                <p className="text-white text-base uppercase tracking-widest font-semibold mb-4"
+                   style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', fontWeight: '600' }}>
+                  Discover More
+                </p>
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+              >
+                <svg 
+                  width="32" 
+                  height="32" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="white" 
+                  strokeWidth="3"
+                  className="mx-auto"
+                  style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.6))' }}
                 >
-                  <div className="w-px h-16 bg-white/60 mx-auto mb-4"></div>
-                  <p className="text-white text-sm uppercase tracking-widest font-light mb-3">
-                    Discover More
-                  </p>
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                >
-                  <svg 
-                    width="24" 
-                    height="24" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="white" 
-                    strokeWidth="2"
-                    className="mx-auto"
-                  >
-                    <polyline points="6,9 12,15 18,9"></polyline>
-                  </svg>
-                </motion.div>
-                </motion.div>
-              </div>
+                  <polyline points="6,9 12,15 18,9"></polyline>
+                </svg>
+              </motion.div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
