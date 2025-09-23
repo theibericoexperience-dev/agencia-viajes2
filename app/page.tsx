@@ -93,8 +93,8 @@ export default function Page() {
               className="absolute top-8 left-8 z-30"
             >
               <h1 
-                className="text-3xl md:text-4xl lg:text-5xl font-medium text-white tracking-widest"
-                style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
+                className="text-3xl md:text-4xl lg:text-5xl font-medium text-black tracking-widest"
+                style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}
               >
                 IBERO TOURS
               </h1>
@@ -114,22 +114,22 @@ export default function Page() {
               <nav className="flex items-center gap-6">
                 <Link 
                   href="/gallery" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', textDecoration: 'none' }}
+                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)', textDecoration: 'none' }}
                 >
                   Gallery
                 </Link>
                 <Link 
                   href="/destinations" 
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
-                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)', textDecoration: 'none' }}
+                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105 no-underline"
+                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)', textDecoration: 'none' }}
                 >
                   Destinations
                 </Link>
                 <button
                   onClick={() => setShowSidebar(true)}
-                  className="text-white hover:text-gray-300 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105"
-                  style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
+                  className="text-black hover:text-gray-700 transition-all duration-300 text-sm uppercase tracking-wider font-light hover:scale-105"
+                  style={{ textShadow: '0 2px 10px rgba(255,255,255,0.8)' }}
                 >
                   Menu
                 </button>
@@ -185,18 +185,6 @@ export default function Page() {
       {/* Sidebar Menu */}
       <AnimatePresence>
         {showSidebar && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
-              onClick={() => setShowSidebar(false)}
-            />
-            
-            {/* Sidebar */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -249,7 +237,6 @@ export default function Page() {
                 </nav>
               </div>
             </motion.div>
-          </>
         )}
       </AnimatePresence>
 
