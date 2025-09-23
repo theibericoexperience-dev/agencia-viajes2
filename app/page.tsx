@@ -63,7 +63,7 @@ export default function Page() {
   return (
     <>
       {/* Fixed Hero Background - Never moves, always visible */}
-      <section className="fixed inset-0 w-full h-screen overflow-hidden z-10">
+      <section className="fixed inset-0 w-full h-screen overflow-hidden z-50">
         <Image
           src="/hero-landscape.jpg"
           alt="Hero Background"
@@ -268,7 +268,7 @@ export default function Page() {
       </div>
 
       {/* Content Section to Enable Scroll */}
-      <section className="py-32 bg-gray-900 relative z-20">
+      <section className="py-32 bg-gray-900 relative z-10">
         <div className="max-w-4xl mx-auto px-8 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
