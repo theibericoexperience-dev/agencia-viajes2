@@ -6,15 +6,26 @@ import { Button } from '../../components/ui/button';
 export default function PortoGaliciaPage() {
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } }
+    visible: { opacity: 1, y: 0 }
   };
+
+  const transition = { duration: 0.8, ease: "easeOut" as const };
 
   return (
     <main className="min-h-screen bg-white">
+      {/* Back Button */}
+      <div className="max-w-4xl mx-auto px-8 py-4">
+        <Link
+          href="/destinations?modal=spain"
+          className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          ← Back to Destinations
+        </Link>
+      </div>
       {/* Hero Section */}
       <section className="relative h-screen w-full bg-gradient-to-b from-gray-100 to-gray-200 flex items-center justify-center">
         <div className="text-center max-w-4xl px-6">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp}>
+          <motion.div initial="hidden" animate="visible" variants={fadeInUp} transition={transition}>
             <h1 className="text-6xl md:text-8xl font-light tracking-wider mb-6 text-gray-800">
               PORTO
               <br />
@@ -49,7 +60,7 @@ export default function PortoGaliciaPage() {
       {/* Coming Soon Details */}
       <section className="py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} transition={transition}>
             <h2 className="text-4xl font-light mb-8 text-gray-900">
               Launching Soon
             </h2>

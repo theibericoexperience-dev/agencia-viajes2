@@ -3,12 +3,15 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '../../components/ui/button';
+import ReservationForm from '../../../components/ReservationForm';
 
 export default function MadridLisboaPage() {
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } }
+    visible: { opacity: 1, y: 0 }
   };
+
+  const transition = { duration: 0.8, ease: "easeOut" as const };
 
   const staggerContainer = {
     hidden: {},
@@ -59,7 +62,7 @@ export default function MadridLisboaPage() {
         <div className="absolute inset-0 bg-black/40" />
         
         <div className="relative z-10 h-full flex items-center justify-center text-white">
-          <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="text-center max-w-4xl px-6">
+          <motion.div initial="hidden" animate="visible" variants={fadeInUp} transition={transition} className="text-center max-w-4xl px-6">
             <h1 className="text-6xl md:text-8xl font-light tracking-wider mb-6">
               MADRID
               <br />
@@ -149,7 +152,7 @@ export default function MadridLisboaPage() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {gallery.map((image, index) => (
-              <motion.div key={index} variants={fadeInUp} className="group">
+              <motion.div key={index} variants={fadeInUp} transition={transition} className="group">
                 <div className="aspect-square overflow-hidden">
                   <Image 
                     src={image.src} 
@@ -185,6 +188,7 @@ export default function MadridLisboaPage() {
               <motion.div 
                 key={index} 
                 variants={fadeInUp}
+                transition={transition}
                 className={`grid md:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? 'md:grid-flow-col-dense' : ''}`}
               >
                 <div className={index % 2 === 1 ? 'md:col-start-2' : ''}>
@@ -213,28 +217,41 @@ export default function MadridLisboaPage() {
         </div>
       </section>
 
-      {/* Booking CTA */}
-      <section id="booking" className="bg-gray-900 text-white py-24">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-            <h2 className="text-4xl font-light mb-8">
-              Ready for Your Madrid & Lisboa Adventure?
+      {/* Booking Section */}
+      <section id="booking" className="bg-gray-50 py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div 
+            initial="hidden" 
+            whileInView="visible" 
+            viewport={{ once: true }} 
+            variants={fadeInUp} 
+            transition={transition}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-light text-gray-900 mb-4">
+              Reserve Your Madrid & Lisboa Adventure
             </h2>
-            <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               This 7-day curated experience includes luxury accommodations, private transportation, 
               all meals, and expert local guides. Limited to 8 travelers for an intimate experience.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/#contact">
-                <Button className="bg-white text-black hover:bg-gray-100 px-8 py-4 text-lg">
-                  Request This Journey
-                </Button>
-              </Link>
-              <Link href="/" className="text-white hover:text-gray-300 underline underline-offset-4 py-4">
-                Explore Other Destinations
-              </Link>
-            </div>
           </motion.div>
+
+          <ReservationForm
+            destination={{
+              id: 'madrid-lisboa',
+              name: 'Madrid & Lisboa Journey',
+              image: '/images/destinations/madrid-lisboa/IMG_4335.JPG',
+              price: 1200
+            }}
+            onSuccess={(reservation) => {
+              console.log('Reservation created:', reservation);
+              // Aquí puedes agregar lógica adicional como redireccionar o mostrar confirmación
+            }}
+            onCancel={() => {
+              // Opcional: lógica cuando se cancela
+            }}
+          />
         </div>
       </section>
     </main>

@@ -1,0 +1,323 @@
+"use client";
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+
+export default function HistoriaPage() {
+  return (
+    <main className="min-h-screen bg-black">
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-50 p-8">
+        <nav className="flex justify-between items-center">
+          <Link href="/" className="text-2xl font-light text-white tracking-widest">
+            IBERO TOURS
+          </Link>
+          <div className="flex gap-8 items-center">
+            <Link href="/gallery" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
+              Gallery
+            </Link>
+            <Link href="/destinations" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
+              Destinations
+            </Link>
+            <Link href="/historia" className="text-white border-b border-white text-sm uppercase tracking-wider">
+              Historia
+            </Link>
+            <Link href="/contact" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
+              Contact
+            </Link>
+          </div>
+        </nav>
+      </header>
+
+      {/* Hero Section - Minimalista */}
+      <section className="relative min-h-screen flex items-center justify-center">
+        <div className="absolute inset-0">
+          <Image
+            src="/hero-historia.jpg"
+            alt="IBERO Historia"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+
+        {/* Flecha con texto pequeño abajo */}
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+          <div className="flex flex-col items-center space-y-4">
+            <span className="text-white/70 text-sm uppercase tracking-widest font-light">
+              Nuestra Historia
+            </span>
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-6 h-6 border-r-2 border-b-2 border-white/70 transform rotate-45"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Contenido Cronológico */}
+      <div className="bg-white text-black">
+        {/* AÑO 2021 */}
+        <section className="py-24 border-b border-gray-200">
+          <div className="max-w-4xl mx-auto px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-5xl font-light text-center mb-16 tracking-wider">
+                AÑO 2021
+              </h2>
+
+              <div className="space-y-8">
+                <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                  <p>
+                    Este proyecto nace en Seúl, Corea del Sur en junio de 2021. El fundador, Ramiro, de origen extremeño, lleva años educándose en entornos de fomento emprendedor y desarrollo de equipos funcionales. Tras vivir en Seattle, Shanghai, Bilbao y Seúl, decide apostar por aquello que ha logrado ver y entender desde una perspectiva única: su tierra.
+                  </p>
+                  <p>
+                    Consciente de la validada calidad de su producción gastronómica a nivel mundial, surge la idea de validar el potencial de un turismo auténtico, de calidad, que enriquezca a todos los agentes que lo componen.
+                  </p>
+                  <p>
+                    Creación de la primera web y contenido promocional. En septiembre el proyecto es aceptado dentro del Punto de Acompañamiento Empresarial de Badajoz. Grabación con dron y estabilizador en diferentes zonas para dos vídeos. Edición del contenido y desarrollo web.
+                  </p>
+                </div>
+
+                <div className="text-center pt-12">
+                  <p className="text-xl font-light text-gray-600 italic">
+                    Fin año 2021
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* AÑO 2022 */}
+        <section className="py-24 border-b border-gray-200">
+          <div className="max-w-4xl mx-auto px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-5xl font-light text-center mb-16 tracking-wider">
+                AÑO 2022
+              </h2>
+
+              <div className="space-y-8">
+                <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                  <p>
+                    Formación para liderar tours educativos en Europa a estudiantes norteamericanos.
+                  </p>
+                  <p>
+                    Liderazgo de dos tours con los clubes automovilísticos Jaguar y Rolls Royce de Suiza y Reino Unido (Santander → Cuenca).
+                  </p>
+                  <p>
+                    Liderazgo de tour educativo de Lisboa a Barcelona, rodeando la costa mediterránea.
+                  </p>
+                  <p>
+                    Tour educativo de Madrid a Lisboa.
+                  </p>
+                </div>
+
+                {/* Media - Video */}
+                <div className="my-16">
+                  <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                    <video
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    >
+                      <source src="/historia-2022.mp4#t=3,6" type="video/mp4" />
+                      Tu navegador no soporta el elemento de video.
+                    </video>
+                  </div>
+                </div>
+
+                <div className="text-center pt-12">
+                  <p className="text-xl font-light text-gray-600 italic">
+                    Fin año 2022
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* AÑO 2023 */}
+        <section className="py-24 border-b border-gray-200">
+          <div className="max-w-4xl mx-auto px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-5xl font-light text-center mb-16 tracking-wider">
+                AÑO 2023
+              </h2>
+
+              <div className="space-y-8">
+                <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                  <p>
+                    Colaboración con la agencia estadounidense <em>I, like you, Tours</em>, especializada en viajes a Marruecos. Creación de viaje para dos grupos en 2024.
+                  </p>
+                  <p>
+                    Tour educacional en Roma, Florencia, Barcelona y Madrid.
+                  </p>
+                  <p>
+                    Tres meses guiando diferentes tours en Laponia (invierno): expediciones de auroras boreales en moto de nieve, rutas con raquetas y visita al rompehielos en Suecia.
+                  </p>
+                  <p>
+                    Se une Carlos, amigo de la escuela de Ramiro, recién graduado en Farmacia.
+                  </p>
+                </div>
+
+                {/* Media - Imagen */}
+                <div className="my-16">
+                  <div className="relative aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
+                    <Image
+                      src="/historia-2023.jpg"
+                      alt="Historia 2023"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+
+                <div className="text-center pt-12">
+                  <p className="text-xl font-light text-gray-600 italic">
+                    Fin año 2023
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* AÑO 2024 */}
+        <section className="py-24 border-b border-gray-200">
+          <div className="max-w-4xl mx-auto px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-5xl font-light text-center mb-16 tracking-wider">
+                AÑO 2024
+              </h2>
+
+              <div className="space-y-8">
+                <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                  <p>
+                    Colaboración en la gestión de invitados VIP en la Baja TT Extremadura.
+                  </p>
+                  <p>
+                    Primeros tours diseñados por Ibero Tours e <em>I, like you, Tours</em>.
+                  </p>
+                  <p>
+                    Viaje de reconocimiento a India (Mumbai, Goa, Nueva Delhi, Himalaya).
+                  </p>
+                  <p>
+                    Viaje de reconocimiento a Laos, Tailandia (norte y sur) y Vietnam.
+                  </p>
+                  <p>
+                    Viaje de reconocimiento a British Columbia (Canadá).
+                  </p>
+                  <p>
+                    Viaje educativo en el sur de España (4 colegios).
+                  </p>
+                </div>
+
+                {/* Media - Imagen */}
+                <div className="my-16">
+                  <div className="relative aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
+                    <Image
+                      src="/historia-2024.jpg"
+                      alt="Historia 2024"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+
+                <div className="text-center pt-12">
+                  <p className="text-xl font-light text-gray-600 italic">
+                    Fin año 2024
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* AÑO 2025 */}
+        <section className="py-24 border-b border-gray-200">
+          <div className="max-w-4xl mx-auto px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-5xl font-light text-center mb-16 tracking-wider">
+                AÑO 2025
+              </h2>
+
+              <div className="space-y-8">
+                <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                  <p>
+                    Viaje educativo en Barcelona y Cataluña.
+                  </p>
+                  <p>
+                    Ibero diseña y ejecuta por segundo año consecutivo la ruta Madrid → Lisboa vía Extremadura y Alentejo.
+                  </p>
+                  <p>
+                    Desarrollo de nuevos paquetes para 2026–2027 y valoración de nuevas colaboraciones en Europa y Asia.
+                  </p>
+                </div>
+
+                {/* Media - Imagen */}
+                <div className="my-16">
+                  <div className="relative aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
+                    <Image
+                      src="/historia-2024.jpg"
+                      alt="Historia 2025"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+
+                <div className="text-center pt-12">
+                  <p className="text-xl font-light text-gray-600 italic">
+                    Fin año 2025
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Botón Tienda */}
+        <section className="py-24 bg-black text-white">
+          <div className="max-w-4xl mx-auto px-8 text-center">
+            <Link
+              href="/tienda"
+              className="inline-block bg-white text-black px-12 py-4 text-lg font-medium hover:bg-gray-100 transition-colors duration-300"
+            >
+              Tienda
+            </Link>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}

@@ -3,6 +3,8 @@ import React from "react";
 import "./globals.css";
 import CookieConsent from './components/CookieConsent';
 import SentryInitClient from './components/SentryInitClient';
+import { SessionProvider } from './components/SessionProvider';
+import { NotificationProvider } from '../components/NotificationProvider';
 
   const title = 'Ibero Tours — Authentic travels across Spain & Portugal';
   const description = 'Authentic small-group travels focused on local food, culture and nature across Spain and Portugal.';
@@ -29,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   <link rel="canonical" href={siteUrl} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="/_optimized/IMG_3241.JPG-w1600.webp" fetchPriority="high" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
@@ -49,7 +51,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <a href="#content" className="skip-link">Skip to content</a>
-        {children}
+        <NotificationProvider>
+          <SessionProvider>
+            {children}
+          </SessionProvider>
+        </NotificationProvider>
         <CookieConsent />
         <script dangerouslySetInnerHTML={{ __html: `(function(){
           function loadGA(){

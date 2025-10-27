@@ -1,101 +1,103 @@
 "use client";
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Suspense } from 'react';
+import InteractiveMap from '../../components/InteractiveMap';
+import ContinentSelector from '../../components/ContinentSelector';
+import Header from '../../components/Header';
+
+export const dynamic = 'force-dynamic';
+
+interface Country {
+  name: string;
+  lat: number;
+  lng: number;
+  capital: string;
+  highlights: string[];
+  image: string;
+  images?: string[];
+  routes?: Route[];
+}
+
+interface Route {
+  name: string;
+  image: string;
+  keywords: string[];
+  path: string;
+}
+
+const capitalCities: Country[] = [
+  {
+    name: 'Spain',
+    lat: 40.4168,
+    lng: -3.7038,
+    capital: 'Madrid',
+    highlights: ['Madrid', 'Barcelona', 'Galicia'],
+    image: '/images/destinations/madrid-lisboa/IMG_4335.JPG'
+  },
+  {
+    name: 'Portugal',
+    lat: 38.7223,
+    lng: -9.1393,
+    capital: 'Lisbon',
+    highlights: ['Lisbon', 'Porto', 'Alentejo'],
+    image: '/images/carousel/IMG_4008.JPG'
+  },
+  {
+    name: 'Switzerland',
+    lat: 46.9481,
+    lng: 7.4474,
+    capital: 'Bern',
+    highlights: ['Alps', 'Lake Geneva', 'Zurich'],
+    image: '/images/carousel/IMG_4326.JPG'
+  },
+  {
+    name: 'Finland',
+    lat: 60.1699,
+    lng: 24.9384,
+    capital: 'Helsinki',
+    highlights: ['Northern Lights', 'Saunas', 'Nature'],
+    image: '/images/carousel/IMG_4446.JPG'
+  },
+  {
+    name: 'Sweden',
+    lat: 59.3293,
+    lng: 18.0686,
+    capital: 'Stockholm',
+    highlights: ['Stockholm', 'Fjords', 'Midnight Sun'],
+    image: '/images/carousel/IMG_3951.JPG'
+  }
+];
 
 export default function DestinationsPage() {
-  const destinations = [
-    {
-      title: "Madrid & Lisboa",
-      subtitle: "Dos capitales ibéricas llenas de historia",
-      image: "/images/destinations/madrid-lisboa/IMG_4335.JPG",
-      href: "/destinations/madrid-lisboa"
-    },
-    {
-      title: "Porto & Galicia", 
-      subtitle: "Costa atlántica con sabor tradicional",
-      image: "/images/carousel/IMG_4008.JPG",
-      href: "/destinations/porto-galicia"
-    },
-    {
-      title: "Barcelona & Bordeaux",
-      subtitle: "Arte, arquitectura y vinos excepcionales",
-      image: "/images/carousel/IMG_4326.JPG", 
-      href: "/destinations/barcelona-bordeaux"
-    },
-    {
-      title: "Southeast Asia",
-      subtitle: "Aventura tropical y culturas milenarias",
-      image: "/images/carousel/IMG_4446.JPG",
-      href: "/destinations/southeast-asia"
-    }
-  ];
+  const handleCountryClick = (country: Country) => {
+    console.log('Country clicked:', country);
+    // Aquí puedes agregar navegación o lógica adicional
+  };
 
   return (
-    <main className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-50 p-8">
-        <nav className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-light text-white tracking-widest">
-            IBERO TOURS
-          </Link>
-          <div className="flex gap-8 items-center">
-            <Link href="/gallery" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
-              Gallery
-            </Link>
-            <Link href="/destinations" className="text-white border-b border-white text-sm uppercase tracking-wider">
-              Destinations
-            </Link>
-            <Link href="/contact" className="text-white hover:text-gray-300 transition-colors text-sm uppercase tracking-wider">
-              Contact
-            </Link>
-          </div>
-        </nav>
-      </header>
+    <main className="min-h-screen bg-transparent">
+      <Header leftLabel="Destinations" />
 
-      <div className="pt-24 pb-16">
+      <section className="h-screen">
+        <Suspense fallback={<div className="h-full flex items-center justify-center">Loading map...</div>}>
+          <InteractiveMap />
+        </Suspense>
+      </section>
+
+      <section className="py-16 bg-transparent">
         <div className="max-w-7xl mx-auto px-8">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-6xl font-light text-white text-center mb-16 tracking-wider"
-          >
-            Destinations
-          </motion.h1>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {destinations.map((destination, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-                className="group cursor-pointer"
-              >
-                <Link href={destination.href}>
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src={destination.image}
-                      alt={destination.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
-                    <div className="absolute bottom-8 left-8">
-                      <h2 className="text-3xl font-light text-white mb-2 tracking-wide">
-                        {destination.title}
-                      </h2>
-                      <p className="text-white/80 text-lg">
-                        {destination.subtitle}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+          <ContinentSelector
+            capitalCities={capitalCities}
+            onCountryClick={handleCountryClick}
+          />
         </div>
-      </div>
+      </section>
+
+      {/* Footer kept from site global footer */}
+      <footer className="py-8">
+        <div className="max-w-7xl mx-auto px-8 text-center">
+          <p className="text-gray-600 text-sm">© 2025 Ibero Tours. All rights reserved.</p>
+        </div>
+      </footer>
     </main>
   );
 }
